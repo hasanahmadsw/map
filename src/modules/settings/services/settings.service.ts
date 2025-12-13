@@ -5,6 +5,7 @@ import { CreateSettingDto } from '../dtos/request/create-setting.dto';
 import { UpdateSettingDto } from '../dtos/request/update-setting.dto';
 import { SettingResponseDto } from '../dtos/response/setting-response.dto';
 import { SettingsWithTranslationsResponseDto } from '../dtos/response/settings-with-translations-response.dto';
+import { SettingTranslationResponseDto } from '../dtos/response/setting-translation-response.dto';
 import { SettingEntity } from '../entities/setting.entity';
 import { SettingTranslationEntity } from '../entities/setting-translation.entity';
 import { LanguagesService } from 'src/modules/languages/services/languages.service';
@@ -47,7 +48,7 @@ export class SettingsService {
       },
     );
 
-    return savedSetting;
+    return SettingResponseDto.fromEntity(savedSetting);
   }
 
   async findOne(id: number): Promise<SettingResponseDto> {
@@ -59,7 +60,7 @@ export class SettingsService {
       throw new NotFoundException('Setting not found');
     }
 
-    return setting;
+    return SettingResponseDto.fromEntity(setting);
   }
 
   async getSettings(languageCode?: string): Promise<SettingResponseDto> {
@@ -97,10 +98,8 @@ export class SettingsService {
       relations: ['language'],
     });
 
-    return {
-      ...setting,
-      translations,
-    };
+    const translationDtos = translations.map((t) => SettingTranslationResponseDto.fromEntity(t));
+    return SettingsWithTranslationsResponseDto.fromEntityWithTranslations(setting, translationDtos);
   }
 
   async getSettingsByLanguage(languageCode: string): Promise<SettingResponseDto> {
@@ -168,22 +167,7 @@ export class SettingsService {
     translation?: SettingTranslationEntity,
   ): SettingResponseDto {
     // Start with base settings
-    const mergedSettings: SettingResponseDto = {
-      id: setting.id,
-      siteName: setting.siteName,
-      siteDescription: setting.siteDescription,
-      siteLogo: setting.siteLogo,
-      siteDarkLogo: setting.siteDarkLogo,
-      siteFavicon: setting.siteFavicon,
-      meta: setting.meta,
-      social: setting.social,
-      analytics: setting.analytics,
-      contact: setting.contact,
-      customScripts: setting.customScripts,
-      defaultLanguage: setting.defaultLanguage,
-      createdAt: setting.createdAt,
-      updatedAt: setting.updatedAt,
-    };
+    const mergedSettings = SettingResponseDto.fromEntity(setting);
 
     // Apply translation overrides only for translatable fields
     if (translation) {

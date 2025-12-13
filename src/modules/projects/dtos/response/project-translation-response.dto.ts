@@ -1,49 +1,40 @@
-import { Expose, Type } from 'class-transformer';
 import { LanguageEntity } from '../../../languages/entities/language.entity';
+import { ProjectTranslationEntity } from '../../entities/project-translation.entity';
 import { ProjectChallengeResponseDto } from './project-challenge-response.dto';
 import { ProjectResultResponseDto } from './project-result-response.dto';
 
 export class ProjectTranslationResponseDto {
-  @Expose()
   id: number;
-
-  @Expose()
   projectId: number;
-
-  @Expose()
   languageCode: string;
-
-  @Expose()
   name?: string;
-
-  @Expose()
   description?: string;
-
-  @Expose()
   shortDescription?: string;
-
-  @Expose()
   meta?: {
     title?: string;
     description?: string;
     keywords?: string[];
   };
-
-  @Expose()
-  @Type(() => ProjectChallengeResponseDto)
   challenges?: ProjectChallengeResponseDto[];
-
-  @Expose()
-  @Type(() => ProjectResultResponseDto)
   results?: ProjectResultResponseDto[];
-
-  @Expose()
-  @Type(() => LanguageEntity)
   language: LanguageEntity;
-
-  @Expose()
   createdAt: Date;
-
-  @Expose()
   updatedAt: Date;
+
+  static fromEntity(entity: ProjectTranslationEntity): ProjectTranslationResponseDto {
+    const dto = new ProjectTranslationResponseDto();
+    dto.id = entity.id;
+    dto.projectId = entity.projectId;
+    dto.languageCode = entity.languageCode;
+    dto.name = entity.name;
+    dto.description = entity.description;
+    dto.shortDescription = entity.shortDescription;
+    dto.meta = entity.meta;
+    dto.challenges = entity.challenges?.map((challenge) => ProjectChallengeResponseDto.fromEntity(challenge));
+    dto.results = entity.results?.map((result) => ProjectResultResponseDto.fromEntity(result));
+    dto.language = entity.language;
+    dto.createdAt = entity.createdAt;
+    dto.updatedAt = entity.updatedAt;
+    return dto;
+  }
 }

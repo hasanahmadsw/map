@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, SelectQueryBuilder, In } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
 import { CreateSolutionDto } from '../dtos/request/create-solution.dto';
 import { UpdateSolutionDto } from '../dtos/request/update-solution.dto';
 import { SolutionResponseDto } from '../dtos/response/solution-response.dto';
@@ -105,7 +104,7 @@ export class SolutionsService {
     const qb = this.buildBaseQB();
 
     if (filterSolutionDto.search) {
-      qb.andWhere('translations.name ILIKE :search', { search: `%${filterSolutionDto.search}%` });
+      qb.andWhere('solution.slug ILIKE :search', { search: `%${filterSolutionDto.search}%` });
     }
     if (filterSolutionDto.slug) {
       qb.andWhere('solution.slug = :slug', { slug: filterSolutionDto.slug });
@@ -123,32 +122,25 @@ export class SolutionsService {
       qb.andWhere('solution.order = :order', { order: filterSolutionDto.order });
     }
 
-    if (filterSolutionDto.sortBy) {
-      const sortOrder = filterSolutionDto.sortOrder || 'ASC';
-      qb.orderBy(`solution.${filterSolutionDto.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
-    }
+    qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
 
-    return this.paginationService.paginateSafeQB(qb, filterSolutionDto, {
-      primaryId: 'solution.id',
-      createdAt: 'solution.createdAt',
-      orderDirection: (filterSolutionDto.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
-      map: (e) => plainToInstance(SolutionResponseDto, e, { excludeExtraneousValues: true }),
+    return this.paginationService.paginateQB(qb, filterSolutionDto, {
+      orderBy: 'solution.order',
+      map: (e) => SolutionResponseDto.fromEntity(e, filterSolutionDto.languageCode),
     });
   }
 
   async getById(id: number): Promise<SolutionResponseDto> {
     const solution = await this.solutionRepository.findOne({
       where: { id },
-      relations: ['translations', 'services', 'services.translations'],
+      relations: ['translations', 'services'],
     });
 
     if (!solution) {
       throw new NotFoundException('Solution not found');
     }
 
-    return plainToInstance(SolutionResponseDto, solution, { enableImplicitConversion: true });
+    return SolutionResponseDto.fromEntity(solution);
   }
 
   async findBySlug(slug: string): Promise<SolutionResponseDto> {
@@ -165,7 +157,7 @@ export class SolutionsService {
     solution.viewCount += 1;
     await this.solutionRepository.save(solution);
 
-    return solution;
+    return SolutionResponseDto.fromEntity(solution);
   }
 
   async update(id: number, updateSolutionDto: UpdateSolutionDto): Promise<SolutionResponseDto> {
@@ -263,41 +255,14 @@ export class SolutionsService {
       qb.andWhere('solution.order = :order', { order: filter.order });
     }
 
-    if (filter.sortBy) {
-      const sortOrder = filter.sortOrder || 'ASC';
-      qb.orderBy(`solution.${filter.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
-    }
+    qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
 
-    const result = await this.paginationService.paginateSafeQB(qb, filter, {
+    return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'solution.id',
       createdAt: 'solution.createdAt',
-      orderDirection: (filter.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
-      map: (e) => plainToInstance(SolutionResponseDto, e, { excludeExtraneousValues: true }),
+      orderDirection: filter.orderDirection ?? 'DESC',
+      map: (e) => SolutionResponseDto.fromEntity(e, languageCode),
     });
-
-    // post-processing: اختر ترجمة اللغة المطلوبة ثم الافتراضية
-    result.data = result.data.map((solution: any) => {
-      if (Array.isArray(solution.translations)) {
-        const requested = solution.translations.find((t: any) => t.languageCode === languageCode);
-        const fallback = solution.translations.find((t: any) => t.isDefault);
-        solution.translations = requested ? [requested] : fallback ? [fallback] : solution.translations;
-      }
-      if (Array.isArray(solution.services)) {
-        solution.services = solution.services.map((service: any) => {
-          if (Array.isArray(service.translations)) {
-            const sReq = service.translations.find((t: any) => t.languageCode === languageCode);
-            const sDef = service.translations.find((t: any) => t.isDefault);
-            service.translations = sReq ? [sReq] : sDef ? [sDef] : service.translations;
-          }
-          return service;
-        });
-      }
-      return solution;
-    });
-
-    return result;
   }
 
   async getFeaturedSolutions(filter: PublicSolutionFilterDto): Promise<PaginationResponseDto<SolutionResponseDto>> {
@@ -315,18 +280,13 @@ export class SolutionsService {
       qb.andWhere('solution.order = :order', { order: filter.order });
     }
 
-    if (filter.sortBy) {
-      const sortOrder = filter.sortOrder || 'ASC';
-      qb.orderBy(`solution.${filter.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
-    }
+    qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
 
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'solution.id',
       createdAt: 'solution.createdAt',
-      orderDirection: (filter.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
-      map: (e) => plainToInstance(SolutionResponseDto, e, { excludeExtraneousValues: true }),
+      orderDirection: filter.orderDirection ?? 'DESC',
+      map: (e) => SolutionResponseDto.fromEntity(e, languageCode),
     });
   }
 
@@ -345,50 +305,25 @@ export class SolutionsService {
 
     if (!solution) throw new NotFoundException('Solution not found');
 
-    // Post-process to select the correct translation (prefer requested language, fall back to default)
-    if (solution.translations && Array.isArray(solution.translations)) {
-      const requestedTranslation = solution.translations.find((t: any) => t.languageCode === languageCode);
-      const defaultTranslation = solution.translations.find((t: any) => t.isDefault);
-      solution.translations = requestedTranslation
-        ? [requestedTranslation]
-        : defaultTranslation
-          ? [defaultTranslation]
-          : solution.translations;
-
-      // Same for services
-      if (solution.services && Array.isArray(solution.services)) {
-        solution.services = solution.services.map((service: any) => {
-          if (service.translations && Array.isArray(service.translations)) {
-            const serviceRequestedTranslation = service.translations.find((t: any) => t.languageCode === languageCode);
-            const serviceDefaultTranslation = service.translations.find((t: any) => t.isDefault);
-            service.translations = serviceRequestedTranslation
-              ? [serviceRequestedTranslation]
-              : serviceDefaultTranslation
-                ? [serviceDefaultTranslation]
-                : service.translations;
-          }
-          return service;
-        });
-      }
-    }
-
     // Increment view count without saving relations
     await this.solutionRepository.update(solution.id, { viewCount: solution.viewCount + 1 });
 
-    return solution;
+    return SolutionResponseDto.fromEntity(solution, languageCode);
   }
 
   // ---------- Helpers ----------
-  private buildBaseQB(languageCode?: string): SelectQueryBuilder<SolutionEntity> {
+  private buildBaseQB(languageCode?: string, dto?: SolutionFilterDto): SelectQueryBuilder<SolutionEntity> {
     const qb = this.solutionRepository.createQueryBuilder('solution');
 
     if (languageCode) {
       qb.innerJoinAndSelect('solution.translations', 'translations', 'translations.languageCode = :languageCode', {
         languageCode,
       });
-    } else {
-      qb.leftJoinAndSelect('solution.translations', 'translations');
     }
+
+    //  else {
+    //   qb.leftJoinAndSelect('solution.translations', 'translations');
+    // }
 
     qb.leftJoinAndSelect('solution.services', 'services');
 
@@ -401,9 +336,10 @@ export class SolutionsService {
           languageCode,
         },
       );
-    } else {
-      qb.leftJoinAndSelect('services.translations', 'serviceTranslations');
     }
+    // else {
+    //   qb.leftJoinAndSelect('services.translations', 'serviceTranslations');
+    // }
 
     qb.orderBy('solution.order', 'ASC').addOrderBy('solution.createdAt', 'DESC');
 

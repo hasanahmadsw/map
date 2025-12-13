@@ -98,7 +98,7 @@ export class StaffController {
   @Protected(Role.ADMIN, Role.SUPER_ADMIN)
   @SerializeResponse(FullStaffResponseDto)
   async getMe(@CurrentStaff() staff: StaffEntity): Promise<FullStaffResponseDto> {
-    return staff;
+    return this.staffService.getMe(staff);
   }
 
   // ===== AUTHOR ENDPOINTS =====

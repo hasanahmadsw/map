@@ -6,7 +6,6 @@ import { ArticleEntity } from '../entities/article.entity';
 import { CreateArticleTranslationDto } from '../dtos/request/create-article-translation.dto';
 import { UpdateArticleTranslationDto } from '../dtos/request/update-article-translation.dto';
 import { ArticleTranslationResponseDto } from '../dtos/response/article-translation-response.dto';
-import { plainToInstance } from 'class-transformer';
 import { LanguagesService } from 'src/modules/languages/services/languages.service';
 import { TranslateService } from 'src/services/translation/services/translate.service';
 import { TranslationEventTypes } from 'src/services/translation/enums/translated-types.enum';
@@ -42,15 +41,13 @@ export class ArticleTranslationsService {
     if (!articleExists) throw new NotFoundException('Article not found');
 
     const translations = await this.translationsRepo.find({ where: { articleId }, relations: ['language'] });
-    return translations.map((t) =>
-      plainToInstance(ArticleTranslationResponseDto, t, { enableImplicitConversion: true }),
-    );
+    return translations.map((t) => ArticleTranslationResponseDto.fromEntity(t));
   }
 
   async getById(id: number): Promise<ArticleTranslationResponseDto> {
     const translation = await this.translationsRepo.findOne({ where: { id }, relations: ['language'] });
     if (!translation) throw new NotFoundException('Article translation not found');
-    return plainToInstance(ArticleTranslationResponseDto, translation, { enableImplicitConversion: true });
+    return ArticleTranslationResponseDto.fromEntity(translation);
   }
 
   async getByArticleAndLanguage(articleId: number, languageCode: string): Promise<ArticleTranslationResponseDto> {
@@ -60,14 +57,12 @@ export class ArticleTranslationsService {
     });
     if (!translation)
       throw new NotFoundException(`Translation not found for article ${articleId} and language ${languageCode}`);
-    return plainToInstance(ArticleTranslationResponseDto, translation, { enableImplicitConversion: true });
+    return ArticleTranslationResponseDto.fromEntity(translation);
   }
 
   async listAll(): Promise<ArticleTranslationResponseDto[]> {
     const translations = await this.translationsRepo.find({ relations: ['language'] });
-    return translations.map((t) =>
-      plainToInstance(ArticleTranslationResponseDto, t, { enableImplicitConversion: true }),
-    );
+    return translations.map((t) => ArticleTranslationResponseDto.fromEntity(t));
   }
 
   async autoTranslate(articleId: number, dto: AutoTranslateDto): Promise<ArticleTranslationResponseDto[]> {
@@ -101,7 +96,8 @@ export class ArticleTranslationsService {
       meta: defaultTranslation.meta,
     });
 
-    return this.translationsRepo.find({ where: { articleId } });
+    const translations = await this.translationsRepo.find({ where: { articleId }, relations: ['language'] });
+    return translations.map((t) => ArticleTranslationResponseDto.fromEntity(t));
   }
 
   async update(

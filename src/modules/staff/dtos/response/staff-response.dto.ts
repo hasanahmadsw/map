@@ -1,36 +1,25 @@
-import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { StaffEntity } from '../../entities/staff.entity';
 import { StaffTranslationResponseDto } from './staff-translation-response.dto';
+import { StaffRole } from '../../enums/staff-role.enums';
 
-@Exclude()
 export class StaffResponseDto {
-  @Expose()
   id: number;
-
-  @Expose()
   name: string;
-
-  @Expose()
   email: string;
-
-  @Expose()
-  bio?: string;
-
-  @Expose()
   image?: string;
-
-  @Expose()
-  @Type(() => StaffTranslationResponseDto)
   translations?: StaffTranslationResponseDto[];
-
-  @Expose()
   createdAt: Date;
+  role: StaffRole;
 
-  @Expose()
-  @Transform(({ value }) => value ?? undefined)
-  deletedAt?: Date;
-
-  constructor(staff: StaffEntity) {
-    return Object.assign(this, staff);
+  static fromEntity(entity: StaffEntity): StaffResponseDto {
+    const dto = new StaffResponseDto();
+    dto.id = entity.id;
+    dto.name = entity.name;
+    dto.email = entity.email;
+    dto.image = entity.image;
+    dto.translations = entity.translations?.map((translation) => StaffTranslationResponseDto.fromEntity(translation));
+    dto.role = entity.role;
+    dto.createdAt = entity.createdAt;
+    return dto;
   }
 }

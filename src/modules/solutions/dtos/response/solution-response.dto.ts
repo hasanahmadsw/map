@@ -1,61 +1,53 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { SolutionEntity } from '../../entities/solution.entity';
 import { SolutionTranslationResponseDto } from './solution-translation-response.dto';
 import { ServiceResponseDto } from 'src/modules/services/dtos/response/service-response.dto';
 
-@Exclude()
 export class SolutionResponseDto {
-  @Expose()
   id: number;
-
-  @Expose()
   slug: string;
-
-  @Expose()
   icon?: string;
-
-  @Expose()
   isPublished: boolean;
-
-  @Expose()
   isFeatured: boolean;
-
-  @Expose()
   featuredImage?: string;
-
-  @Expose()
   viewCount: number;
-
-  @Expose()
   order: number;
-
-  // Translatable fields (for merged responses)
-  @Expose()
   name?: string;
-
-  @Expose()
   description?: string;
-
-  @Expose()
   shortDescription?: string;
-
-  @Expose()
   meta?: {
     title?: string;
     description?: string;
     keywords?: string[];
   };
-
-  @Expose()
-  @Type(() => ServiceResponseDto)
   services?: ServiceResponseDto[];
-
-  @Expose()
-  @Type(() => SolutionTranslationResponseDto)
   translations?: SolutionTranslationResponseDto[];
-
-  @Expose()
   createdAt: Date;
-
-  @Expose()
   updatedAt: Date;
+
+  static fromEntity(entity: SolutionEntity, languageCode?: string): SolutionResponseDto {
+    const dto = new SolutionResponseDto();
+    dto.id = entity.id;
+    dto.slug = entity.slug;
+    dto.icon = entity.icon;
+    dto.isPublished = entity.isPublished;
+    dto.isFeatured = entity.isFeatured;
+    dto.featuredImage = entity.featuredImage;
+    dto.viewCount = entity.viewCount;
+    dto.order = entity.order;
+    dto.name = entity.translations?.find((translation) => translation.languageCode === languageCode)?.name;
+    dto.description = entity.translations?.find(
+      (translation) => translation.languageCode === languageCode,
+    )?.description;
+    dto.shortDescription = entity.translations?.find(
+      (translation) => translation.languageCode === languageCode,
+    )?.shortDescription;
+    dto.meta = entity.translations?.find((translation) => translation.languageCode === languageCode)?.meta;
+    dto.services = entity.services?.map((service) => ServiceResponseDto.fromEntity(service, languageCode));
+    dto.translations = entity.translations?.map((translation) =>
+      SolutionTranslationResponseDto.fromEntity(translation),
+    );
+    dto.createdAt = entity.createdAt;
+    dto.updatedAt = entity.updatedAt;
+    return dto;
+  }
 }

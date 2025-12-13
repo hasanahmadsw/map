@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource, SelectQueryBuilder, In } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
 import { CreateProjectDto } from '../dtos/request/create-project.dto';
 import { UpdateProjectDto } from '../dtos/request/update-project.dto';
 import { ProjectResponseDto } from '../dtos/response/project-response.dto';
@@ -219,19 +218,13 @@ export class ProjectsService {
       qb.andWhere('solutions.id = :solutionId', { solutionId: filterProjectDto.solutionId });
     }
 
-    // Sorting
-    if (filterProjectDto.sortBy) {
-      const sortOrder = filterProjectDto.sortOrder || 'ASC';
-      qb.orderBy(`project.${filterProjectDto.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
-    }
+    qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
 
     return this.paginationService.paginateSafeQB(qb, filterProjectDto, {
       primaryId: 'project.id',
       createdAt: 'project.createdAt',
-      map: (e) => plainToInstance(ProjectResponseDto, e, { excludeExtraneousValues: true }),
-      orderDirection: (filterProjectDto.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
+      map: (e) => ProjectResponseDto.fromEntity(e, filterProjectDto.languageCode),
+      orderDirection: filterProjectDto.orderDirection ?? 'DESC',
     });
   }
 
@@ -245,7 +238,7 @@ export class ProjectsService {
       throw new NotFoundException('Project not found');
     }
 
-    return plainToInstance(ProjectResponseDto, project, { enableImplicitConversion: true });
+    return ProjectResponseDto.fromEntity(project);
   }
 
   async findBySlug(slug: string): Promise<ProjectResponseDto> {
@@ -262,7 +255,7 @@ export class ProjectsService {
     project.viewCount += 1;
     await this.projectRepository.save(project);
 
-    return project;
+    return ProjectResponseDto.fromEntity(project);
   }
 
   async update(id: number, updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
@@ -434,23 +427,16 @@ export class ProjectsService {
       if (filter.startDateTo) {
         qb.andWhere('project.startDate <= :startDateTo', { startDateTo: filter.startDateTo });
       }
-
-      if (filter.sortBy) {
-        const sortOrder = filter.sortOrder || 'ASC';
-        qb.orderBy(`project.${filter.sortBy}`, sortOrder);
-      } else {
-        qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
-      }
-    } else {
-      qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
     }
+
+    qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
 
     // Get paginated results with raw entities
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'project.id',
       createdAt: 'project.createdAt',
-      map: (e) => plainToInstance(ProjectResponseDto, e, { excludeExtraneousValues: true }),
-      orderDirection: (filter.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
+      map: (e) => ProjectResponseDto.fromEntity(e, languageCode),
+      orderDirection: filter.orderDirection ?? 'DESC',
     });
   }
 
@@ -486,23 +472,16 @@ export class ProjectsService {
       if (filter.startDateTo) {
         qb.andWhere('project.startDate <= :startDateTo', { startDateTo: filter.startDateTo });
       }
-
-      if (filter.sortBy) {
-        const sortOrder = filter.sortOrder || 'ASC';
-        qb.orderBy(`project.${filter.sortBy}`, sortOrder);
-      } else {
-        qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
-      }
-    } else {
-      qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
     }
+
+    qb.orderBy('project.order', 'ASC').addOrderBy('project.createdAt', 'DESC');
 
     // Get paginated results with raw entities
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'project.id',
       createdAt: 'project.createdAt',
-      map: (e) => plainToInstance(ProjectResponseDto, e, { excludeExtraneousValues: true }),
-      orderDirection: (filter.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
+      map: (e) => ProjectResponseDto.fromEntity(e, languageCode),
+      orderDirection: filter.orderDirection ?? 'DESC',
     });
   }
 
@@ -520,7 +499,7 @@ export class ProjectsService {
     // Increment view count without saving relations
     await this.projectRepository.update(project.id, { viewCount: project.viewCount + 1 });
 
-    return project;
+    return ProjectResponseDto.fromEntity(project, languageCode);
   }
 
   // ---------- Helpers ----------

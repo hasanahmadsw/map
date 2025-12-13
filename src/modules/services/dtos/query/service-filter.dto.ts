@@ -30,12 +30,4 @@ export class ServiceFilterDto extends PaginationDto {
   @IsOptional()
   @IsInt()
   solutionId?: number;
-
-  @IsOptional()
-  @IsString()
-  sortBy?: 'createdAt' | 'updatedAt' | 'viewCount' | 'name' | 'order';
-
-  @IsOptional()
-  @IsString()
-  sortOrder?: 'ASC' | 'DESC';
 }

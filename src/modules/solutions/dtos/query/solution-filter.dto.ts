@@ -26,12 +26,4 @@ export class SolutionFilterDto extends PaginationDto {
   @IsInt()
   @Min(0)
   order?: number;
-
-  @IsOptional()
-  @IsString()
-  sortBy?: 'createdAt' | 'updatedAt' | 'viewCount' | 'name' | 'order';
-
-  @IsOptional()
-  @IsString()
-  sortOrder?: 'ASC' | 'DESC';
 }

@@ -1,10 +1,11 @@
-import { Exclude, Expose } from 'class-transformer';
-
-@Exclude()
 export class ProjectChallengeResponseDto {
-  @Expose()
   title: string;
-
-  @Expose()
   description: string;
+
+  static fromEntity(entity: { title: string; description: string }): ProjectChallengeResponseDto {
+    const dto = new ProjectChallengeResponseDto();
+    dto.title = entity.title;
+    dto.description = entity.description;
+    return dto;
+  }
 }

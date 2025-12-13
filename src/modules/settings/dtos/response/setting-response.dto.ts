@@ -1,52 +1,38 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { SettingEntity } from '../../entities/setting.entity';
 import { AnalyticsConfig, ContactInfo, CustomScripts, MetaConfig, SocialLink } from '../../types';
 
-@Exclude()
 export class SettingResponseDto {
-  @Expose()
   id: number;
-
-  @Expose()
   siteName: string;
-
-  @Expose()
   siteDescription: string;
-
-  @Expose()
   siteLogo: string;
-
-  @Expose()
   siteDarkLogo: string;
-
-  @Expose()
   siteFavicon: string;
-
-  @Expose()
-  @Type(() => MetaConfig)
   meta?: MetaConfig;
-
-  @Expose()
-  @Type(() => SocialLink)
   social?: SocialLink[];
-
-  @Expose()
-  @Type(() => AnalyticsConfig)
   analytics?: AnalyticsConfig;
-
-  @Expose()
-  @Type(() => ContactInfo)
   contact?: ContactInfo;
-
-  @Expose()
-  @Type(() => CustomScripts)
   customScripts?: CustomScripts;
-
-  @Expose()
   defaultLanguage: string;
-
-  @Expose()
   createdAt: Date;
-
-  @Expose()
   updatedAt: Date;
+
+  static fromEntity(entity: SettingEntity): SettingResponseDto {
+    const dto = new SettingResponseDto();
+    dto.id = entity.id;
+    dto.siteName = entity.siteName;
+    dto.siteDescription = entity.siteDescription;
+    dto.siteLogo = entity.siteLogo;
+    dto.siteDarkLogo = entity.siteDarkLogo;
+    dto.siteFavicon = entity.siteFavicon;
+    dto.meta = entity.meta;
+    dto.social = entity.social;
+    dto.analytics = entity.analytics;
+    dto.contact = entity.contact;
+    dto.customScripts = entity.customScripts;
+    dto.defaultLanguage = entity.defaultLanguage;
+    dto.createdAt = entity.createdAt;
+    dto.updatedAt = entity.updatedAt;
+    return dto;
+  }
 }

@@ -13,7 +13,7 @@ export class LanguagesService {
     private readonly languageRepository: Repository<LanguageEntity>,
   ) {}
 
-  async create(createLanguageDto: CreateLanguageDto): Promise<LanguageEntity> {
+  async create(createLanguageDto: CreateLanguageDto): Promise<LanguageResponseDto> {
     const codeExists = await this.findByCode(createLanguageDto.code);
     if (codeExists !== null) {
       throw new ConflictException(`A language with the code ${createLanguageDto.code} does already exist`);
@@ -33,12 +33,13 @@ export class LanguagesService {
     }
 
     const language = this.languageRepository.create(createLanguageDto);
-    return await this.languageRepository.save(language);
+    const savedLanguage = await this.languageRepository.save(language);
+    return LanguageResponseDto.fromEntity(savedLanguage);
   }
 
   async findAll(): Promise<LanguageResponseDto[]> {
     const languages = await this.languageRepository.find();
-    return languages;
+    return languages.map((lang) => LanguageResponseDto.fromEntity(lang));
   }
 
   async findOneById(id: number): Promise<LanguageResponseDto> {
@@ -48,7 +49,7 @@ export class LanguagesService {
       throw new NotFoundException('Language not found');
     }
 
-    return language;
+    return LanguageResponseDto.fromEntity(language);
   }
 
   async findByCode(code: string) {
@@ -56,12 +57,12 @@ export class LanguagesService {
     return this.languageRepository.findOneBy({ code });
   }
 
-  async findByCodeOrThrow(code: string) {
+  async findByCodeOrThrow(code: string): Promise<LanguageResponseDto> {
     const language = await this.findByCode(code);
     if (!language) {
       throw new NotFoundException(`No language with the code ${code} was found`);
     }
-    return language;
+    return LanguageResponseDto.fromEntity(language);
   }
 
   async findDefaultLanguage() {
@@ -72,8 +73,11 @@ export class LanguagesService {
     return langauge;
   }
 
-  async update(code: string, updateLanguageDto: UpdateLanguageDto): Promise<LanguageEntity> {
-    const language = await this.findByCodeOrThrow(code);
+  async update(code: string, updateLanguageDto: UpdateLanguageDto): Promise<LanguageResponseDto> {
+    const language = await this.findByCode(code);
+    if (!language) {
+      throw new NotFoundException(`No language with the code ${code} was found`);
+    }
 
     if (updateLanguageDto.isDefault === false && language.isDefault === true) {
       if (language.isDefault) {
@@ -91,11 +95,15 @@ export class LanguagesService {
       }
     }
 
-    return await this.languageRepository.save({ ...language, ...updateLanguageDto });
+    const updatedLanguage = await this.languageRepository.save({ ...language, ...updateLanguageDto });
+    return LanguageResponseDto.fromEntity(updatedLanguage);
   }
 
   async delete(code: string): Promise<void> {
-    const language = await this.findByCodeOrThrow(code);
+    const language = await this.findByCode(code);
+    if (!language) {
+      throw new NotFoundException(`No language with the code ${code} was found`);
+    }
     if (language.isDefault) {
       throw new BadRequestException(`Please make another language default before deleting this language`);
     }

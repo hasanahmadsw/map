@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, DataSource, SelectQueryBuilder } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
 import { CreateArticleDto } from '../dtos/request/create-article.dto';
 import { UpdateArticleDto } from '../dtos/request/update-article.dto';
 import { ArticleResponseDto } from '../dtos/response/article-response.dto';
@@ -103,7 +102,7 @@ export class ArticlesService {
 
     // Search by slug or translation content
     if (filterArticleDto.search) {
-      qb.andWhere('translations.name ILIKE :search', { search: `%${filterArticleDto.search}%` });
+      qb.andWhere('article.slug ILIKE :search', { search: `%${filterArticleDto.search}%` });
     }
 
     // Filter by slug
@@ -140,18 +139,12 @@ export class ArticlesService {
       qb.andWhere('article.topics @> :topic', { topic: [filterArticleDto.topic] });
     }
 
-    // Sorting
-    if (filterArticleDto.sortBy) {
-      const sortOrder = filterArticleDto.sortOrder || 'ASC';
-      qb.orderBy(`article.${filterArticleDto.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('article.createdAt', 'DESC');
-    }
+    qb.orderBy('article.createdAt', 'DESC');
 
     return this.paginationService.paginateSafeQB(qb, filterArticleDto, {
       primaryId: 'article.id',
       createdAt: 'article.createdAt',
-      map: (e) => plainToInstance(ArticleResponseDto, e, { excludeExtraneousValues: true }),
+      map: (e) => ArticleResponseDto.fromEntity(e, filterArticleDto.languageCode),
     });
   }
 
@@ -165,7 +158,7 @@ export class ArticlesService {
       throw new NotFoundException('Article not found');
     }
 
-    return plainToInstance(ArticleResponseDto, article, { enableImplicitConversion: true });
+    return ArticleResponseDto.fromEntity(article);
   }
 
   async findBySlug(slug: string): Promise<ArticleResponseDto> {
@@ -182,7 +175,7 @@ export class ArticlesService {
     article.viewCount += 1;
     await this.articleRepository.save(article);
 
-    return article;
+    return ArticleResponseDto.fromEntity(article);
   }
 
   async findRelatedArticles(slug: string, languageCode: string): Promise<ArticleResponseDto[]> {
@@ -215,7 +208,8 @@ export class ArticlesService {
 
     qb.orderBy('article.createdAt', 'DESC').take(10);
 
-    return qb.getMany();
+    const articles = await qb.getMany();
+    return articles.map((article) => ArticleResponseDto.fromEntity(article, languageCode));
   }
 
   async update(id: number, author: StaffEntity, updateArticleDto: UpdateArticleDto): Promise<ArticleResponseDto> {
@@ -305,22 +299,15 @@ export class ArticlesService {
       if (filter.topic) {
         qb.andWhere('article.topics @> :topic', { topic: [filter.topic] });
       }
-
-      if (filter.sortBy) {
-        const sortOrder = filter.sortOrder || 'ASC';
-        qb.orderBy(`article.${filter.sortBy}`, sortOrder);
-      } else {
-        qb.orderBy('article.createdAt', 'DESC');
-      }
-    } else {
-      qb.orderBy('article.createdAt', 'DESC');
     }
+
+    qb.orderBy('article.createdAt', 'DESC');
 
     // Get paginated results with raw entities
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'article.id',
       createdAt: 'article.createdAt',
-      map: (e) => plainToInstance(ArticleResponseDto, e, { excludeExtraneousValues: true }),
+      map: (e) => ArticleResponseDto.fromEntity(e, languageCode),
     });
   }
 
@@ -345,22 +332,15 @@ export class ArticlesService {
       if (filter.topic) {
         qb.andWhere('article.topics @> :topic', { topic: [filter.topic] });
       }
-
-      if (filter.sortBy) {
-        const sortOrder = filter.sortOrder || 'ASC';
-        qb.orderBy(`article.${filter.sortBy}`, sortOrder);
-      } else {
-        qb.orderBy('article.createdAt', 'DESC');
-      }
-    } else {
-      qb.orderBy('article.createdAt', 'DESC');
     }
+
+    qb.orderBy('article.createdAt', 'DESC');
 
     // Get paginated results with raw entities
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'article.id',
       createdAt: 'article.createdAt',
-      map: (e) => plainToInstance(ArticleResponseDto, e, { excludeExtraneousValues: true }),
+      map: (e) => ArticleResponseDto.fromEntity(e, languageCode),
     });
   }
 
@@ -378,7 +358,7 @@ export class ArticlesService {
     // Increment view count without saving relations
     await this.articleRepository.update(article.id, { viewCount: article.viewCount + 1 });
 
-    return article;
+    return ArticleResponseDto.fromEntity(article, languageCode);
   }
 
   // ---------- Helpers ----------
@@ -415,10 +395,11 @@ export class ArticlesService {
         'authorTranslations.languageCode = :languageCode',
         { languageCode },
       );
-    } else {
-      qb.leftJoinAndSelect('article.translations', 'translations');
-      qb.leftJoinAndSelect('author.translations', 'authorTranslations');
     }
+    // else {
+    //   qb.leftJoinAndSelect('article.translations', 'translations');
+    //   qb.leftJoinAndSelect('author.translations', 'authorTranslations');
+    // }
 
     qb.orderBy('article.createdAt', 'DESC');
 

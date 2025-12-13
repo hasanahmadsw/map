@@ -1,15 +1,16 @@
-import { Expose } from 'class-transformer';
+import { SubService } from '../../interfaces/sub-service.interface';
 
 export class SubServiceResponseDto {
-  @Expose()
   icon?: string;
-
-  @Expose()
   title: string;
-
-  @Expose()
   description?: string;
-
-  @Expose()
   features?: string[];
+  static fromEntity(entity: SubService): SubServiceResponseDto {
+    const dto = new SubServiceResponseDto();
+    dto.icon = entity.icon;
+    dto.title = entity.title;
+    dto.description = entity.description;
+    dto.features = entity.features;
+    return dto;
+  }
 }

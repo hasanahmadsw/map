@@ -50,12 +50,4 @@ export class ProjectFilterDto extends PaginationDto {
   @IsOptional()
   @IsInt()
   solutionId?: number;
-
-  @IsOptional()
-  @IsString()
-  sortBy?: 'createdAt' | 'updatedAt' | 'viewCount' | 'name' | 'order' | 'startDate';
-
-  @IsOptional()
-  @IsString()
-  sortOrder?: 'ASC' | 'DESC';
 }

@@ -6,7 +6,6 @@ import { StaffEntity } from '../entities/staff.entity';
 import { CreateStaffTranslationDto } from '../dtos/request/create-staff-translation.dto';
 import { UpdateStaffTranslationDto } from '../dtos/request/update-staff-translation.dto';
 import { StaffTranslationResponseDto } from '../dtos/response/staff-translation-response.dto';
-import { plainToInstance } from 'class-transformer';
 import { AutoTranslateDto } from 'src/common/dtos/request/auto-translate.dto';
 import { LanguagesService } from 'src/modules/languages/services/languages.service';
 import { TranslateService } from 'src/services/translation/services/translate.service';
@@ -39,13 +38,13 @@ export class StaffTranslationService {
 
   async listByStaff(staffId: number): Promise<StaffTranslationResponseDto[]> {
     const translations = await this.translationsRepo.find({ where: { staffId }, relations: ['language'] });
-    return translations.map((t) => plainToInstance(StaffTranslationResponseDto, t, { enableImplicitConversion: true }));
+    return translations.map((t) => StaffTranslationResponseDto.fromEntity(t));
   }
 
   async getById(id: number): Promise<StaffTranslationResponseDto> {
     const translation = await this.translationsRepo.findOne({ where: { id }, relations: ['language'] });
     if (!translation) throw new NotFoundException('Staff translation not found');
-    return plainToInstance(StaffTranslationResponseDto, translation, { enableImplicitConversion: true });
+    return StaffTranslationResponseDto.fromEntity(translation);
   }
 
   async getByStaffAndLanguage(staffId: number, languageCode: string): Promise<StaffTranslationResponseDto> {
@@ -55,12 +54,12 @@ export class StaffTranslationService {
     });
     if (!translation)
       throw new NotFoundException(`Translation not found for staff ${staffId} and language ${languageCode}`);
-    return plainToInstance(StaffTranslationResponseDto, translation, { enableImplicitConversion: true });
+    return StaffTranslationResponseDto.fromEntity(translation);
   }
 
   async listAll(): Promise<StaffTranslationResponseDto[]> {
     const translations = await this.translationsRepo.find({ relations: ['language'] });
-    return translations.map((t) => plainToInstance(StaffTranslationResponseDto, t, { enableImplicitConversion: true }));
+    return translations.map((t) => StaffTranslationResponseDto.fromEntity(t));
   }
 
   async autoTranslate(staffId: number, dto: AutoTranslateDto): Promise<StaffTranslationResponseDto[]> {
@@ -88,7 +87,8 @@ export class StaffTranslationService {
       bio: defaultTranslation.bio,
     });
 
-    return this.translationsRepo.find({ where: { staffId } });
+    const translations = await this.translationsRepo.find({ where: { staffId }, relations: ['language'] });
+    return translations.map((t) => StaffTranslationResponseDto.fromEntity(t));
   }
 
   async update(id: number, staffId: number, dto: UpdateStaffTranslationDto): Promise<StaffTranslationResponseDto> {

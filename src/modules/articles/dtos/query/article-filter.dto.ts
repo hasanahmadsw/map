@@ -29,12 +29,4 @@ export class ArticleFilterDto extends PaginationDto {
   @IsOptional()
   @IsString()
   topic?: string;
-
-  @IsOptional()
-  @IsString()
-  sortBy?: 'createdAt' | 'updatedAt' | 'viewCount' | 'name';
-
-  @IsOptional()
-  @IsString()
-  sortOrder?: 'ASC' | 'DESC';
 }

@@ -24,7 +24,6 @@ import { TranslationEventTypes } from 'src/services/translation/enums/translated
 import { AuthorFilterDto } from '../dtos/query/author-filter.dto';
 import { UploadService } from 'src/shared/modules/upload/services/upload.service';
 import { FullStaffResponseDto } from '../dtos/response/full-staff-response.dto';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class StaffService {
@@ -77,7 +76,7 @@ export class StaffService {
     return { url };
   }
 
-  async create(createStaffDto: CreateStaffDto): Promise<StaffEntity> {
+  async create(createStaffDto: CreateStaffDto): Promise<FullStaffResponseDto> {
     const existingStaff = await this.staffRepository.findOne({
       where: { email: createStaffDto.email },
     });
@@ -114,17 +113,37 @@ export class StaffService {
       { bio: createStaffDto.bio },
     );
 
-    return savedStaff;
+    const staffWithRelations = await this.staffRepository.findOne({
+      where: { id: savedStaff.id },
+      relations: ['translations'],
+    });
+    return FullStaffResponseDto.fromEntity(staffWithRelations);
   }
 
-  async update(staff: StaffEntity, updateStaffDto: UpdateStaffDto): Promise<StaffEntity> {
+  async update(staff: StaffEntity, updateStaffDto: UpdateStaffDto): Promise<FullStaffResponseDto> {
     const updatedStaff = this.staffRepository.merge(staff, updateStaffDto);
     const savedStaff = await this.staffRepository.save(updatedStaff);
-    return savedStaff;
+
+    const staffWithRelations = await this.staffRepository.findOne({
+      where: { id: savedStaff.id },
+      relations: ['translations'],
+    });
+    return FullStaffResponseDto.fromEntity(staffWithRelations);
+  }
+
+  async getMe(staff: StaffEntity): Promise<FullStaffResponseDto> {
+    const me = await this.staffRepository.findOne({
+      where: { id: staff.id },
+      relations: ['translations'],
+    });
+    if (!me) {
+      throw new NotFoundException('Staff not found');
+    }
+    return FullStaffResponseDto.fromEntity(me);
   }
 
   async delete(id: number): Promise<void> {
-    const staff = await this.findOne(id, null);
+    const staff = await this.findOneEntity(id, null);
 
     if (staff.role == StaffRole.SUPERADMIN) {
       throw new ForbiddenException('Cannot delete SuperAdmin');
@@ -150,7 +169,7 @@ export class StaffService {
     return this.paginationService.paginateSafeQB(queryBuilder, filterStaffDto, {
       primaryId: 'staff.id',
       createdAt: 'staff.createdAt',
-      map: (e) => plainToInstance(FullStaffResponseDto, e, { excludeExtraneousValues: true }),
+      map: (e: StaffEntity) => StaffResponseDto.fromEntity(e),
     });
   }
 
@@ -164,12 +183,12 @@ export class StaffService {
     return this.paginationService.paginateSafeQB(queryBuilder, filterAuthorDto, {
       primaryId: 'staff.id',
       createdAt: 'staff.createdAt',
-      map: (e) => plainToInstance(StaffResponseDto, e, { excludeExtraneousValues: true }),
+      map: (e: StaffEntity) => StaffResponseDto.fromEntity(e),
     });
   }
 
-  async findOneAuthor(id: number, languageCode: string) {
-    const author = this.staffRepository
+  async findOneAuthor(id: number, languageCode: string): Promise<StaffResponseDto> {
+    const author = await this.staffRepository
       .createQueryBuilder('staff')
       .innerJoinAndSelect('staff.translations', 'translations')
       .where('translations.languageCode = :languageCode', { languageCode })
@@ -179,11 +198,26 @@ export class StaffService {
     if (!author) {
       throw new NotFoundException('Author not found');
     }
-    console.log(author);
-    return author;
+    return StaffResponseDto.fromEntity(author);
   }
 
-  async findOne(id: number, role?: StaffRole): Promise<StaffEntity> {
+  async findOne(id: number, role?: StaffRole): Promise<StaffResponseDto> {
+    const whereCondition: any = { id };
+    if (role !== null && role !== undefined) {
+      whereCondition.role = role;
+    }
+
+    const staff = await this.staffRepository.findOne({
+      where: whereCondition,
+      relations: ['translations'],
+    });
+    if (!staff) {
+      throw new NotFoundException('Staff not found');
+    }
+    return StaffResponseDto.fromEntity(staff);
+  }
+
+  async findOneForAuth(id: number, role?: StaffRole): Promise<StaffEntity> {
     const whereCondition: any = { id };
     if (role !== null && role !== undefined) {
       whereCondition.role = role;
@@ -199,7 +233,11 @@ export class StaffService {
     return staff;
   }
 
-  async updateBySuperAdmin(id: number, updateStaffDto: UpdateStaffBySuperAdminDto): Promise<StaffEntity> {
+  private async findOneEntity(id: number, role?: StaffRole): Promise<StaffEntity> {
+    return this.findOneForAuth(id, role);
+  }
+
+  async updateBySuperAdmin(id: number, updateStaffDto: UpdateStaffBySuperAdminDto): Promise<FullStaffResponseDto> {
     const staff = await this.staffRepository.findOne({
       where: { id },
     });
@@ -223,7 +261,11 @@ export class StaffService {
       this.uploadService.deleteFiles([previousImage]);
     }
 
-    return savedStaff;
+    const staffWithRelations = await this.staffRepository.findOne({
+      where: { id: savedStaff.id },
+      relations: ['translations'],
+    });
+    return FullStaffResponseDto.fromEntity(staffWithRelations);
   }
 
   async findOneByEmail(email: string): Promise<StaffEntity> {

@@ -115,7 +115,7 @@ export class ServicesService {
     const qb = this.buildBaseQB();
 
     if (filterServiceDto.search) {
-      qb.andWhere('translations.name ILIKE :search', { search: `%${filterServiceDto.search}%` });
+      qb.andWhere('service.slug ILIKE :search', { search: `%${filterServiceDto.search}%` });
     }
     if (filterServiceDto.slug) {
       qb.andWhere('service.slug = :slug', { slug: filterServiceDto.slug });
@@ -136,32 +136,25 @@ export class ServicesService {
       qb.andWhere('solutions.id = :solutionId', { solutionId: filterServiceDto.solutionId });
     }
 
-    if (filterServiceDto.sortBy) {
-      const sortOrder = filterServiceDto.sortOrder || 'ASC';
-      qb.orderBy(`service.${filterServiceDto.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-    }
+    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
 
-    return this.paginationService.paginateSafeQB(qb, filterServiceDto, {
-      primaryId: 'service.id',
-      createdAt: 'service.createdAt',
-      map: (e) => plainToInstance(ServiceResponseDto, e, { excludeExtraneousValues: true }),
-      orderDirection: (filterServiceDto.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
+    return this.paginationService.paginateQB(qb, filterServiceDto, {
+      orderBy: 'service.order',
+      map: (e) => ServiceResponseDto.fromEntity(e, filterServiceDto.languageCode),
     });
   }
 
   async getById(id: number): Promise<ServiceResponseDto> {
     const service = await this.serviceRepository.findOne({
       where: { id },
-      relations: ['translations', 'solutions', 'solutions.translations'],
+      relations: ['translations', 'solutions'],
     });
 
     if (!service) {
       throw new NotFoundException('Service not found');
     }
 
-    return plainToInstance(ServiceResponseDto, service, { enableImplicitConversion: true });
+    return ServiceResponseDto.fromEntity(service);
   }
 
   async findBySlug(slug: string): Promise<ServiceResponseDto> {
@@ -281,18 +274,13 @@ export class ServicesService {
       qb.andWhere('service.order = :order', { order: filter.order });
     }
 
-    if (filter.sortBy) {
-      const sortOrder = filter.sortOrder || 'ASC';
-      qb.orderBy(`service.${filter.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-    }
+    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
 
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'service.id',
       createdAt: 'service.createdAt',
-      map: (e) => plainToInstance(ServiceResponseDto, e, { excludeExtraneousValues: true }),
-      orderDirection: (filter.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
+      map: (e) => ServiceResponseDto.fromEntity(e, languageCode),
+      orderDirection: filter.orderDirection ?? 'DESC',
     });
   }
 
@@ -311,18 +299,13 @@ export class ServicesService {
       qb.andWhere('service.order = :order', { order: filter.order });
     }
 
-    if (filter.sortBy) {
-      const sortOrder = filter.sortOrder || 'ASC';
-      qb.orderBy(`service.${filter.sortBy}`, sortOrder);
-    } else {
-      qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-    }
+    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
 
     return this.paginationService.paginateSafeQB(qb, filter, {
       primaryId: 'service.id',
       createdAt: 'service.createdAt',
-      map: (e) => plainToInstance(ServiceResponseDto, e, { excludeExtraneousValues: true }),
-      orderDirection: (filter.sortOrder as 'ASC' | 'DESC') ?? 'DESC',
+      map: (e) => ServiceResponseDto.fromEntity(e, languageCode),
+      orderDirection: filter.orderDirection ?? 'DESC',
     });
   }
 
@@ -340,7 +323,7 @@ export class ServicesService {
     // Increment view count without saving relations
     await this.serviceRepository.update(service.id, { viewCount: service.viewCount + 1 });
 
-    return service;
+    return ServiceResponseDto.fromEntity(service, languageCode);
   }
 
   // ---------- Helpers ----------
@@ -351,14 +334,15 @@ export class ServicesService {
       qb.innerJoinAndSelect('service.translations', 'translations', 'translations.languageCode = :languageCode', {
         languageCode,
       });
-    } else {
-      qb.leftJoinAndSelect('service.translations', 'translations');
     }
+    // else {
+    //   qb.leftJoinAndSelect('service.translations', 'translations');
+    // }
 
-    qb.leftJoinAndSelect('service.solutions', 'solutions').leftJoinAndSelect(
-      'solutions.translations',
-      'solutionTranslations',
-    );
+    // qb.leftJoinAndSelect('service.solutions', 'solutions').leftJoinAndSelect(
+    //   'solutions.translations',
+    //   'solutionTranslations',
+    // );
 
     qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
 

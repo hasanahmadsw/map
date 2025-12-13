@@ -1,64 +1,49 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { ArticleEntity } from '../../entities/article.entity';
 import { ArticleTranslationResponseDto } from './article-translation-response.dto';
 import { StaffResponseDto } from 'src/modules/staff/dtos/response/staff-response.dto';
 
-@Exclude()
 export class ArticleResponseDto {
-  @Expose()
   id: number;
-
-  @Expose()
   slug: string;
-
-  @Expose()
   image?: string;
-
-  @Expose()
   isPublished: boolean;
-
-  @Expose()
   isFeatured: boolean;
-
-  @Expose()
   featuredImage?: string;
-
-  @Expose()
   viewCount: number;
-
   // Translatable fields (for merged responses)
-  @Expose()
   name?: string;
-
-  @Expose()
   content?: string;
-
-  @Expose()
   excerpt?: string;
-
-  @Expose()
   meta?: {
     title?: string;
     description?: string;
     keywords?: string[];
   };
-
-  @Expose()
   tags?: string[];
-
-  @Expose()
   topics?: string[];
-
-  @Expose()
-  @Type(() => StaffResponseDto)
   author?: StaffResponseDto;
-
-  @Expose()
-  @Type(() => ArticleTranslationResponseDto)
   translations?: ArticleTranslationResponseDto[];
-
-  @Expose()
   createdAt: Date;
-
-  @Expose()
   updatedAt: Date;
+
+  static fromEntity(entity: ArticleEntity, languageCode?: string): ArticleResponseDto {
+    const dto = new ArticleResponseDto();
+    dto.id = entity.id;
+    dto.slug = entity.slug;
+    dto.image = entity.image;
+    dto.isPublished = entity.isPublished;
+    dto.isFeatured = entity.isFeatured;
+    dto.viewCount = entity.viewCount;
+    dto.tags = entity.tags;
+    dto.topics = entity.topics;
+    dto.name = entity.translations?.find((translation) => translation.languageCode === languageCode)?.name;
+    dto.content = entity.translations?.find((translation) => translation.languageCode === languageCode)?.content;
+    dto.excerpt = entity.translations?.find((translation) => translation.languageCode === languageCode)?.excerpt;
+    dto.meta = entity.translations?.find((translation) => translation.languageCode === languageCode)?.meta;
+    dto.author = entity.author ? StaffResponseDto.fromEntity(entity.author) : undefined;
+    dto.translations = entity.translations?.map((translation) => ArticleTranslationResponseDto.fromEntity(translation));
+    dto.createdAt = entity.createdAt;
+    dto.updatedAt = entity.updatedAt;
+    return dto;
+  }
 }

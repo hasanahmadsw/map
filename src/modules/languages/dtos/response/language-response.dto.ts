@@ -1,25 +1,23 @@
-import { Exclude, Expose } from 'class-transformer';
+import { LanguageEntity } from '../../entities/language.entity';
 
-@Exclude()
 export class LanguageResponseDto {
-  @Expose()
   id: number;
-
-  @Expose()
   code: string;
-
-  @Expose()
   nativeName: string;
-
-  @Expose()
   name: string;
-
-  @Expose()
   isDefault: boolean;
-
-  @Expose()
   updatedAt: Date;
-
-  @Expose()
   createdAt: Date;
+
+  static fromEntity(entity: LanguageEntity): LanguageResponseDto {
+    const dto = new LanguageResponseDto();
+    dto.id = entity.id;
+    dto.code = entity.code;
+    dto.nativeName = entity.nativeName;
+    dto.name = entity.name;
+    dto.isDefault = entity.isDefault;
+    dto.updatedAt = entity.updatedAt;
+    dto.createdAt = entity.createdAt;
+    return dto;
+  }
 }

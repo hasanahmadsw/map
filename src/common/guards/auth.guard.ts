@@ -45,7 +45,7 @@ export class AuthGuard implements CanActivate {
     const staffService = this.moduleRef.get(StaffService, {
       strict: false,
     });
-    const staff = await staffService.findOne(payload.id);
+    const staff = await staffService.findOneForAuth(payload.id);
 
     // Check if token was issued before password was changed
     const passwordChangedAt = staff.passwordChangedAt

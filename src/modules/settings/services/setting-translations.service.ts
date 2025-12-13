@@ -39,7 +39,12 @@ export class SettingTranslationsService {
 
     const translation = this.translationRepository.create(createTranslationDto);
     const savedTranslation = await this.translationRepository.save(translation);
-    return savedTranslation;
+
+    const translationWithRelations = await this.translationRepository.findOne({
+      where: { id: savedTranslation.id },
+      relations: ['language'],
+    });
+    return SettingTranslationResponseDto.fromEntity(translationWithRelations);
   }
 
   async findAllBySetting(): Promise<SettingTranslationResponseDto[]> {
@@ -47,7 +52,7 @@ export class SettingTranslationsService {
       relations: ['language'],
     });
 
-    return translations;
+    return translations.map((t) => SettingTranslationResponseDto.fromEntity(t));
   }
 
   async findOne(id: number): Promise<SettingTranslationResponseDto> {
@@ -60,7 +65,7 @@ export class SettingTranslationsService {
       throw new NotFoundException('Setting translation not found');
     }
 
-    return translation;
+    return SettingTranslationResponseDto.fromEntity(translation);
   }
 
   async findByLanguage(languageCode: string): Promise<SettingTranslationResponseDto> {
@@ -73,7 +78,7 @@ export class SettingTranslationsService {
       throw new NotFoundException(`Translation not found for language: ${languageCode}`);
     }
 
-    return translation;
+    return SettingTranslationResponseDto.fromEntity(translation);
   }
 
   async findAllTranslations(): Promise<SettingTranslationResponseDto[]> {
@@ -81,7 +86,7 @@ export class SettingTranslationsService {
       relations: ['language'],
     });
 
-    return translations;
+    return translations.map((t) => SettingTranslationResponseDto.fromEntity(t));
   }
 
   async createAutoTranslation(autoTranslateDto: AutoTranslateDto): Promise<SettingTranslationResponseDto[]> {
@@ -108,7 +113,10 @@ export class SettingTranslationsService {
       meta: settings.meta,
     });
 
-    return this.translationRepository.find();
+    const translations = await this.translationRepository.find({
+      relations: ['language'],
+    });
+    return translations.map((t) => SettingTranslationResponseDto.fromEntity(t));
   }
 
   async update(id: number, updateTranslationDto: UpdateSettingTranslationDto): Promise<SettingTranslationResponseDto> {
@@ -121,7 +129,11 @@ export class SettingTranslationsService {
     const updatedTranslation = this.translationRepository.merge(translation, updateTranslationDto);
     const savedTranslation = await this.translationRepository.save(updatedTranslation);
 
-    return savedTranslation;
+    const translationWithRelations = await this.translationRepository.findOne({
+      where: { id: savedTranslation.id },
+      relations: ['language'],
+    });
+    return SettingTranslationResponseDto.fromEntity(translationWithRelations);
   }
 
   async delete(id: number): Promise<void> {
