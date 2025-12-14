@@ -1,18 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-  HttpStatus,
-  HttpCode,
-  BadRequestException,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpStatus, HttpCode } from '@nestjs/common';
 import { ProjectsService } from '../services/projects.service';
 import { CreateProjectDto } from '../dtos/request/create-project.dto';
 import { UpdateProjectDto } from '../dtos/request/update-project.dto';
@@ -24,45 +10,32 @@ import { SerializeResponse } from 'src/common/decorators/serialize-response.deco
 import { Protected } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/enums/role.enum';
 import { PublicProjectFilterDto } from '../dtos/query/public-project-filter.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { createMulterConfig } from 'src/common/utils/multer-config.factory';
 
-@Controller('projects')
+@Controller()
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  @Post('upload-picture')
-  @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
-  @UseInterceptors(FileInterceptor('picture', createMulterConfig('image', 5, 1)))
-  uploadPicture(@UploadedFile() picture: Express.Multer.File): Promise<{ url: string }> {
-    if (!picture) {
-      throw new BadRequestException('Picture is required');
-    }
-
-    return this.projectsService.uploadPicture(picture);
-  }
-
-  @Post()
+  @Post('admin/projects')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ProjectResponseDto)
   create(@Body() createProjectDto: CreateProjectDto): Promise<ProjectResponseDto> {
     return this.projectsService.create(createProjectDto);
   }
 
-  @Get('staff')
+  @Get('admin/projects')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   findAllForStaff(@Query() filterProjectDto: ProjectFilterDto): Promise<PaginationResponseDto<ProjectResponseDto>> {
     return this.projectsService.findAll(filterProjectDto);
   }
 
-  @Get('staff/:id')
+  @Get('admin/projects/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ProjectResponseDto)
   findOne(@Param('id', PositiveIntPipe) id: number): Promise<ProjectResponseDto> {
     return this.projectsService.getById(id);
   }
 
-  @Patch(':id')
+  @Patch('admin/projects/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ProjectResponseDto)
   update(
@@ -72,28 +45,28 @@ export class ProjectsController {
     return this.projectsService.update(id, updateProjectDto);
   }
 
-  @Delete(':id')
+  @Delete('admin/projects/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', PositiveIntPipe) id: number): Promise<void> {
     this.projectsService.delete(id);
   }
 
-  @Patch(':id/publish')
+  @Patch('admin/projects/:id/publish')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ProjectResponseDto)
   publish(@Param('id', PositiveIntPipe) id: number): Promise<ProjectResponseDto> {
     return this.projectsService.publish(id);
   }
 
-  @Patch(':id/unpublish')
+  @Patch('admin/projects/:id/unpublish')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ProjectResponseDto)
   unpublish(@Param('id', PositiveIntPipe) id: number): Promise<ProjectResponseDto> {
     return this.projectsService.unpublish(id);
   }
 
-  @Patch(':id/toggle-featured')
+  @Patch('admin/projects/:id/toggle-featured')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ProjectResponseDto)
   toggleFeatured(@Param('id', PositiveIntPipe) id: number): Promise<ProjectResponseDto> {
@@ -101,21 +74,21 @@ export class ProjectsController {
   }
 
   // ===== PUBLIC ENDPOINTS =====
-  @Get('published')
+  @Get('projects/published')
   getPublishedProjects(
     @Query() filterProjectDto: PublicProjectFilterDto,
   ): Promise<PaginationResponseDto<ProjectResponseDto>> {
     return this.projectsService.getPublishedProjects(filterProjectDto);
   }
 
-  @Get('featured')
+  @Get('projects/featured')
   getFeaturedProjects(
     @Query() filterProjectDto: PublicProjectFilterDto,
   ): Promise<PaginationResponseDto<ProjectResponseDto>> {
     return this.projectsService.getFeaturedProjects(filterProjectDto);
   }
 
-  @Get('slug/:slug')
+  @Get('projects/slug/:slug')
   @SerializeResponse(ProjectResponseDto)
   getBySlugPublic(@Param('slug') slug: string): Promise<ProjectResponseDto> {
     return this.projectsService.getBySlugPublic(slug);

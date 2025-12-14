@@ -7,30 +7,18 @@ import { SerializeResponse } from 'src/common/decorators/serialize-response.deco
 import { LanguageCodePipe } from 'src/common/pipes/language-code.pipe';
 import { StaffRole } from 'src/modules/staff/enums/staff-role.enums';
 import { Protected } from 'src/common/decorators/roles.decorator';
-@Controller('languages')
+@Controller()
 export class LanguagesController {
   constructor(private readonly languagesService: LanguagesService) {}
 
-  @Post()
+  @Post('admin/languages')
   @Protected(StaffRole.SUPERADMIN)
   @SerializeResponse(LanguageResponseDto)
   create(@Body() createLanguageDto: CreateLanguageDto): Promise<LanguageResponseDto> {
     return this.languagesService.create(createLanguageDto);
   }
 
-  @Get()
-  @SerializeResponse(LanguageResponseDto)
-  findAll(): Promise<LanguageResponseDto[]> {
-    return this.languagesService.findAll();
-  }
-
-  @Get(':code')
-  @SerializeResponse(LanguageResponseDto)
-  findOneByCode(@Param('code', LanguageCodePipe) code: string): Promise<LanguageResponseDto> {
-    return this.languagesService.findByCodeOrThrow(code);
-  }
-
-  @Patch(':code')
+  @Patch('admin/languages/:code')
   @Protected(StaffRole.SUPERADMIN)
   @SerializeResponse(LanguageResponseDto)
   update(
@@ -40,10 +28,23 @@ export class LanguagesController {
     return this.languagesService.update(code, updateLanguageDto);
   }
 
-  @Delete(':code')
+  @Delete('admin/languages/:code')
   @Protected(StaffRole.SUPERADMIN)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('code', LanguageCodePipe) code: string): Promise<void> {
     await this.languagesService.delete(code);
+  }
+
+  // Shared endpoints
+  @Get('languages')
+  @SerializeResponse(LanguageResponseDto)
+  findAll(): Promise<LanguageResponseDto[]> {
+    return this.languagesService.findAll();
+  }
+
+  @Get('languages/:code')
+  @SerializeResponse(LanguageResponseDto)
+  findOneByCode(@Param('code', LanguageCodePipe) code: string): Promise<LanguageResponseDto> {
+    return this.languagesService.findByCodeOrThrow(code);
   }
 }

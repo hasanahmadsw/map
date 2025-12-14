@@ -8,7 +8,6 @@ import { ProjectFilterDto } from '../dtos/query/project-filter.dto';
 import { PublicProjectFilterDto } from '../dtos/query/public-project-filter.dto';
 
 import { PaginationService } from 'src/common/pagination/paginate.service';
-import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { ViewCounterService } from 'src/common/db/view-counter.service';
 import { BaseReadService } from 'src/common/crud/base-read.service';
 

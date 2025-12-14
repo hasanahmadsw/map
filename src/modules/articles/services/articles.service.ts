@@ -10,20 +10,13 @@ import { ArticleFilterDto } from '../dtos/query/article-filter.dto';
 import { PublicArticleFilterDto } from '../dtos/query/public-article-filter.dto';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { StaffEntity } from 'src/modules/staff/entities/staff.entity';
-import { UploadService } from 'src/shared/modules/upload/services/upload.service';
 
 @Injectable()
 export class ArticlesService {
   constructor(
     private readonly read: ArticlesReadService,
     private readonly crud: ArticlesCrudService,
-    private readonly uploadService: UploadService,
   ) {}
-
-  async uploadPicture(picture: Express.Multer.File): Promise<{ url: string }> {
-    const url = await this.uploadService.uploadPicture(picture);
-    return { url };
-  }
 
   async create(author: StaffEntity, dto: CreateArticleDto): Promise<ArticleResponseDto> {
     const saved = await this.crud.createWithAuthor(author, dto);

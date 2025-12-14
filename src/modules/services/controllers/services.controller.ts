@@ -11,31 +11,31 @@ import { Protected } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/enums/role.enum';
 import { PublicServiceFilterDto } from '../dtos/query/public-service-filter.dto';
 
-@Controller('services')
+@Controller()
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
-  @Post()
+  @Post('admin/services')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ServiceResponseDto)
   create(@Body() createServiceDto: CreateServiceDto): Promise<ServiceResponseDto> {
     return this.servicesService.create(createServiceDto);
   }
 
-  @Get('staff')
+  @Get('admin/services')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   findAllForStaff(@Query() filterServiceDto: ServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
     return this.servicesService.findAll(filterServiceDto);
   }
 
-  @Get('staff/:id')
+  @Get('admin/services/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ServiceResponseDto)
   findOne(@Param('id', PositiveIntPipe) id: number): Promise<ServiceResponseDto> {
     return this.servicesService.getById(id);
   }
 
-  @Patch(':id')
+  @Patch('admin/services/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ServiceResponseDto)
   update(
@@ -45,28 +45,28 @@ export class ServicesController {
     return this.servicesService.update(id, updateServiceDto);
   }
 
-  @Delete(':id')
+  @Delete('admin/services/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', PositiveIntPipe) id: number): Promise<void> {
     this.servicesService.delete(id);
   }
 
-  @Patch(':id/publish')
+  @Patch('admin/services/:id/publish')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ServiceResponseDto)
   publish(@Param('id', PositiveIntPipe) id: number): Promise<ServiceResponseDto> {
     return this.servicesService.publish(id);
   }
 
-  @Patch(':id/unpublish')
+  @Patch('admin/services/:id/unpublish')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ServiceResponseDto)
   unpublish(@Param('id', PositiveIntPipe) id: number): Promise<ServiceResponseDto> {
     return this.servicesService.unpublish(id);
   }
 
-  @Patch(':id/toggle-featured')
+  @Patch('admin/services/:id/toggle-featured')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ServiceResponseDto)
   toggleFeatured(@Param('id', PositiveIntPipe) id: number): Promise<ServiceResponseDto> {
@@ -74,21 +74,21 @@ export class ServicesController {
   }
 
   // ===== PUBLIC ENDPOINTS =====
-  @Get('published')
+  @Get('services/published')
   getPublishedServices(
     @Query() filterServiceDto: PublicServiceFilterDto,
   ): Promise<PaginationResponseDto<ServiceResponseDto>> {
     return this.servicesService.getPublishedServices(filterServiceDto);
   }
 
-  @Get('featured')
+  @Get('services/featured')
   getFeaturedServices(
     @Query() filterServiceDto: PublicServiceFilterDto,
   ): Promise<PaginationResponseDto<ServiceResponseDto>> {
     return this.servicesService.getFeaturedServices(filterServiceDto);
   }
 
-  @Get('slug/:slug')
+  @Get('services/slug/:slug')
   @SerializeResponse(ServiceResponseDto)
   getBySlugPublic(@Param('slug') slug: string): Promise<ServiceResponseDto> {
     return this.servicesService.getBySlugPublic(slug);

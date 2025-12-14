@@ -1,18 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-  HttpStatus,
-  HttpCode,
-  BadRequestException,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpStatus, HttpCode } from '@nestjs/common';
 import { ArticlesService } from '../services/articles.service';
 import { CreateArticleDto } from '../dtos/request/create-article.dto';
 import { UpdateArticleDto } from '../dtos/request/update-article.dto';
@@ -26,45 +12,32 @@ import { Role } from 'src/common/enums/role.enum';
 import { PublicArticleFilterDto } from '../dtos/query/public-article-filter.dto';
 import { CurrentStaff } from 'src/common/decorators/staff.decorator';
 import { StaffEntity } from 'src/modules/staff/entities/staff.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { createMulterConfig } from 'src/common/utils/multer-config.factory';
 
-@Controller('articles')
+@Controller()
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
-  @Post('upload-picture')
-  @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
-  @UseInterceptors(FileInterceptor('picture', createMulterConfig('image', 5, 1)))
-  uploadPicture(@UploadedFile() picture: Express.Multer.File): Promise<{ url: string }> {
-    if (!picture) {
-      throw new BadRequestException('Picture is required');
-    }
-
-    return this.articlesService.uploadPicture(picture);
-  }
-
-  @Post()
+  @Post('admin/articles')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ArticleResponseDto)
   create(@CurrentStaff() author: StaffEntity, @Body() createArticleDto: CreateArticleDto): Promise<ArticleResponseDto> {
     return this.articlesService.create(author, createArticleDto);
   }
 
-  @Get('staff')
+  @Get('admin/articles')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   findAllForStaff(@Query() filterArticleDto: ArticleFilterDto): Promise<PaginationResponseDto<ArticleResponseDto>> {
     return this.articlesService.findAll(filterArticleDto);
   }
 
-  @Get('staff/:id')
+  @Get('admin/articles/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ArticleResponseDto)
   findOne(@Param('id', PositiveIntPipe) id: number): Promise<ArticleResponseDto> {
     return this.articlesService.getById(id);
   }
 
-  @Patch(':id')
+  @Patch('admin/articles/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(ArticleResponseDto)
   update(
@@ -75,7 +48,7 @@ export class ArticlesController {
     return this.articlesService.update(id, author, updateArticleDto);
   }
 
-  @Delete(':id')
+  @Delete('admin/articles/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', PositiveIntPipe) id: number, @CurrentStaff() author: StaffEntity): Promise<void> {
@@ -83,27 +56,27 @@ export class ArticlesController {
   }
 
   // ===== PUBLIC ENDPOINTS =====
-  @Get('published')
+  @Get('articles/published')
   getPublishedArticles(
     @Query() filterArticleDto: PublicArticleFilterDto,
   ): Promise<PaginationResponseDto<ArticleResponseDto>> {
     return this.articlesService.getPublishedArticles(filterArticleDto);
   }
 
-  @Get('featured')
+  @Get('articles/featured')
   getFeaturedArticles(
     @Query() filterArticleDto: PublicArticleFilterDto,
   ): Promise<PaginationResponseDto<ArticleResponseDto>> {
     return this.articlesService.getFeaturedArticles(filterArticleDto);
   }
 
-  @Get('slug/:slug')
+  @Get('articles/slug/:slug')
   @SerializeResponse(ArticleResponseDto)
   getBySlugPublic(@Param('slug') slug: string): Promise<ArticleResponseDto> {
     return this.articlesService.getBySlugPublic(slug);
   }
 
-  @Get('slug/:slug/related')
+  @Get('articles/slug/:slug/related')
   @SerializeResponse(ArticleResponseDto)
   findRelatedArticles(@Param('slug') slug: string): Promise<ArticleResponseDto[]> {
     return this.articlesService.findRelatedArticles(slug);

@@ -11,31 +11,31 @@ import { Protected } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/enums/role.enum';
 import { PublicSolutionFilterDto } from '../dtos/query/public-solution-filter.dto';
 
-@Controller('solutions')
+@Controller()
 export class SolutionsController {
   constructor(private readonly solutionsService: SolutionsService) {}
 
-  @Post()
+  @Post('admin/solutions')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(SolutionResponseDto)
   create(@Body() createSolutionDto: CreateSolutionDto): Promise<SolutionResponseDto> {
     return this.solutionsService.create(createSolutionDto);
   }
 
-  @Get('staff')
+  @Get('admin/solutions')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   findAllForStaff(@Query() filterSolutionDto: SolutionFilterDto): Promise<PaginationResponseDto<SolutionResponseDto>> {
     return this.solutionsService.findAll(filterSolutionDto);
   }
 
-  @Get('staff/:id')
+  @Get('admin/solutions/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(SolutionResponseDto)
   findOne(@Param('id', PositiveIntPipe) id: number): Promise<SolutionResponseDto> {
     return this.solutionsService.getById(id);
   }
 
-  @Patch(':id')
+  @Patch('admin/solutions/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(SolutionResponseDto)
   update(
@@ -45,28 +45,28 @@ export class SolutionsController {
     return this.solutionsService.update(id, updateSolutionDto);
   }
 
-  @Delete(':id')
+  @Delete('admin/solutions/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', PositiveIntPipe) id: number): Promise<void> {
     this.solutionsService.delete(id);
   }
 
-  @Patch(':id/publish')
+  @Patch('admin/solutions/:id/publish')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(SolutionResponseDto)
   publish(@Param('id', PositiveIntPipe) id: number): Promise<SolutionResponseDto> {
     return this.solutionsService.publish(id);
   }
 
-  @Patch(':id/unpublish')
+  @Patch('admin/solutions/:id/unpublish')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(SolutionResponseDto)
   unpublish(@Param('id', PositiveIntPipe) id: number): Promise<SolutionResponseDto> {
     return this.solutionsService.unpublish(id);
   }
 
-  @Patch(':id/toggle-featured')
+  @Patch('admin/solutions/:id/toggle-featured')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN, Role.AUTHOR)
   @SerializeResponse(SolutionResponseDto)
   toggleFeatured(@Param('id', PositiveIntPipe) id: number): Promise<SolutionResponseDto> {
@@ -74,21 +74,21 @@ export class SolutionsController {
   }
 
   // ===== PUBLIC ENDPOINTS =====
-  @Get('published')
+  @Get('solutions/published')
   getPublishedSolutions(
     @Query() filterSolutionDto: PublicSolutionFilterDto,
   ): Promise<PaginationResponseDto<SolutionResponseDto>> {
     return this.solutionsService.getPublishedSolutions(filterSolutionDto);
   }
 
-  @Get('featured')
+  @Get('solutions/featured')
   getFeaturedSolutions(
     @Query() filterSolutionDto: PublicSolutionFilterDto,
   ): Promise<PaginationResponseDto<SolutionResponseDto>> {
     return this.solutionsService.getFeaturedSolutions(filterSolutionDto);
   }
 
-  @Get('slug/:slug')
+  @Get('solutions/slug/:slug')
   @SerializeResponse(SolutionResponseDto)
   getBySlugPublic(@Param('slug') slug: string): Promise<SolutionResponseDto> {
     return this.solutionsService.getBySlugPublic(slug);

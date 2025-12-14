@@ -16,7 +16,7 @@ import { Role } from 'src/common/enums/role.enum';
 import { StaffEntity } from '../entities/staff.entity';
 import { FullStaffResponseDto } from '../dtos/response/full-staff-response.dto';
 
-@Controller('staff')
+@Controller()
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
@@ -27,21 +27,21 @@ export class StaffController {
     return this.staffService.login(loginStaffDto);
   }
 
-  @Post()
+  @Post('admin/staff')
   @Protected(Role.SUPER_ADMIN)
   @SerializeResponse(FullStaffResponseDto)
   create(@Body() createStaffDto: CreateStaffDto): Promise<FullStaffResponseDto> {
     return this.staffService.create(createStaffDto);
   }
 
-  @Patch('me')
+  @Patch('admin/staff/me')
   @Protected(Role.ADMIN, Role.SUPER_ADMIN)
   @SerializeResponse(FullStaffResponseDto)
   update(@CurrentStaff() staff: StaffEntity, @Body() updateStaffDto: UpdateStaffDto): Promise<FullStaffResponseDto> {
     return this.staffService.update(staff, updateStaffDto);
   }
 
-  @Patch(':id')
+  @Patch('admin/staff/:id')
   @Protected(Role.SUPER_ADMIN)
   @SerializeResponse(FullStaffResponseDto)
   updateStaffBySuperAdmin(
@@ -51,17 +51,30 @@ export class StaffController {
     return this.staffService.updateBySuperAdmin(id, updateStaffDto);
   }
 
-  @Delete(':id')
+  @Delete('admin/staff/:id')
   @Protected(Role.SUPER_ADMIN)
   async delete(@Param('id', PositiveIntPipe) id: number): Promise<void> {
     await this.staffService.delete(id);
   }
 
-  @Get('me')
+  @Get('admin/staff/me')
   @Protected(Role.ADMIN, Role.SUPER_ADMIN)
   @SerializeResponse(FullStaffResponseDto)
   async getMe(@CurrentStaff() staff: StaffEntity): Promise<FullStaffResponseDto> {
     return this.staffService.getMe(staff);
+  }
+
+  @Get('admin/staff/:id')
+  @Protected(Role.SUPER_ADMIN)
+  @SerializeResponse(StaffResponseDto)
+  findOne(@Param('id', PositiveIntPipe) id: number): Promise<StaffResponseDto> {
+    return this.staffService.findOne(id);
+  }
+
+  @Get('admin/staff')
+  @Protected(Role.SUPER_ADMIN)
+  findAll(@Query() filterStaffDto: StaffFilterDto): Promise<PaginationResponseDto<StaffResponseDto>> {
+    return this.staffService.findAll(filterStaffDto);
   }
 
   // ===== AUTHOR ENDPOINTS =====
@@ -74,18 +87,5 @@ export class StaffController {
   @SerializeResponse(StaffResponseDto)
   findOneAuthor(@Param('id', PositiveIntPipe) id: number): Promise<StaffResponseDto> {
     return this.staffService.findOneAuthor(id);
-  }
-
-  @Get(':id')
-  @Protected(Role.SUPER_ADMIN)
-  @SerializeResponse(StaffResponseDto)
-  findOne(@Param('id', PositiveIntPipe) id: number): Promise<StaffResponseDto> {
-    return this.staffService.findOne(id);
-  }
-
-  @Get()
-  @Protected(Role.SUPER_ADMIN)
-  findAll(@Query() filterStaffDto: StaffFilterDto): Promise<PaginationResponseDto<StaffResponseDto>> {
-    return this.staffService.findAll(filterStaffDto);
   }
 }

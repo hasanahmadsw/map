@@ -1,0 +1,2306 @@
+{
+  "info": {
+    "_postman_id": "map-backend-api-collection",
+    "name": "MAP Backend API",
+    "description": "Comprehensive API collection for MAP Backend - A professional content management system API with articles, projects, services, solutions, staff management, and media handling.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "map-backend"
+  },
+  "item": [
+    {
+      "name": "App",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": ["{{baseUrl}}"],
+              "path": []
+            },
+            "description": "Basic health check endpoint to verify API is running"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Staff Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"SecurePass123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Authenticate staff member and receive access token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Staff",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Staff",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"role\": \"admin\",\n  \"bio\": \"Experienced administrator with 5+ years in content management\",\n  \"image\": \"https://example.com/images/staff/john-doe.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff"]
+                },
+                "description": "Create a new staff member (Super Admin only). Role must be one of: superadmin, admin, author"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Staff",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "name",
+                      "value": "",
+                      "description": "Filter by name",
+                      "disabled": true
+                    },
+                    {
+                      "key": "email",
+                      "value": "",
+                      "description": "Filter by email",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isDeleted",
+                      "value": "false",
+                      "description": "Filter by deleted status",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of all staff members (Super Admin only)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Staff by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Staff ID"
+                    }
+                  ]
+                },
+                "description": "Get staff member by ID (Super Admin only)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Current Staff (Me)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff", "me"]
+                },
+                "description": "Get current authenticated staff member's full profile (Admin/Super Admin)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Current Staff (Me)",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"bio\": \"Updated bio information\",\n  \"image\": \"https://example.com/images/staff/john-doe-updated.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff/me",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff", "me"]
+                },
+                "description": "Update current authenticated staff member's profile (Admin/Super Admin). Cannot update email or role."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Staff by Super Admin",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"password\": \"NewSecurePass123!\",\n  \"role\": \"admin\",\n  \"bio\": \"Updated bio information\",\n  \"image\": \"https://example.com/images/staff/john-doe-updated.jpg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Staff ID"
+                    }
+                  ]
+                },
+                "description": "Update staff member by Super Admin (can update role, but not email)"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Staff",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/staff/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "staff", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Staff ID"
+                    }
+                  ]
+                },
+                "description": "Delete staff member (Super Admin only)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Authors",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/authors?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["authors"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of authors (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Author by ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/authors/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["authors", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Author ID"
+                    }
+                  ]
+                },
+                "description": "Get author by ID (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Languages",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Language",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"en\",\n  \"name\": \"English\",\n  \"nativeName\": \"English\",\n  \"isDefault\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/languages",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "languages"]
+                },
+                "description": "Create a new language (Super Admin only). Code must be 2 characters (ISO 639-1)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Language",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"English Updated\",\n  \"nativeName\": \"English\",\n  \"isDefault\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/languages/:code",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "languages", ":code"],
+                  "variable": [
+                    {
+                      "key": "code",
+                      "value": "en",
+                      "description": "Language code (ISO 639-1)"
+                    }
+                  ]
+                },
+                "description": "Update language by code (Super Admin only)"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Language",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/languages/:code",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "languages", ":code"],
+                  "variable": [
+                    {
+                      "key": "code",
+                      "value": "en",
+                      "description": "Language code (ISO 639-1)"
+                    }
+                  ]
+                },
+                "description": "Delete language by code (Super Admin only)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get All Languages",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/languages",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["languages"]
+                },
+                "description": "Get all available languages (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Language by Code",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/languages/:code",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["languages", ":code"],
+                  "variable": [
+                    {
+                      "key": "code",
+                      "value": "en",
+                      "description": "Language code (ISO 639-1)"
+                    }
+                  ]
+                },
+                "description": "Get language by code (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Article",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"getting-started-with-nestjs\",\n  \"image\": \"https://example.com/images/articles/nestjs-intro.jpg\",\n  \"name\": \"Getting Started with NestJS\",\n  \"content\": \"<p>This is a comprehensive guide to getting started with NestJS...</p>\",\n  \"excerpt\": \"Learn the basics of NestJS framework and build your first application\",\n  \"meta\": {\n    \"title\": \"Getting Started with NestJS - Complete Guide\",\n    \"description\": \"A comprehensive guide to NestJS framework\",\n    \"keywords\": [\"nestjs\", \"nodejs\", \"backend\", \"framework\"]\n  },\n  \"isPublished\": false,\n  \"isFeatured\": false,\n  \"tags\": [\"nestjs\", \"tutorial\", \"backend\"],\n  \"topics\": [\"programming\", \"web-development\"]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/articles",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "articles"]
+                },
+                "description": "Create a new article (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Articles",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/articles?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "articles"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in name and content",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "true",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "false",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "tag",
+                      "value": "",
+                      "description": "Filter by tag",
+                      "disabled": true
+                    },
+                    {
+                      "key": "topic",
+                      "value": "",
+                      "description": "Filter by topic",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of all articles (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Article by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/articles/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "articles", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Article ID"
+                    }
+                  ]
+                },
+                "description": "Get article by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Article",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Getting Started with NestJS - Updated\",\n  \"content\": \"<p>Updated content...</p>\",\n  \"isPublished\": true,\n  \"isFeatured\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/articles/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "articles", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Article ID"
+                    }
+                  ]
+                },
+                "description": "Update article by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Article",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/articles/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "articles", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Article ID"
+                    }
+                  ]
+                },
+                "description": "Delete article by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Articles",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/published?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in name and content",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "false",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "tag",
+                      "value": "",
+                      "description": "Filter by tag",
+                      "disabled": true
+                    },
+                    {
+                      "key": "topic",
+                      "value": "",
+                      "description": "Filter by topic",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of published articles (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Featured Articles",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/featured?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "featured"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of featured articles (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Article by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "getting-started-with-nestjs",
+                      "description": "Article slug"
+                    }
+                  ]
+                },
+                "description": "Get published article by slug (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Related Articles",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/articles/slug/:slug/related",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["articles", "slug", ":slug", "related"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "getting-started-with-nestjs",
+                      "description": "Article slug"
+                    }
+                  ]
+                },
+                "description": "Get related articles by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Project",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"e-commerce-platform\",\n  \"icon\": \"https://example.com/icons/ecommerce.svg\",\n  \"name\": \"E-Commerce Platform\",\n  \"description\": \"A comprehensive e-commerce platform built with modern technologies\",\n  \"shortDescription\": \"Modern e-commerce solution\",\n  \"meta\": {\n    \"title\": \"E-Commerce Platform - Project\",\n    \"description\": \"A comprehensive e-commerce platform\",\n    \"keywords\": [\"ecommerce\", \"shopping\", \"platform\"]\n  },\n  \"challenges\": [\n    {\n      \"title\": \"High Traffic Handling\",\n      \"description\": \"Need to handle millions of concurrent users\"\n    }\n  ],\n  \"results\": [\n    {\n      \"title\": \"50% Performance Improvement\",\n      \"description\": \"Achieved 50% faster page load times\"\n    }\n  ],\n  \"isPublished\": false,\n  \"isFeatured\": false,\n  \"featuredImage\": \"https://example.com/images/projects/ecommerce-featured.jpg\",\n  \"order\": 1,\n  \"clientName\": \"Acme Corp\",\n  \"projectUrl\": \"https://ecommerce.example.com\",\n  \"githubUrl\": \"https://github.com/example/ecommerce\",\n  \"startDate\": \"2024-01-01\",\n  \"endDate\": \"2024-06-30\",\n  \"technologies\": [\"React\", \"Node.js\", \"PostgreSQL\"],\n  \"serviceIds\": [1, 2],\n  \"solutionIds\": [1]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects"]
+                },
+                "description": "Create a new project (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Projects",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in name and description",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "true",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "false",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "1",
+                      "description": "Filter by order",
+                      "disabled": true
+                    },
+                    {
+                      "key": "clientName",
+                      "value": "",
+                      "description": "Filter by client name",
+                      "disabled": true
+                    },
+                    {
+                      "key": "technology",
+                      "value": "",
+                      "description": "Filter by technology",
+                      "disabled": true
+                    },
+                    {
+                      "key": "startDateFrom",
+                      "value": "",
+                      "description": "Filter by start date from (ISO 8601)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "startDateTo",
+                      "value": "",
+                      "description": "Filter by start date to (ISO 8601)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "serviceId",
+                      "value": "",
+                      "description": "Filter by service ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "solutionId",
+                      "value": "",
+                      "description": "Filter by solution ID",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of all projects (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Project by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Project ID"
+                    }
+                  ]
+                },
+                "description": "Get project by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Project",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"E-Commerce Platform - Updated\",\n  \"description\": \"Updated description\",\n  \"isPublished\": true,\n  \"order\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Project ID"
+                    }
+                  ]
+                },
+                "description": "Update project by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Project",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Project ID"
+                    }
+                  ]
+                },
+                "description": "Delete project by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Project",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Project ID"
+                    }
+                  ]
+                },
+                "description": "Publish a project (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Project",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Project ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish a project (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Toggle Featured Project",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/projects/:id/toggle-featured",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "projects", ":id", "toggle-featured"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Project ID"
+                    }
+                  ]
+                },
+                "description": "Toggle featured status of a project (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Projects",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/published?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["projects", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of published projects (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Featured Projects",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/featured?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["projects", "featured"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of featured projects (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Project by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/projects/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["projects", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "e-commerce-platform",
+                      "description": "Project slug"
+                    }
+                  ]
+                },
+                "description": "Get published project by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Service",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"web-development\",\n  \"icon\": \"https://example.com/icons/web-dev.svg\",\n  \"name\": \"Web Development\",\n  \"description\": \"Comprehensive web development services\",\n  \"shortDescription\": \"Professional web development\",\n  \"meta\": {\n    \"title\": \"Web Development Services\",\n    \"description\": \"Professional web development services\",\n    \"keywords\": [\"web\", \"development\", \"services\"]\n  },\n  \"subServices\": [\n    {\n      \"icon\": \"https://example.com/icons/frontend.svg\",\n      \"title\": \"Frontend Development\",\n      \"description\": \"Modern frontend development\",\n      \"features\": [\"React\", \"Vue.js\", \"Angular\"]\n    }\n  ],\n  \"isPublished\": false,\n  \"isFeatured\": false,\n  \"featuredImage\": \"https://example.com/images/services/web-dev-featured.jpg\",\n  \"order\": 1,\n  \"solutionIds\": [1, 2]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services"]
+                },
+                "description": "Create a new service (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Services",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in name and description",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "true",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "false",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "1",
+                      "description": "Filter by order",
+                      "disabled": true
+                    },
+                    {
+                      "key": "solutionId",
+                      "value": "",
+                      "description": "Filter by solution ID",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of all services (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Service by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Service ID"
+                    }
+                  ]
+                },
+                "description": "Get service by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Service",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Web Development - Updated\",\n  \"description\": \"Updated description\",\n  \"isPublished\": true,\n  \"order\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Service ID"
+                    }
+                  ]
+                },
+                "description": "Update service by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Service",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Service ID"
+                    }
+                  ]
+                },
+                "description": "Delete service by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Service",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Service ID"
+                    }
+                  ]
+                },
+                "description": "Publish a service (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Service",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Service ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish a service (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Toggle Featured Service",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/services/:id/toggle-featured",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "services", ":id", "toggle-featured"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Service ID"
+                    }
+                  ]
+                },
+                "description": "Toggle featured status of a service (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Services",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/services/published?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["services", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of published services (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Featured Services",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/services/featured?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["services", "featured"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of featured services (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Service by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/services/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["services", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "web-development",
+                      "description": "Service slug"
+                    }
+                  ]
+                },
+                "description": "Get published service by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Solutions",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Solution",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"cloud-infrastructure\",\n  \"icon\": \"https://example.com/icons/cloud.svg\",\n  \"name\": \"Cloud Infrastructure\",\n  \"description\": \"Scalable cloud infrastructure solutions\",\n  \"shortDescription\": \"Enterprise cloud solutions\",\n  \"meta\": {\n    \"title\": \"Cloud Infrastructure Solutions\",\n    \"description\": \"Scalable cloud infrastructure\",\n    \"keywords\": [\"cloud\", \"infrastructure\", \"aws\", \"azure\"]\n  },\n  \"isPublished\": false,\n  \"isFeatured\": false,\n  \"featuredImage\": \"https://example.com/images/solutions/cloud-featured.jpg\",\n  \"order\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions"]
+                },
+                "description": "Create a new solution (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Solutions",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in name and description",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "true",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "false",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "1",
+                      "description": "Filter by order",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of all solutions (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Solution by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Solution ID"
+                    }
+                  ]
+                },
+                "description": "Get solution by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Solution",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Cloud Infrastructure - Updated\",\n  \"description\": \"Updated description\",\n  \"isPublished\": true,\n  \"order\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Solution ID"
+                    }
+                  ]
+                },
+                "description": "Update solution by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Solution",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Solution ID"
+                    }
+                  ]
+                },
+                "description": "Delete solution by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Solution",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Solution ID"
+                    }
+                  ]
+                },
+                "description": "Publish a solution (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Solution",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Solution ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish a solution (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Toggle Featured Solution",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/solutions/:id/toggle-featured",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "solutions", ":id", "toggle-featured"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Solution ID"
+                    }
+                  ]
+                },
+                "description": "Toggle featured status of a solution (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Solutions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/solutions/published?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["solutions", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of published solutions (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Featured Solutions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/solutions/featured?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["solutions", "featured"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    }
+                  ]
+                },
+                "description": "Get paginated list of featured solutions (public endpoint)"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Solution by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/solutions/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["solutions", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "cloud-infrastructure",
+                      "description": "Solution slug"
+                    }
+                  ]
+                },
+                "description": "Get published solution by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Settings",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteName\": \"MAP Platform\",\n  \"siteDescription\": \"Modern Application Platform\",\n  \"siteLogo\": \"https://example.com/logo.png\",\n  \"siteDarkLogo\": \"https://example.com/logo-dark.png\",\n  \"siteFavicon\": \"https://example.com/favicon.ico\",\n  \"meta\": {\n    \"title\": \"MAP Platform - Home\",\n    \"description\": \"Modern Application Platform\",\n    \"keywords\": [\"platform\", \"application\", \"modern\"]\n  },\n  \"social\": [\n    {\n      \"platform\": \"facebook\",\n      \"url\": \"https://facebook.com/mapplatform\",\n      \"label\": \"Facebook\"\n    },\n    {\n      \"platform\": \"twitter\",\n      \"url\": \"https://twitter.com/mapplatform\",\n      \"label\": \"Twitter\"\n    }\n  ],\n  \"analytics\": {\n    \"googleAnalytics\": \"UA-XXXXXXXXX-X\",\n    \"facebookPixel\": \"123456789\",\n    \"customScripts\": []\n  },\n  \"contact\": {\n    \"email\": \"contact@example.com\",\n    \"phone\": \"+1234567890\",\n    \"address\": \"123 Main St, City, Country\",\n    \"workingHours\": \"Mon-Fri 9AM-5PM\"\n  },\n  \"customScripts\": {\n    \"header\": [],\n    \"footer\": []\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/settings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "settings"]
+                },
+                "description": "Create site settings (Super Admin only)"
+              },
+              "response": []
+            },
+            {
+              "name": "Initialize Settings",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/settings/initialize",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "settings", "initialize"]
+                },
+                "description": "Initialize default settings (Super Admin only)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Settings",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"siteName\": \"MAP Platform Updated\",\n  \"siteDescription\": \"Updated description\",\n  \"contact\": {\n    \"email\": \"newemail@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/settings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "settings"]
+                },
+                "description": "Update site settings (Super Admin only)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Settings",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/settings",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["settings"]
+                },
+                "description": "Get site settings (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Upload Media",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [],
+                  "description": "Image files to upload (max 10 files, 50MB each)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/media/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["media", "upload"]
+            },
+            "description": "Upload media files (images). Supports up to 10 files, max 50MB each. (Super Admin, Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "List Media",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/media?page=1&limit=20&orderBy=name&orderDir=asc&type=all&signed=false&expiresIn=3600",
+              "host": ["{{baseUrl}}"],
+              "path": ["media"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Items per page (default: 20, max: 100)"
+                },
+                {
+                  "key": "orderBy",
+                  "value": "name",
+                  "description": "Sort by: name, created_at, updated_at"
+                },
+                {
+                  "key": "orderDir",
+                  "value": "asc",
+                  "description": "Sort direction: asc or desc"
+                },
+                {
+                  "key": "type",
+                  "value": "all",
+                  "description": "Filter by type: image, video, audio, all"
+                },
+                {
+                  "key": "signed",
+                  "value": "false",
+                  "description": "Generate signed URLs (default: false)"
+                },
+                {
+                  "key": "expiresIn",
+                  "value": "3600",
+                  "description": "Signed URL expiration in seconds (60-86400, default: 3600)"
+                },
+                {
+                  "key": "prefix",
+                  "value": "",
+                  "description": "Filter by path prefix",
+                  "disabled": true
+                },
+                {
+                  "key": "mime",
+                  "value": "",
+                  "description": "Filter by MIME type (comma-separated or array)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "List media files with pagination (Super Admin, Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Media",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paths\": [\n    \"images/example1.jpg\",\n    \"images/example2.png\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/media",
+              "host": ["{{baseUrl}}"],
+              "path": ["media"]
+            },
+            "description": "Delete media files by paths (Super Admin, Admin only)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
