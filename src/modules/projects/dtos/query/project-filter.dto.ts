@@ -11,10 +11,6 @@ export class ProjectFilterDto extends PaginationDto {
   slug?: string;
 
   @IsOptional()
-  @IsString()
-  languageCode?: string;
-
-  @IsOptional()
   @IsBoolean()
   isPublished?: boolean;
 

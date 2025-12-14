@@ -2,25 +2,29 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectsController } from './controllers/projects.controller';
 import { ProjectsService } from './services/projects.service';
-import { ProjectTranslationsService } from './services/project-translations.service';
+import { ProjectsReadService } from './services/projects-read.service';
+import { ProjectsCrudService } from './services/projects-crud.service';
 import { ProjectEntity } from './entities/project.entity';
-import { ProjectTranslationEntity } from './entities/project-translation.entity';
 import { ServiceEntity } from '../services/entities/service.entity';
 import { SolutionEntity } from '../solutions/entities/solution.entity';
-import { LanguageEntity } from '../languages/entities/language.entity';
-import { LanguagesModule } from '../languages/languages.module';
-import { TranslationModule } from 'src/services/translation/translation.module';
 import { UploadModule } from 'src/shared/modules/upload/upload.module';
+import { SlugUniquenessService } from 'src/common/db/slug-uniqueness.service';
+import { ViewCounterService } from 'src/common/db/view-counter.service';
+import { FlagsService } from 'src/common/db/flags.service';
+import { JunctionSyncService } from 'src/common/db/junction-sync.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ProjectEntity, ProjectTranslationEntity, ServiceEntity, SolutionEntity, LanguageEntity]),
-    LanguagesModule,
-    TranslationModule,
-    UploadModule,
-  ],
+  imports: [TypeOrmModule.forFeature([ProjectEntity, ServiceEntity, SolutionEntity]), UploadModule],
   controllers: [ProjectsController],
-  providers: [ProjectsService, ProjectTranslationsService],
-  exports: [ProjectsService, ProjectTranslationsService],
+  providers: [
+    SlugUniquenessService,
+    ViewCounterService,
+    FlagsService,
+    JunctionSyncService,
+    ProjectsService,
+    ProjectsReadService,
+    ProjectsCrudService,
+  ],
+  exports: [ProjectsService],
 })
 export class ProjectsModule {}

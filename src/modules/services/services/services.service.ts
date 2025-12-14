@@ -1,351 +1,72 @@
-import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DataSource, SelectQueryBuilder, In } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
+import { Injectable } from '@nestjs/common';
+
+import { ServicesReadService } from './services-read.service';
+import { ServicesCrudService } from './services-crud.service';
+
 import { CreateServiceDto } from '../dtos/request/create-service.dto';
 import { UpdateServiceDto } from '../dtos/request/update-service.dto';
 import { ServiceResponseDto } from '../dtos/response/service-response.dto';
 import { ServiceFilterDto } from '../dtos/query/service-filter.dto';
-import { ServiceEntity } from '../entities/service.entity';
-import { ServiceTranslationEntity } from '../entities/service-translation.entity';
-import { SolutionEntity } from '../../solutions/entities/solution.entity';
-import { PaginationService } from 'src/common/pagination/paginate.service';
-import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { PublicServiceFilterDto } from '../dtos/query/public-service-filter.dto';
-import { TranslationEventTypes } from 'src/services/translation/enums/translated-types.enum';
-import { TranslateService } from 'src/services/translation/services/translate.service';
-import { LanguagesService } from 'src/modules/languages/services/languages.service';
-import { UploadService } from 'src/shared/modules/upload/services/upload.service';
+import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class ServicesService {
   constructor(
-    @InjectRepository(ServiceEntity)
-    private readonly serviceRepository: Repository<ServiceEntity>,
-    @InjectRepository(SolutionEntity)
-    private readonly solutionRepository: Repository<SolutionEntity>,
-    private readonly translateService: TranslateService,
-    private readonly languagesService: LanguagesService,
-    private readonly uploadService: UploadService,
-    private readonly dataSource: DataSource,
-    private readonly paginationService: PaginationService,
+    private readonly read: ServicesReadService,
+    private readonly crud: ServicesCrudService,
   ) {}
 
-  async uploadPicture(picture: Express.Multer.File): Promise<{ url: string }> {
-    const url = await this.uploadService.uploadPicture(picture);
-    return { url };
+  async create(dto: CreateServiceDto): Promise<ServiceResponseDto> {
+    const saved = await this.crud.create(dto);
+    return this.read.getById(saved.id, ['solutions']);
   }
 
-  async create(createServiceDto: CreateServiceDto): Promise<ServiceResponseDto> {
-    const { languageCode, name, description, shortDescription, meta, subServices, solutionIds, ...serviceData } =
-      createServiceDto;
-
-    // slug must be unique
-    const exists = await this.serviceRepository.exist({ where: { slug: serviceData.slug } });
-    if (exists) throw new ConflictException('Slug already exists');
-
-    // ensure the languages exist
-    await this.languagesService.ensureLanguagesExist([...createServiceDto.translateTo, languageCode]);
-
-    // omit the default language code
-    const translateTo = createServiceDto.translateTo.filter((code) => code !== languageCode);
-
-    // language must exist
-    await this.languagesService.ensureLanguageExists(languageCode);
-
-    const id = await this.dataSource.transaction(async (trx) => {
-      // Create the service
-      const service = trx.getRepository(ServiceEntity).create({
-        slug: serviceData.slug,
-        isPublished: serviceData.isPublished ?? false,
-        isFeatured: serviceData.isFeatured ?? false,
-        featuredImage: serviceData.featuredImage,
-        viewCount: 0,
-        icon: serviceData.icon,
-        order: serviceData.order ?? 0,
-      });
-      const savedService = await trx.getRepository(ServiceEntity).save(service);
-
-      // Create the default translation
-      const translation = trx.getRepository(ServiceTranslationEntity).create({
-        serviceId: savedService.id,
-        languageCode: languageCode,
-        name,
-        description: description ?? null,
-        shortDescription: shortDescription ?? null,
-        meta: meta ?? null,
-        subServices: subServices ?? null,
-        isDefault: true,
-      });
-      await trx.getRepository(ServiceTranslationEntity).save(translation);
-
-      // Associate solutions if provided
-      if (solutionIds && solutionIds.length > 0) {
-        const solutions = await trx.getRepository(SolutionEntity).findBy({ id: In(solutionIds) });
-        savedService.solutions = solutions;
-        await trx.getRepository(ServiceEntity).save(savedService);
-      }
-
-      return savedService.id;
-    });
-
-    if (translateTo.length > 0) {
-      // Translate asynchronously, but don't let translation errors crash the service creation
-      this.translateService
-        .translateToLanguages(translateTo, TranslationEventTypes.service, id, {
-          name,
-          description,
-          shortDescription,
-          meta,
-          subServices,
-        })
-        .catch((error) => {
-          // Log translation errors but don't throw - service creation should succeed even if translation fails
-          console.error(
-            `Failed to translate service ${id} to languages [${translateTo.join(', ')}]:`,
-            error.message || error,
-          );
-        });
-    }
-
-    return this.getById(id);
+  findAll(dto: ServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
+    return this.read.findAll(dto);
   }
 
-  async findAll(filterServiceDto: ServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
-    const qb = this.buildBaseQB();
-
-    if (filterServiceDto.search) {
-      qb.andWhere('service.slug ILIKE :search', { search: `%${filterServiceDto.search}%` });
-    }
-    if (filterServiceDto.slug) {
-      qb.andWhere('service.slug = :slug', { slug: filterServiceDto.slug });
-    }
-    if (filterServiceDto.isPublished !== undefined) {
-      qb.andWhere('service.isPublished = :isPublished', { isPublished: filterServiceDto.isPublished });
-    }
-    if (filterServiceDto.isFeatured !== undefined) {
-      qb.andWhere('service.isFeatured = :isFeatured', { isFeatured: filterServiceDto.isFeatured });
-    }
-    if (filterServiceDto.languageCode) {
-      qb.andWhere('translations.languageCode = :languageCode', { languageCode: filterServiceDto.languageCode });
-    }
-    if (filterServiceDto.order !== undefined) {
-      qb.andWhere('service.order = :order', { order: filterServiceDto.order });
-    }
-    if (filterServiceDto.solutionId !== undefined) {
-      qb.andWhere('solutions.id = :solutionId', { solutionId: filterServiceDto.solutionId });
-    }
-
-    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-
-    return this.paginationService.paginateQB(qb, filterServiceDto, {
-      orderBy: 'service.order',
-      map: (e) => ServiceResponseDto.fromEntity(e, filterServiceDto.languageCode),
-    });
+  getById(id: number): Promise<ServiceResponseDto> {
+    return this.read.getById(id, ['solutions']);
   }
 
-  async getById(id: number): Promise<ServiceResponseDto> {
-    const service = await this.serviceRepository.findOne({
-      where: { id },
-      relations: ['translations', 'solutions'],
-    });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    return ServiceResponseDto.fromEntity(service);
+  findBySlug(slug: string): Promise<ServiceResponseDto> {
+    return this.read.findBySlug(slug, ['solutions']);
   }
 
-  async findBySlug(slug: string): Promise<ServiceResponseDto> {
-    const service = await this.serviceRepository.findOne({
-      where: { slug },
-    });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    // Increment view count
-    service.viewCount += 1;
-    await this.serviceRepository.save(service);
-
-    return service;
+  async update(id: number, dto: UpdateServiceDto): Promise<ServiceResponseDto> {
+    const saved = await this.crud.update(id, dto);
+    return this.read.getById(saved.id, ['solutions']);
   }
 
-  async update(id: number, updateServiceDto: UpdateServiceDto): Promise<ServiceResponseDto> {
-    const service = await this.serviceRepository.findOne({ where: { id }, relations: ['translations', 'solutions'] });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    // if slug changes, enforce uniqueness
-    if (updateServiceDto.slug && updateServiceDto.slug !== service.slug) {
-      const exists = await this.serviceRepository.exist({ where: { slug: updateServiceDto.slug } });
-      if (exists) throw new ConflictException('Slug already exists');
-    }
-
-    // Handle solution associations
-    if (updateServiceDto.solutionIds !== undefined) {
-      const solutions = await this.solutionRepository.findBy({ id: In(updateServiceDto.solutionIds) });
-      service.solutions = solutions;
-    }
-
-    // Update basic service data
-    const { solutionIds, ...serviceData } = updateServiceDto;
-    Object.assign(service, serviceData);
-
-    const savedService = await this.serviceRepository.save(service);
-
-    // Reload with relationships for response
-    return this.getById(savedService.id);
-  }
-
-  async delete(id: number): Promise<void> {
-    const service = await this.serviceRepository.findOne({ where: { id } });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    // Remove ManyToMany relationships before deletion
-    // Delete from solution_services junction table
-    await this.dataSource.query('DELETE FROM solution_services WHERE service_id = $1', [id]);
-
-    // Delete from project_services junction table
-    await this.dataSource.query('DELETE FROM project_services WHERE service_id = $1', [id]);
-
-    await this.serviceRepository.delete(id);
+  delete(id: number): Promise<void> {
+    return this.crud.delete(id);
   }
 
   async publish(id: number): Promise<ServiceResponseDto> {
-    const service = await this.serviceRepository.findOne({ where: { id } });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    service.isPublished = true;
-    const savedService = await this.serviceRepository.save(service);
-
-    return this.getById(savedService.id);
+    const saved = await this.crud.publish(id);
+    return this.read.getById(saved.id, ['solutions']);
   }
 
   async unpublish(id: number): Promise<ServiceResponseDto> {
-    const service = await this.serviceRepository.findOne({ where: { id } });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    service.isPublished = false;
-    const savedService = await this.serviceRepository.save(service);
-
-    return this.getById(savedService.id);
+    const saved = await this.crud.unpublish(id);
+    return this.read.getById(saved.id, ['solutions']);
   }
 
   async toggleFeatured(id: number): Promise<ServiceResponseDto> {
-    const service = await this.serviceRepository.findOne({ where: { id } });
-
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
-
-    service.isFeatured = !service.isFeatured;
-    const savedService = await this.serviceRepository.save(service);
-
-    return this.getById(savedService.id);
+    const saved = await this.crud.toggleFeatured(id);
+    return this.read.getById(saved.id, ['solutions']);
   }
 
-  async getPublishedServices(filter: PublicServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
-    const languageCode = filter.lang;
-    await this.languagesService.ensureLanguageExists(languageCode);
-
-    const qb = this.buildBaseQB(languageCode).andWhere('service.isPublished = :isPublished', { isPublished: true });
-
-    if (filter.search) {
-      qb.andWhere('translations.name ILIKE :search', { search: `%${filter.search}%` });
-    }
-    if (filter.isFeatured !== undefined) {
-      qb.andWhere('service.isFeatured = :isFeatured', { isFeatured: filter.isFeatured });
-    }
-    if (filter.order !== undefined) {
-      qb.andWhere('service.order = :order', { order: filter.order });
-    }
-
-    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-
-    return this.paginationService.paginateSafeQB(qb, filter, {
-      primaryId: 'service.id',
-      createdAt: 'service.createdAt',
-      map: (e) => ServiceResponseDto.fromEntity(e, languageCode),
-      orderDirection: filter.orderDirection ?? 'DESC',
-    });
+  getPublishedServices(dto: PublicServiceFilterDto) {
+    return this.read.getPublished(dto);
   }
 
-  async getFeaturedServices(filter: PublicServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
-    const languageCode = filter.lang;
-    await this.languagesService.ensureLanguageExists(languageCode);
-
-    const qb = this.buildBaseQB(languageCode)
-      .andWhere('service.isFeatured = :isFeatured', { isFeatured: true })
-      .andWhere('service.isPublished = :isPublished', { isPublished: true });
-
-    if (filter.search) {
-      qb.andWhere('translations.name ILIKE :search', { search: `%${filter.search}%` });
-    }
-    if (filter.order !== undefined) {
-      qb.andWhere('service.order = :order', { order: filter.order });
-    }
-
-    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-
-    return this.paginationService.paginateSafeQB(qb, filter, {
-      primaryId: 'service.id',
-      createdAt: 'service.createdAt',
-      map: (e) => ServiceResponseDto.fromEntity(e, languageCode),
-      orderDirection: filter.orderDirection ?? 'DESC',
-    });
+  getFeaturedServices(dto: PublicServiceFilterDto) {
+    return this.read.getFeatured(dto);
   }
 
-  async getBySlugPublic(slug: string, languageCode: string): Promise<ServiceResponseDto> {
-    await this.languagesService.ensureLanguageExists(languageCode);
-
-    const service = await this.buildBaseQB(languageCode)
-      .andWhere('service.slug = :slug', { slug })
-      .andWhere('service.isPublished = :isPublished', { isPublished: true })
-      .andWhere('translations.languageCode = :languageCode', { languageCode })
-      .getOne();
-
-    if (!service) throw new NotFoundException('Service not found');
-
-    // Increment view count without saving relations
-    await this.serviceRepository.update(service.id, { viewCount: service.viewCount + 1 });
-
-    return ServiceResponseDto.fromEntity(service, languageCode);
-  }
-
-  // ---------- Helpers ----------
-  private buildBaseQB(languageCode?: string): SelectQueryBuilder<ServiceEntity> {
-    const qb = this.serviceRepository.createQueryBuilder('service');
-
-    if (languageCode) {
-      qb.innerJoinAndSelect('service.translations', 'translations', 'translations.languageCode = :languageCode', {
-        languageCode,
-      });
-    }
-    // else {
-    //   qb.leftJoinAndSelect('service.translations', 'translations');
-    // }
-
-    // qb.leftJoinAndSelect('service.solutions', 'solutions').leftJoinAndSelect(
-    //   'solutions.translations',
-    //   'solutionTranslations',
-    // );
-
-    qb.orderBy('service.order', 'ASC').addOrderBy('service.createdAt', 'DESC');
-
-    return qb;
+  getBySlugPublic(slug: string) {
+    return this.read.getBySlugPublic(slug);
   }
 }

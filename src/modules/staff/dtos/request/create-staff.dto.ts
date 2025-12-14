@@ -1,6 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 import { StaffRole } from '../../enums/staff-role.enums';
-import { IsLanguageCode, IsLanguageCodeArray } from 'src/common';
 
 export class CreateStaffDto {
   @IsString({ message: 'Name must be a string' })
@@ -28,13 +27,7 @@ export class CreateStaffDto {
   @IsOptional({ message: 'Bio is optional' })
   bio: string;
 
-  @IsLanguageCode()
-  languageCode: string;
-
   @IsString({ message: 'Image must be a string' })
   @IsOptional({ message: 'Image is optional' })
   image: string;
-
-  @IsLanguageCodeArray()
-  translateTo: string[];
 }

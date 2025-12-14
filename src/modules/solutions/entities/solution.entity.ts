@@ -4,17 +4,17 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  OneToMany,
   Index,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { SolutionTranslationEntity } from './solution-translation.entity';
 import { ServiceEntity } from '../../services/entities/service.entity';
 import { ProjectEntity } from '../../projects/entities/project.entity';
 
 @Entity('solutions')
 @Index('IDX_SOLUTION_SLUG', ['slug'], { unique: true })
+// Note: Advanced indexes (GIN for slug, composite published+featured, partial indexes)
+// are managed by migrations. See: 1735661763925-AddMissingSolutionIndexes.ts
 export class SolutionEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,6 +24,22 @@ export class SolutionEntity {
 
   @Column({ nullable: true })
   icon: string;
+
+  @Column({ nullable: true })
+  name: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column({ name: 'short_description', type: 'text', nullable: true })
+  shortDescription: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  meta: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
 
   @Column({ name: 'is_published', default: false })
   isPublished: boolean;
@@ -39,9 +55,6 @@ export class SolutionEntity {
 
   @Column({ type: 'int', default: 0 })
   order: number;
-
-  @OneToMany(() => SolutionTranslationEntity, (translation) => translation.solution)
-  translations: SolutionTranslationEntity[];
 
   @ManyToMany(() => ServiceEntity, (service) => service.solutions)
   @JoinTable({

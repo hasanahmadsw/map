@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from 'src/app.module';
 import { ServicesService } from 'src/modules/services/services/services.service';
 import { CreateServiceDto } from 'src/modules/services/dtos/request/create-service.dto';
-import { TranslateService } from 'src/services/translation/services/translate.service';
-import { TranslationEventTypes } from 'src/services/translation/enums/translated-types.enum';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -27,14 +25,11 @@ interface ServiceJsonData {
   featuredImage?: string;
   order?: number;
   solutionIds?: number[];
-  languageCode: string;
-  translateTo: string[];
 }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const servicesService = app.get(ServicesService);
-  const translateService = app.get(TranslateService);
 
   try {
     // Read services.json file
@@ -64,19 +59,6 @@ async function bootstrap() {
         description: subService.description,
       }));
 
-      // Normalize language codes (ensure lowercase and trimmed)
-      let normalizedLanguageCode = (serviceData.languageCode || 'en').toLowerCase().trim();
-      // Validate language code - must be exactly 2 lowercase letters
-      if (!/^[a-z]{2}$/.test(normalizedLanguageCode)) {
-        console.warn(`   ⚠️  Invalid language code "${serviceData.languageCode}", defaulting to "en"`);
-        normalizedLanguageCode = 'en';
-      }
-
-      // Normalize and filter translateTo array - only keep valid 2-letter codes
-      const normalizedTranslateTo = (serviceData.translateTo || [])
-        .map((code) => code.toLowerCase().trim())
-        .filter((code) => /^[a-z]{2}$/.test(code));
-
       // Create CreateServiceDto
       const createServiceDto: CreateServiceDto = {
         slug: serviceData.slug,
@@ -91,58 +73,11 @@ async function bootstrap() {
         featuredImage: serviceData.featuredImage,
         order: serviceData.order ?? 0,
         solutionIds: serviceData.solutionIds,
-        languageCode: normalizedLanguageCode,
-        translateTo: normalizedTranslateTo,
       };
 
       try {
-        // Create service without translation (we'll handle translation separately)
-        const createServiceDtoWithoutTranslation: CreateServiceDto = {
-          ...createServiceDto,
-          translateTo: [], // Don't translate in create, we'll do it manually
-        };
-        const createdService = await servicesService.create(createServiceDtoWithoutTranslation);
+        const createdService = await servicesService.create(createServiceDto);
         console.log(`   ✅ Created service: ${createdService.slug}`);
-
-        // Translate if needed
-        if (createServiceDto.translateTo.length > 0) {
-          // Filter out invalid language codes and the default language code
-          const translateTo = createServiceDto.translateTo.filter((code) => {
-            // Validate: must be exactly 2 lowercase letters
-            return /^[a-z]{2}$/.test(code) && code !== createServiceDto.languageCode;
-          });
-
-          if (translateTo.length > 0) {
-            console.log(`   ⏳ Translating to [${translateTo.join(', ')}]...`);
-            try {
-              await translateService.translateToLanguages(
-                translateTo,
-                TranslationEventTypes.service,
-                createdService.id,
-                {
-                  name: createServiceDto.name,
-                  description: createServiceDto.description,
-                  shortDescription: createServiceDto.shortDescription,
-                  meta: createServiceDto.meta,
-                  subServices: createServiceDto.subServices,
-                },
-              );
-              console.log(`   ✅ Translation completed for [${translateTo.join(', ')}]`);
-            } catch (translationError) {
-              const errorMessage =
-                translationError instanceof Error ? translationError.message : String(translationError);
-              console.error(`   ⚠️  Translation failed: ${errorMessage}`);
-              // Continue even if translation fails
-            }
-          } else if (createServiceDto.translateTo.length > 0) {
-            console.log(`   ⚠️  No valid language codes to translate to (filtered out invalid codes)`);
-          }
-        }
-
-        // Wait a bit to avoid overwhelming the translation service
-        if (i < servicesData.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error(`   ❌ Error creating service ${serviceData.slug}:`, errorMessage);
@@ -152,7 +87,7 @@ async function bootstrap() {
       }
     }
 
-    console.log('\n✅ All services seeded successfully with translations!');
+    console.log('\n✅ All services seeded successfully!');
   } catch (error) {
     console.error('❌ Error seeding services:', error);
     throw error;

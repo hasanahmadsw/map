@@ -4,15 +4,20 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { StaffRole } from '../enums/staff-role.enums';
-import { StaffTranslationEntity } from './staff-translation.entity';
 import * as bcrypt from 'bcryptjs';
 
 @Entity('staff')
+// Basic indexes defined here for TypeORM awareness
+// Note: Advanced indexes (DESC ordering, GIN indexes, partial indexes) are created via migrations
+// See: migrations/1731353000000-AddStaffIndexes.ts and 1731355000000-EnsureStaffIndexes.ts
+@Index('idx_staff_created_desc', ['createdAt', 'id'])
+@Index('idx_staff_role_created_desc', ['role', 'createdAt', 'id'])
+@Index('idx_staff_password_changed_at', ['passwordChangedAt'])
 export class StaffEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -35,6 +40,9 @@ export class StaffEntity {
   })
   role: StaffRole;
 
+  @Column({ type: 'text', nullable: true })
+  bio: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
@@ -43,9 +51,6 @@ export class StaffEntity {
 
   @Column({ nullable: true, type: 'timestamp', name: 'password_changed_at' })
   passwordChangedAt: Date;
-
-  @OneToMany(() => StaffTranslationEntity, (translation) => translation.staff)
-  translations: StaffTranslationEntity[];
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -5,11 +5,7 @@ import {
   IsOptional,
   IsBoolean,
   IsArray,
-  IsNumber,
-  ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
-import { IsLanguageCode, IsLanguageCodeArray } from 'src/common';
 
 export class CreateArticleDto {
   @IsString()
@@ -21,7 +17,6 @@ export class CreateArticleDto {
   @IsOptional()
   image?: string;
 
-  // the first translation
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -58,11 +53,4 @@ export class CreateArticleDto {
   @IsOptional()
   @IsString({ each: true })
   topics?: string[];
-
-  // required: must be provided and must be a 2-letter language code
-  @IsLanguageCode()
-  languageCode: string;
-
-  @IsLanguageCodeArray()
-  translateTo: string[];
 }

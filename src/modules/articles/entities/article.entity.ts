@@ -4,12 +4,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  OneToMany,
   Index,
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import { ArticleTranslationEntity } from './article-translation.entity';
 import { StaffEntity } from 'src/modules/staff/entities/staff.entity';
 
 @Entity('articles')
@@ -33,6 +31,22 @@ export class ArticleEntity {
   @Column({ unique: true })
   slug: string;
 
+  @Column({ nullable: true })
+  name: string;
+
+  @Column({ type: 'text', nullable: true })
+  content: string;
+
+  @Column({ type: 'text', nullable: true })
+  excerpt: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  meta: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+
   @Column({ default: false, name: 'is_published' })
   isPublished: boolean;
 
@@ -47,9 +61,6 @@ export class ArticleEntity {
 
   @Column({ type: 'text', array: true, default: '{}' })
   topics: string[];
-
-  @OneToMany(() => ArticleTranslationEntity, (translation) => translation.article)
-  translations: ArticleTranslationEntity[];
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })
   createdAt: Date;

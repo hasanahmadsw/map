@@ -1,5 +1,4 @@
 import { ProjectEntity } from '../../entities/project.entity';
-import { ProjectTranslationResponseDto } from './project-translation-response.dto';
 import { ProjectChallengeResponseDto } from './project-challenge-response.dto';
 import { ProjectResultResponseDto } from './project-result-response.dto';
 import { ServiceResponseDto } from 'src/modules/services/dtos/response/service-response.dto';
@@ -20,7 +19,6 @@ export class ProjectResponseDto {
   startDate?: Date;
   endDate?: Date;
   technologies?: string[];
-  // Translatable fields (for merged responses)
   name?: string;
   description?: string;
   shortDescription?: string;
@@ -33,11 +31,10 @@ export class ProjectResponseDto {
   results?: ProjectResultResponseDto[];
   services?: ServiceResponseDto[];
   solutions?: SolutionResponseDto[];
-  translations?: ProjectTranslationResponseDto[];
   createdAt: Date;
   updatedAt: Date;
 
-  static fromEntity(entity: ProjectEntity, languageCode?: string): ProjectResponseDto {
+  static fromEntity(entity: ProjectEntity): ProjectResponseDto {
     const dto = new ProjectResponseDto();
     dto.id = entity.id;
     dto.slug = entity.slug;
@@ -53,20 +50,14 @@ export class ProjectResponseDto {
     dto.startDate = entity.startDate;
     dto.endDate = entity.endDate;
     dto.technologies = entity.technologies;
-    dto.name = entity.translations?.find((translation) => translation.languageCode === languageCode)?.name;
-    dto.description = entity.translations?.find(
-      (translation) => translation.languageCode === languageCode,
-    )?.description;
-    dto.shortDescription = entity.translations?.find(
-      (translation) => translation.languageCode === languageCode,
-    )?.shortDescription;
-    dto.meta = entity.translations?.find((translation) => translation.languageCode === languageCode)?.meta;
-    const translation = entity.translations?.find((translation) => translation.languageCode === languageCode);
-    dto.challenges = translation?.challenges?.map((challenge) => ProjectChallengeResponseDto.fromEntity(challenge));
-    dto.results = translation?.results?.map((result) => ProjectResultResponseDto.fromEntity(result));
-    dto.services = entity.services?.map((service) => ServiceResponseDto.fromEntity(service, languageCode));
-    dto.solutions = entity.solutions?.map((solution) => SolutionResponseDto.fromEntity(solution, languageCode));
-    dto.translations = entity.translations?.map((translation) => ProjectTranslationResponseDto.fromEntity(translation));
+    dto.name = entity.name;
+    dto.description = entity.description;
+    dto.shortDescription = entity.shortDescription;
+    dto.meta = entity.meta;
+    dto.challenges = entity.challenges?.map((challenge) => ProjectChallengeResponseDto.fromEntity(challenge));
+    dto.results = entity.results?.map((result) => ProjectResultResponseDto.fromEntity(result));
+    dto.services = entity.services?.map((service) => ServiceResponseDto.fromEntity(service));
+    dto.solutions = entity.solutions?.map((solution) => SolutionResponseDto.fromEntity(solution));
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
     return dto;

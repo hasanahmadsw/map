@@ -1,4 +1,4 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/mapped-types';
 import { CreateProjectDto } from './create-project.dto';
 
-export class UpdateProjectDto extends PartialType(OmitType(CreateProjectDto, ['languageCode'])) {}
+export class UpdateProjectDto extends PartialType(CreateProjectDto) {}

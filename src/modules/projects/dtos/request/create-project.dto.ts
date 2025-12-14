@@ -12,7 +12,6 @@ import {
   IsUrl,
   ValidateNested,
 } from 'class-validator';
-import { IsLanguageCode, IsLanguageCodeArray } from 'src/common';
 import { Type } from 'class-transformer';
 import { ProjectChallengeRequestDto } from './project-challenge-request.dto';
 import { ProjectResultRequestDto } from './project-result-request.dto';
@@ -27,7 +26,6 @@ export class CreateProjectDto {
   @IsOptional()
   icon?: string;
 
-  // the first translation
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -110,11 +108,4 @@ export class CreateProjectDto {
   @IsInt({ each: true })
   @IsOptional()
   solutionIds?: number[];
-
-  // required: must be provided and must be a 2-letter language code
-  @IsLanguageCode()
-  languageCode: string;
-
-  @IsLanguageCodeArray()
-  translateTo: string[];
 }

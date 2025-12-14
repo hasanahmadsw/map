@@ -4,14 +4,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  OneToMany,
   Index,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { ServiceTranslationEntity } from './service-translation.entity';
 import { SolutionEntity } from 'src/modules/solutions/entities/solution.entity';
 import { ProjectEntity } from 'src/modules/projects/entities/project.entity';
+import { SubService } from '../interfaces/sub-service.interface';
 
 @Entity('services')
 @Index('IDX_SERVICE_SLUG', ['slug'], { unique: true })
@@ -24,6 +23,25 @@ export class ServiceEntity {
 
   @Column({ nullable: true })
   icon: string;
+
+  @Column({ nullable: true })
+  name: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column({ name: 'short_description', type: 'text', nullable: true })
+  shortDescription: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  meta: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+
+  @Column({ name: 'sub_services', type: 'jsonb', nullable: true })
+  subServices: SubService[];
 
   @Column({ name: 'is_published', default: false })
   isPublished: boolean;
@@ -39,9 +57,6 @@ export class ServiceEntity {
 
   @Column({ type: 'int', default: 0 })
   order: number;
-
-  @OneToMany(() => ServiceTranslationEntity, (translation) => translation.service)
-  translations: ServiceTranslationEntity[];
 
   @ManyToMany(() => SolutionEntity, (solution) => solution.services)
   @JoinTable({

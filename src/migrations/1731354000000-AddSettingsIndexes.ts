@@ -29,8 +29,19 @@ export class AddSettingsIndexes1731354000000 implements MigrationInterface {
       CREATE INDEX IF NOT EXISTS idx_settings_contact_gin
         ON public.settings USING gin (contact);
 
-      CREATE INDEX IF NOT EXISTS idx_settings_custom_scripts_gin
-        ON public.settings USING gin (custom_scripts);
+      -- Only create index on custom_scripts if the column exists
+      DO $$
+      BEGIN
+        IF EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_schema = 'public' 
+          AND table_name = 'settings' 
+          AND column_name = 'custom_scripts'
+        ) THEN
+          CREATE INDEX IF NOT EXISTS idx_settings_custom_scripts_gin
+            ON public.settings USING gin (custom_scripts);
+        END IF;
+      END $$;
 
       -- Temporal order (in case there are multiple settings in the future)
       CREATE INDEX IF NOT EXISTS idx_settings_created_desc

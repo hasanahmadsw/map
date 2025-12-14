@@ -4,12 +4,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  OneToMany,
   Index,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { ProjectTranslationEntity } from './project-translation.entity';
 import { ServiceEntity } from '../../services/entities/service.entity';
 import { SolutionEntity } from '../../solutions/entities/solution.entity';
 
@@ -24,6 +22,34 @@ export class ProjectEntity {
 
   @Column({ nullable: true })
   icon: string;
+
+  @Column({ nullable: true })
+  name: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
+  @Column({ name: 'short_description', type: 'text', nullable: true })
+  shortDescription: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  meta: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+  };
+
+  @Column({ type: 'jsonb', nullable: true })
+  challenges: {
+    title: string;
+    description: string;
+  }[];
+
+  @Column({ type: 'jsonb', nullable: true })
+  results: {
+    title: string;
+    description: string;
+  }[];
 
   @Column({ name: 'is_published', default: false })
   isPublished: boolean;
@@ -57,9 +83,6 @@ export class ProjectEntity {
 
   @Column({ type: 'jsonb', nullable: true })
   technologies: string[];
-
-  @OneToMany(() => ProjectTranslationEntity, (translation) => translation.project)
-  translations: ProjectTranslationEntity[];
 
   @ManyToMany(() => ServiceEntity, (service) => service.projects)
   @JoinTable({

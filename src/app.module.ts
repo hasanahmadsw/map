@@ -11,7 +11,6 @@ import { StaffModule } from './modules/staff/staff.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { LanguagesModule } from './modules/languages/languages.module';
 import { ArticlesModule } from './modules/articles/articles.module';
-import { TranslationModule } from './services/translation/translation.module';
 import { UploadModule } from './shared/modules/upload/upload.module';
 import { SupabaseModule } from './services/supabase/supabase.module';
 import { ServicesModule } from './modules/services/services.module';
@@ -31,7 +30,6 @@ import { PaginationModule } from './common/pagination/pagination.module';
     SettingsModule,
     LanguagesModule,
     ArticlesModule,
-    TranslationModule,
     ServicesModule,
     SolutionsModule,
     ProjectsModule,

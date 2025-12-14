@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { StaffEntity } from 'src/modules/staff/entities/staff.entity';
-import { StaffTranslationEntity } from 'src/modules/staff/entities/staff-translation.entity';
 import { StaffRole } from 'src/modules/staff/enums/staff-role.enums';
 import { AppModule } from 'src/app.module';
 
@@ -16,7 +15,6 @@ async function bootstrap() {
     await queryRunner.startTransaction();
 
     const staffRepository = queryRunner.manager.getRepository(StaffEntity);
-    const staffTranslationRepository = queryRunner.manager.getRepository(StaffTranslationEntity);
 
     // Check if any staff already exists
     const existingStaff = await staffRepository.count();
@@ -35,51 +33,26 @@ async function bootstrap() {
         email: 'superadmin@example.com',
         password: await bcrypt.hash('Superadmin1', 10),
         role: StaffRole.SUPERADMIN,
+        bio: 'System administrator with full access to all features and settings.',
       },
       {
         name: 'Admin',
         email: 'admin@example.com',
         password: await bcrypt.hash('Admin1', 10),
         role: StaffRole.ADMIN,
+        bio: 'Administrator with access to content management and user administration.',
       },
       {
         name: 'Author',
         email: 'author@example.com',
         password: await bcrypt.hash('Author1', 10),
         role: StaffRole.AUTHOR,
+        bio: 'Content author responsible for creating and managing articles and content.',
       },
     ];
 
     const savedStaff = await staffRepository.save(staff);
     console.log(`Successfully seeded ${savedStaff.length} staff`);
-
-    // Create default translations for each staff member
-    const defaultTranslations: Partial<StaffTranslationEntity>[] = [
-      {
-        staffId: savedStaff[0].id,
-        languageCode: 'en',
-        name: 'Super Admin',
-        bio: 'System administrator with full access to all features and settings.',
-        isDefault: true,
-      },
-      {
-        staffId: savedStaff[1].id,
-        languageCode: 'en',
-        name: 'Admin',
-        bio: 'Administrator with access to content management and user administration.',
-        isDefault: true,
-      },
-      {
-        staffId: savedStaff[2].id,
-        languageCode: 'en',
-        name: 'Author',
-        bio: 'Content author responsible for creating and managing articles and content.',
-        isDefault: true,
-      },
-    ];
-
-    const savedTranslations = await staffTranslationRepository.save(defaultTranslations);
-    console.log(`Successfully seeded ${savedTranslations.length} staff translations`);
 
     await queryRunner.commitTransaction();
     console.log('Transaction committed successfully');

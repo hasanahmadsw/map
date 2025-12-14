@@ -1,5 +1,4 @@
 import { StaffEntity } from '../../entities/staff.entity';
-import { StaffTranslationResponseDto } from './staff-translation-response.dto';
 import { StaffRole } from '../../enums/staff-role.enums';
 
 export class StaffResponseDto {
@@ -7,7 +6,7 @@ export class StaffResponseDto {
   name: string;
   email: string;
   image?: string;
-  translations?: StaffTranslationResponseDto[];
+  bio?: string;
   createdAt: Date;
   role: StaffRole;
 
@@ -17,7 +16,7 @@ export class StaffResponseDto {
     dto.name = entity.name;
     dto.email = entity.email;
     dto.image = entity.image;
-    dto.translations = entity.translations?.map((translation) => StaffTranslationResponseDto.fromEntity(translation));
+    dto.bio = entity.bio;
     dto.role = entity.role;
     dto.createdAt = entity.createdAt;
     return dto;

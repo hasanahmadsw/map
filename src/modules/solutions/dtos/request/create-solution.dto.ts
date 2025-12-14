@@ -1,5 +1,4 @@
-import { IsString, IsNotEmpty, Length, IsOptional, IsBoolean, IsNumber, Min, IsArray, IsInt } from 'class-validator';
-import { IsLanguageCode, IsLanguageCodeArray } from 'src/common';
+import { IsString, IsNotEmpty, Length, IsOptional, IsBoolean, IsNumber, Min } from 'class-validator';
 
 export class CreateSolutionDto {
   @IsString()
@@ -11,7 +10,6 @@ export class CreateSolutionDto {
   @IsOptional()
   icon?: string;
 
-  // the first translation
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -47,11 +45,4 @@ export class CreateSolutionDto {
   @IsOptional()
   @Min(0)
   order?: number;
-
-  // required: must be provided and must be a 2-letter language code
-  @IsLanguageCode()
-  languageCode: string;
-
-  @IsLanguageCodeArray()
-  translateTo: string[];
 }

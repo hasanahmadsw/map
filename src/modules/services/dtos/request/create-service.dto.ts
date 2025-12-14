@@ -10,7 +10,6 @@ import {
   ValidateNested,
   IsInt,
 } from 'class-validator';
-import { IsLanguageCode, IsLanguageCodeArray } from 'src/common';
 import { Type } from 'class-transformer';
 import { CreateSubServiceDto } from './create-sub-service.dto';
 
@@ -24,7 +23,6 @@ export class CreateServiceDto {
   @IsOptional()
   icon?: string;
 
-  // the first translation
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -71,11 +69,4 @@ export class CreateServiceDto {
   @IsInt({ each: true })
   @IsOptional()
   solutionIds?: number[];
-
-  // required: must be provided and must be a 2-letter language code
-  @IsLanguageCode()
-  languageCode: string;
-
-  @IsLanguageCodeArray()
-  translateTo: string[];
 }

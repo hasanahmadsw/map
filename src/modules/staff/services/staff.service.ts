@@ -18,11 +18,7 @@ import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-resp
 import { StaffRole } from '../enums/staff-role.enums';
 import { AppJwtService } from 'src/shared/modules/jwt/jwt.service';
 import * as bcrypt from 'bcryptjs';
-import { LanguagesService } from 'src/modules/languages/services/languages.service';
-import { TranslateService } from 'src/services/translation/services/translate.service';
-import { TranslationEventTypes } from 'src/services/translation/enums/translated-types.enum';
 import { AuthorFilterDto } from '../dtos/query/author-filter.dto';
-import { UploadService } from 'src/shared/modules/upload/services/upload.service';
 import { FullStaffResponseDto } from '../dtos/response/full-staff-response.dto';
 
 @Injectable()
@@ -31,9 +27,6 @@ export class StaffService {
     @InjectRepository(StaffEntity)
     private readonly staffRepository: Repository<StaffEntity>,
     private readonly jwtService: AppJwtService,
-    private readonly languagesService: LanguagesService,
-    private readonly translateService: TranslateService,
-    private readonly uploadService: UploadService,
     private readonly paginationService: PaginationService,
   ) {}
 
@@ -71,101 +64,43 @@ export class StaffService {
     };
   }
 
-  async uploadPicture(picture: Express.Multer.File): Promise<{ url: string }> {
-    const url = await this.uploadService.uploadPicture(picture);
-    return { url };
-  }
-
   async create(createStaffDto: CreateStaffDto): Promise<FullStaffResponseDto> {
-    const existingStaff = await this.staffRepository.findOne({
-      where: { email: createStaffDto.email },
-    });
+    await this.validateEmailUniqueness(createStaffDto.email);
 
-    if (existingStaff) {
-      throw new ConflictException('Staff with this email already exists');
-    }
+    // Create the staff entity
+    const staff = this.staffRepository.create(createStaffDto);
+    const savedStaff = await this.staffRepository.save(staff);
 
-    await this.languagesService.ensureLanguagesExist([...createStaffDto.translateTo, createStaffDto.languageCode]);
-
-    // Create staff and its default translation in a transaction
-    const savedStaff = await this.staffRepository.manager.transaction(async (manager) => {
-      // Create the staff entity
-      const staff = manager.create(StaffEntity, createStaffDto);
-      const savedStaff = await manager.save(StaffEntity, staff);
-
-      // Create the default translation with the bio and languageCode
-      if (createStaffDto.bio && createStaffDto.languageCode) {
-        const translation = manager.create('StaffTranslationEntity', {
-          staff: savedStaff,
-          bio: createStaffDto.bio,
-          languageCode: createStaffDto.languageCode,
-        });
-        await manager.save('StaffTranslationEntity', translation);
-      }
-
-      return savedStaff;
-    });
-
-    await this.translateService.translateToLanguages(
-      createStaffDto.translateTo,
-      TranslationEventTypes.staff,
-      savedStaff.id,
-      { bio: createStaffDto.bio },
-    );
-
-    const staffWithRelations = await this.staffRepository.findOne({
-      where: { id: savedStaff.id },
-      relations: ['translations'],
-    });
-    return FullStaffResponseDto.fromEntity(staffWithRelations);
+    return FullStaffResponseDto.fromEntity(savedStaff);
   }
 
   async update(staff: StaffEntity, updateStaffDto: UpdateStaffDto): Promise<FullStaffResponseDto> {
     const updatedStaff = this.staffRepository.merge(staff, updateStaffDto);
     const savedStaff = await this.staffRepository.save(updatedStaff);
-
-    const staffWithRelations = await this.staffRepository.findOne({
-      where: { id: savedStaff.id },
-      relations: ['translations'],
-    });
-    return FullStaffResponseDto.fromEntity(staffWithRelations);
+    return FullStaffResponseDto.fromEntity(savedStaff);
   }
 
   async getMe(staff: StaffEntity): Promise<FullStaffResponseDto> {
-    const me = await this.staffRepository.findOne({
-      where: { id: staff.id },
-      relations: ['translations'],
-    });
-    if (!me) {
-      throw new NotFoundException('Staff not found');
-    }
+    const me = await this.findOneOrThrow(staff.id);
     return FullStaffResponseDto.fromEntity(me);
   }
 
   async delete(id: number): Promise<void> {
-    const staff = await this.findOneEntity(id, null);
+    const staff = await this.findOneOrThrow(id);
 
-    if (staff.role == StaffRole.SUPERADMIN) {
-      throw new ForbiddenException('Cannot delete SuperAdmin');
-    }
+    this.validateNotSuperAdmin(staff, 'Cannot delete SuperAdmin');
 
     await this.staffRepository.remove(staff);
   }
 
   async findAll(filterStaffDto: StaffFilterDto): Promise<PaginationResponseDto<StaffResponseDto>> {
-    const queryBuilder = this.staffRepository
-      .createQueryBuilder('staff')
-      .leftJoinAndSelect('staff.translations', 'translations');
+    // Build query excluding password field for performance and security
+    // Using select() to only fetch needed fields reduces data transfer
+    const queryBuilder = this.createBaseQueryBuilder();
 
-    if (filterStaffDto.name) {
-      queryBuilder.andWhere('staff.name ILIKE :name', {
-        name: `%${filterStaffDto.name}%`,
-      });
-    }
-    if (filterStaffDto.email) {
-      queryBuilder.andWhere('staff.email = :email', { email: filterStaffDto.email });
-    }
+    this.applyStaffFilters(queryBuilder, filterStaffDto);
 
+    // Use pagination service for consistent pagination logic
     return this.paginationService.paginateSafeQB(queryBuilder, filterStaffDto, {
       primaryId: 'staff.id',
       createdAt: 'staff.createdAt',
@@ -176,9 +111,7 @@ export class StaffService {
   async findAuthors(filterAuthorDto: AuthorFilterDto) {
     const queryBuilder = this.staffRepository
       .createQueryBuilder('staff')
-      .innerJoinAndSelect('staff.translations', 'translations')
-      .where('translations.languageCode = :languageCode', { languageCode: filterAuthorDto.languageCode })
-      .andWhere('staff.role = :role', { role: StaffRole.AUTHOR });
+      .where('staff.role = :role', { role: StaffRole.AUTHOR });
 
     return this.paginationService.paginateSafeQB(queryBuilder, filterAuthorDto, {
       primaryId: 'staff.id',
@@ -187,94 +120,134 @@ export class StaffService {
     });
   }
 
-  async findOneAuthor(id: number, languageCode: string): Promise<StaffResponseDto> {
-    const author = await this.staffRepository
-      .createQueryBuilder('staff')
-      .innerJoinAndSelect('staff.translations', 'translations')
-      .where('translations.languageCode = :languageCode', { languageCode })
-      .andWhere('staff.id = :id', { id })
-      .getOne();
-
-    if (!author) {
-      throw new NotFoundException('Author not found');
-    }
+  async findOneAuthor(id: number): Promise<StaffResponseDto> {
+    const author = await this.findOneOrThrow(id);
     return StaffResponseDto.fromEntity(author);
   }
 
   async findOne(id: number, role?: StaffRole): Promise<StaffResponseDto> {
-    const whereCondition: any = { id };
-    if (role !== null && role !== undefined) {
-      whereCondition.role = role;
-    }
-
-    const staff = await this.staffRepository.findOne({
-      where: whereCondition,
-      relations: ['translations'],
-    });
-    if (!staff) {
-      throw new NotFoundException('Staff not found');
-    }
+    const staff = await this.findOneOrThrow(id, role);
     return StaffResponseDto.fromEntity(staff);
   }
 
   async findOneForAuth(id: number, role?: StaffRole): Promise<StaffEntity> {
-    const whereCondition: any = { id };
-    if (role !== null && role !== undefined) {
-      whereCondition.role = role;
-    }
-
-    const staff = await this.staffRepository.findOne({
-      where: whereCondition,
-      relations: ['translations'],
-    });
-    if (!staff) {
-      throw new NotFoundException('Staff not found');
-    }
-    return staff;
+    return this.findOneOrThrow(id, role);
   }
 
   private async findOneEntity(id: number, role?: StaffRole): Promise<StaffEntity> {
-    return this.findOneForAuth(id, role);
+    return this.findOneOrThrow(id, role);
   }
 
   async updateBySuperAdmin(id: number, updateStaffDto: UpdateStaffBySuperAdminDto): Promise<FullStaffResponseDto> {
-    const staff = await this.staffRepository.findOne({
-      where: { id },
-    });
-    if (!staff) {
-      throw new NotFoundException('Staff not found');
-    }
+    const staff = await this.findOneOrThrow(id);
 
-    if (staff.role == StaffRole.SUPERADMIN) {
-      throw new ForbiddenException('Cannot update SuperAdmin');
-    }
-
-    let previousImage = null;
-    if (updateStaffDto.image) {
-      previousImage = staff.image;
-    }
+    this.validateNotSuperAdmin(staff, 'Cannot update SuperAdmin');
 
     const updatedStaff = this.staffRepository.merge(staff, updateStaffDto);
     const savedStaff = await this.staffRepository.save(updatedStaff);
 
-    if (previousImage) {
-      this.uploadService.deleteFiles([previousImage]);
-    }
-
-    const staffWithRelations = await this.staffRepository.findOne({
-      where: { id: savedStaff.id },
-      relations: ['translations'],
-    });
-    return FullStaffResponseDto.fromEntity(staffWithRelations);
+    return FullStaffResponseDto.fromEntity(savedStaff);
   }
 
   async findOneByEmail(email: string): Promise<StaffEntity> {
+    return this.findOneByEmailOrThrow(email);
+  }
+
+  // Private helper methods
+
+  /**
+   * Finds a staff by ID (and optionally by role) and throws NotFoundException if not found
+   */
+  private async findOneOrThrow(id: number, role?: StaffRole): Promise<StaffEntity> {
+    const whereCondition = this.buildWhereCondition(id, role);
+
     const staff = await this.staffRepository.findOne({
-      where: { email },
+      where: whereCondition,
     });
+
     if (!staff) {
       throw new NotFoundException('Staff not found');
     }
     return staff;
+  }
+
+  /**
+   * Finds a staff by email and throws NotFoundException if not found
+   */
+  private async findOneByEmailOrThrow(email: string): Promise<StaffEntity> {
+    const staff = await this.staffRepository.findOne({
+      where: { email },
+    });
+
+    if (!staff) {
+      throw new NotFoundException('Staff not found');
+    }
+    return staff;
+  }
+
+  /**
+   * Validates that an email is unique, throws ConflictException if it exists
+   */
+  private async validateEmailUniqueness(email: string): Promise<void> {
+    const existingStaff = await this.staffRepository.findOne({
+      where: { email },
+    });
+
+    if (existingStaff) {
+      throw new ConflictException('Staff with this email already exists');
+    }
+  }
+
+  /**
+   * Validates that staff is not SuperAdmin, throws ForbiddenException if it is
+   */
+  private validateNotSuperAdmin(staff: StaffEntity, message: string): void {
+    if (staff.role === StaffRole.SUPERADMIN) {
+      throw new ForbiddenException(message);
+    }
+  }
+
+  /**
+   * Builds where condition with optional role filter
+   */
+  private buildWhereCondition(id: number, role?: StaffRole): { id: number; role?: StaffRole } {
+    const whereCondition: { id: number; role?: StaffRole } = { id };
+    if (role !== null && role !== undefined) {
+      whereCondition.role = role;
+    }
+    return whereCondition;
+  }
+
+  /**
+   * Creates a base QueryBuilder with selected fields (excluding password)
+   */
+  private createBaseQueryBuilder() {
+    return this.staffRepository
+      .createQueryBuilder('staff')
+      .select([
+        'staff.id',
+        'staff.name',
+        'staff.email',
+        'staff.image',
+        'staff.role',
+        'staff.bio',
+        'staff.createdAt',
+        'staff.updatedAt',
+        'staff.passwordChangedAt',
+      ]);
+  }
+
+  /**
+   * Applies staff filters (name, email)
+   */
+  private applyStaffFilters(queryBuilder: any, filter: StaffFilterDto): void {
+    if (filter.name) {
+      queryBuilder.andWhere('staff.name ILIKE :name', {
+        name: `%${filter.name}%`,
+      });
+    }
+    if (filter.email) {
+      queryBuilder.andWhere('staff.email = :email', { email: filter.email });
+    }
   }
 }

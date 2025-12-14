@@ -1,5 +1,4 @@
 import { SolutionEntity } from '../../entities/solution.entity';
-import { SolutionTranslationResponseDto } from './solution-translation-response.dto';
 import { ServiceResponseDto } from 'src/modules/services/dtos/response/service-response.dto';
 
 export class SolutionResponseDto {
@@ -20,11 +19,10 @@ export class SolutionResponseDto {
     keywords?: string[];
   };
   services?: ServiceResponseDto[];
-  translations?: SolutionTranslationResponseDto[];
   createdAt: Date;
   updatedAt: Date;
 
-  static fromEntity(entity: SolutionEntity, languageCode?: string): SolutionResponseDto {
+  static fromEntity(entity: SolutionEntity): SolutionResponseDto {
     const dto = new SolutionResponseDto();
     dto.id = entity.id;
     dto.slug = entity.slug;
@@ -34,18 +32,11 @@ export class SolutionResponseDto {
     dto.featuredImage = entity.featuredImage;
     dto.viewCount = entity.viewCount;
     dto.order = entity.order;
-    dto.name = entity.translations?.find((translation) => translation.languageCode === languageCode)?.name;
-    dto.description = entity.translations?.find(
-      (translation) => translation.languageCode === languageCode,
-    )?.description;
-    dto.shortDescription = entity.translations?.find(
-      (translation) => translation.languageCode === languageCode,
-    )?.shortDescription;
-    dto.meta = entity.translations?.find((translation) => translation.languageCode === languageCode)?.meta;
-    dto.services = entity.services?.map((service) => ServiceResponseDto.fromEntity(service, languageCode));
-    dto.translations = entity.translations?.map((translation) =>
-      SolutionTranslationResponseDto.fromEntity(translation),
-    );
+    dto.name = entity.name;
+    dto.description = entity.description;
+    dto.shortDescription = entity.shortDescription;
+    dto.meta = entity.meta;
+    dto.services = entity.services?.map((service) => ServiceResponseDto.fromEntity(service));
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
     return dto;

@@ -1,5 +1,4 @@
 import { ServiceEntity } from '../../entities/service.entity';
-import { ServiceTranslationResponseDto } from './service-translation-response.dto';
 import { SubServiceResponseDto } from './sub-service-response.dto';
 import { SolutionResponseDto } from 'src/modules/solutions/dtos/response/solution-response.dto';
 
@@ -12,7 +11,6 @@ export class ServiceResponseDto {
   featuredImage?: string;
   viewCount: number;
   order: number;
-  // Translatable fields (for merged responses)
   name?: string;
   description?: string;
   shortDescription?: string;
@@ -22,12 +20,11 @@ export class ServiceResponseDto {
     keywords?: string[];
   };
   subServices?: SubServiceResponseDto[];
-  translations?: ServiceTranslationResponseDto[];
   solutions?: SolutionResponseDto[];
   createdAt: Date;
   updatedAt: Date;
 
-  static fromEntity(entity: ServiceEntity, languageCode?: string): ServiceResponseDto {
+  static fromEntity(entity: ServiceEntity): ServiceResponseDto {
     const dto = new ServiceResponseDto();
     dto.id = entity.id;
     dto.slug = entity.slug;
@@ -37,18 +34,12 @@ export class ServiceResponseDto {
     dto.featuredImage = entity.featuredImage;
     dto.viewCount = entity.viewCount;
     dto.order = entity.order;
-    dto.name = entity.translations?.find((translation) => translation.languageCode === languageCode)?.name;
-    dto.description = entity.translations?.find(
-      (translation) => translation.languageCode === languageCode,
-    )?.description;
-    dto.shortDescription = entity.translations?.find(
-      (translation) => translation.languageCode === languageCode,
-    )?.shortDescription;
-    dto.meta = entity.translations?.find((translation) => translation.languageCode === languageCode)?.meta;
-    const translation = entity.translations?.find((translation) => translation.languageCode === languageCode);
-    dto.subServices = translation?.subServices?.map((subService) => SubServiceResponseDto.fromEntity(subService));
-    dto.translations = entity.translations?.map((translation) => ServiceTranslationResponseDto.fromEntity(translation));
-    dto.solutions = entity.solutions?.map((solution) => SolutionResponseDto.fromEntity(solution, languageCode || ''));
+    dto.name = entity.name;
+    dto.description = entity.description;
+    dto.shortDescription = entity.shortDescription;
+    dto.meta = entity.meta;
+    dto.subServices = entity.subServices?.map((subService) => SubServiceResponseDto.fromEntity(subService));
+    dto.solutions = entity.solutions?.map((solution) => SolutionResponseDto.fromEntity(solution));
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
     return dto;

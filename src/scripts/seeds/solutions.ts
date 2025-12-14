@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from 'src/app.module';
 import { SolutionsService } from 'src/modules/solutions/services/solutions.service';
 import { CreateSolutionDto } from 'src/modules/solutions/dtos/request/create-solution.dto';
-import { TranslateService } from 'src/services/translation/services/translate.service';
-import { TranslationEventTypes } from 'src/services/translation/enums/translated-types.enum';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -22,14 +20,11 @@ interface SolutionJsonData {
   isFeatured?: boolean;
   featuredImage?: string;
   order?: number;
-  languageCode: string;
-  translateTo: string[];
 }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const solutionsService = app.get(SolutionsService);
-  const translateService = app.get(TranslateService);
 
   try {
     // Read solutions.json file
@@ -53,19 +48,6 @@ async function bootstrap() {
       const solutionData = solutionsData[i];
       console.log(`\n[${i + 1}/${solutionsData.length}] Processing: ${solutionData.name}`);
 
-      // Normalize language codes (ensure lowercase and trimmed)
-      let normalizedLanguageCode = (solutionData.languageCode || 'en').toLowerCase().trim();
-      // Validate language code - must be exactly 2 lowercase letters
-      if (!/^[a-z]{2}$/.test(normalizedLanguageCode)) {
-        console.warn(`   ⚠️  Invalid language code "${solutionData.languageCode}", defaulting to "en"`);
-        normalizedLanguageCode = 'en';
-      }
-
-      // Normalize and filter translateTo array - only keep valid 2-letter codes
-      const normalizedTranslateTo = (solutionData.translateTo || [])
-        .map((code) => code.toLowerCase().trim())
-        .filter((code) => /^[a-z]{2}$/.test(code));
-
       // Create CreateSolutionDto
       const createSolutionDto: CreateSolutionDto = {
         slug: solutionData.slug,
@@ -78,57 +60,11 @@ async function bootstrap() {
         isFeatured: solutionData.isFeatured ?? false,
         featuredImage: solutionData.featuredImage,
         order: solutionData.order ?? 0,
-        languageCode: normalizedLanguageCode,
-        translateTo: normalizedTranslateTo,
       };
 
       try {
-        // Create solution without translation (we'll handle translation separately)
-        const createSolutionDtoWithoutTranslation: CreateSolutionDto = {
-          ...createSolutionDto,
-          translateTo: [], // Don't translate in create, we'll do it manually
-        };
-        const createdSolution = await solutionsService.create(createSolutionDtoWithoutTranslation);
+        const createdSolution = await solutionsService.create(createSolutionDto);
         console.log(`   ✅ Created solution: ${createdSolution.slug}`);
-
-        // Translate if needed
-        if (createSolutionDto.translateTo.length > 0) {
-          // Filter out invalid language codes and the default language code
-          const translateTo = createSolutionDto.translateTo.filter((code) => {
-            // Validate: must be exactly 2 lowercase letters
-            return /^[a-z]{2}$/.test(code) && code !== createSolutionDto.languageCode;
-          });
-
-          if (translateTo.length > 0) {
-            console.log(`   ⏳ Translating to [${translateTo.join(', ')}]...`);
-            try {
-              await translateService.translateToLanguages(
-                translateTo,
-                TranslationEventTypes.solution,
-                createdSolution.id,
-                {
-                  name: createSolutionDto.name,
-                  description: createSolutionDto.description,
-                  shortDescription: createSolutionDto.shortDescription,
-                  meta: createSolutionDto.meta,
-                },
-              );
-              console.log(`   ✅ Translation completed for [${translateTo.join(', ')}]`);
-            } catch (translationError) {
-              const errorMessage =
-                translationError instanceof Error ? translationError.message : String(translationError);
-              console.error(`   ⚠️  Translation failed: ${errorMessage}`);
-              // Continue even if translation fails
-            }
-          } else if (createSolutionDto.translateTo.length > 0) {
-            console.log(`   ⚠️  No valid language codes to translate to (filtered out invalid codes)`);
-          }
-        }
-
-        // Wait a bit to avoid overwhelming the translation service
-        if (i < solutionsData.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error(`   ❌ Error creating solution ${solutionData.slug}:`, errorMessage);
@@ -138,7 +74,7 @@ async function bootstrap() {
       }
     }
 
-    console.log('\n✅ All solutions seeded successfully with translations!');
+    console.log('\n✅ All solutions seeded successfully!');
   } catch (error) {
     console.error('❌ Error seeding solutions:', error);
     throw error;
