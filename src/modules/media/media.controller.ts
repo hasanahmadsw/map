@@ -10,7 +10,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { UploadService } from 'src/shared/modules/upload/services/upload.service';
+import { UploadService } from '../../shared/modules/upload/services/upload.service';
 import { SupabaseStorageService } from 'src/services/supabase/services/supabase-storage.service';
 import { createMulterConfig } from 'src/common/utils/multer-config.factory';
 import { Protected } from 'src/common/decorators/roles.decorator';

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MediaController } from './media.controller';
-import { UploadModule } from 'src/shared/modules/upload/upload.module';
+import { UploadModule } from '../../shared/modules/upload/upload.module';
 import { SupabaseModule } from 'src/services/supabase/supabase.module';
 
 @Module({

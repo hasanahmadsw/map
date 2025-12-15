@@ -7,7 +7,7 @@ import { ProjectsCrudService } from './services/projects-crud.service';
 import { ProjectEntity } from './entities/project.entity';
 import { ServiceEntity } from '../services/entities/service.entity';
 import { SolutionEntity } from '../solutions/entities/solution.entity';
-import { UploadModule } from 'src/shared/modules/upload/upload.module';
+import { UploadModule } from '../../shared/modules/upload/upload.module';
 import { SlugUniquenessService } from 'src/common/db/slug-uniqueness.service';
 import { ViewCounterService } from 'src/common/db/view-counter.service';
 import { FlagsService } from 'src/common/db/flags.service';

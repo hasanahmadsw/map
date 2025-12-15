@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UploadModule } from 'src/shared/modules/upload/upload.module';
+import { UploadModule } from '../../shared/modules/upload/upload.module';
 
 import { SlugUniquenessService } from 'src/common/db/slug-uniqueness.service';
 import { ViewCounterService } from 'src/common/db/view-counter.service';

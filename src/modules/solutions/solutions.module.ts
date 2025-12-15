@@ -4,7 +4,7 @@ import { SolutionsController } from './controllers/solutions.controller';
 import { SolutionsService } from './services/solutions.service';
 import { SolutionEntity } from './entities/solution.entity';
 import { ServiceEntity } from '../services/entities/service.entity';
-import { UploadModule } from 'src/shared/modules/upload/upload.module';
+import { UploadModule } from '../../shared/modules/upload/upload.module';
 import { SolutionsReadService } from './services/solutions-read.service';
 import { SolutionsCrudService } from './services/solutions-crud.service';
 import { SlugUniquenessService } from 'src/common/db/slug-uniqueness.service';
