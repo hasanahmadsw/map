@@ -13,6 +13,11 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
+# Verify upload module files exist before building
+RUN ls -la src/shared/modules/upload/ && \
+    test -f src/shared/modules/upload/upload.module.ts || (echo "ERROR: upload.module.ts not found!" && exit 1) && \
+    test -f src/shared/modules/upload/services/upload.service.ts || (echo "ERROR: upload.service.ts not found!" && exit 1)
+
 RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build 
 
 # ===============================

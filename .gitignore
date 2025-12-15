@@ -58,7 +58,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # env
 
-upload
-uploads
+# Upload directories at root level (not the upload module in src/shared/modules/upload)
+/upload
+/uploads
 
 logger-event.ts
