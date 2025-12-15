@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { memoryStorage } from 'multer';
 
-export type FileType = 'image' | 'audio' | 'video' | 'document';
+export type FileType = 'image' | 'audio' | 'video' | 'document' | 'media';
 
 const mimeTypeMap: Record<FileType, string[]> = {
   image: ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'],
@@ -12,6 +12,20 @@ const mimeTypeMap: Record<FileType, string[]> = {
     'application/pdf',
     'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ],
+  media: [
+    'video/mp4',
+    'video/webm',
+    'video/ogg',
+    'video/quicktime',
+    'image/jpeg',
+    'image/png',
+    'image/jpg',
+    'image/gif',
+    'image/webp',
+    'image/svg+xml',
+    'image/x-icon',
+    'image/vnd.microsoft.icon',
   ],
 };
 

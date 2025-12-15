@@ -14,7 +14,6 @@ import { UploadService } from 'src/shared/modules/upload/services/upload.service
 import { SupabaseStorageService } from 'src/services/supabase/services/supabase-storage.service';
 import { createMulterConfig } from 'src/common/utils/multer-config.factory';
 import { Protected } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/common/enums/role.enum';
 import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
 import {
   ListMediaQueryDto,
@@ -23,10 +22,15 @@ import {
   MediaFileResponseDto,
   DeleteMediaBodyDto,
   DeleteMediaResponseDto,
+  ListMediaTreeResponseDto,
+  ListMediaTreeQueryDto,
+  CreateMediaFolderDto,
 } from './dtos';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentConfig } from 'src/shared/modules/config/env.schema';
 import { PaginationMetadataDto } from 'src/common/pagination/dto/pagination-detadata.dto';
+import { UploadMediaDto } from './dtos/body/upload-media.dto';
+import { FolderItemDto } from './dtos/response/folder-item.dto';
 
 @Controller('media')
 export class MediaController {
@@ -41,15 +45,20 @@ export class MediaController {
   }
 
   @Post('upload')
-  @Protected(Role.SUPER_ADMIN, Role.ADMIN)
-  @UseInterceptors(FilesInterceptor('files', 10, createMulterConfig('image', 50, 10)))
+  @Protected()
+  @UseInterceptors(FilesInterceptor('files', 15, createMulterConfig('media', 50, 15)))
   @SerializeResponse(UploadMediaResponseDto)
-  async uploadMedia(@UploadedFiles() files: Express.Multer.File[]): Promise<UploadMediaResponseDto> {
+  async uploadMedia(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() body: UploadMediaDto,
+  ): Promise<UploadMediaResponseDto> {
     if (!files || files.length === 0) {
       throw new BadRequestException('No files provided');
     }
 
-    const urls = await this.uploadService.uploadPictures(files);
+    const folder = body.folder?.replace(/^\/+|\/+$/g, '') || undefined;
+
+    const urls = await this.uploadService.uploadPictures(files, undefined, folder);
 
     const response = new UploadMediaResponseDto();
     response.urls = urls;
@@ -57,14 +66,18 @@ export class MediaController {
     return response;
   }
 
+  /**
+   * Grid of files (with pagination) inside a given folder or root.
+   */
   @Get()
-  @Protected(Role.SUPER_ADMIN, Role.ADMIN)
+  @Protected()
   @SerializeResponse(ListMediaResponseDto)
   async listMedia(@Query() query: ListMediaQueryDto): Promise<ListMediaResponseDto> {
     const page = Math.max(1, query.page);
     const limit = Math.max(1, Math.min(query.limit, 100));
 
-    const prefixStartsWith = (query.prefix ?? '').replace(/^\/+/, '');
+    const basePrefix = query.folder ?? query.prefix ?? '';
+    const prefixStartsWith = basePrefix.replace(/^\/+/, '');
 
     let mimePatterns: string[] | null = null;
 
@@ -133,8 +146,49 @@ export class MediaController {
     return response;
   }
 
+  /**
+   * Tree view: Returns the folders + direct files inside a given folder.
+   */
+  @Get('tree')
+  @Protected()
+  @SerializeResponse(ListMediaTreeResponseDto)
+  async listMediaTree(@Query() query: ListMediaTreeQueryDto): Promise<ListMediaTreeResponseDto> {
+    const folder = query.folder?.replace(/^\/+|\/+$/g, '') || undefined;
+
+    const { folders, files } = await this.supabaseStorageService.listFoldersAndFiles({
+      bucketName: this.MEDIA_BUCKET_NAME,
+      prefix: folder,
+      signed: query.signed,
+      expiresIn: query.expiresIn ?? 3600,
+    });
+
+    const mediaFiles: MediaFileResponseDto[] = files.map((file) => {
+      const dto = new MediaFileResponseDto();
+      dto.name = file.name;
+      dto.path = file.path;
+      dto.url = file.url;
+      dto.mimeType = file.mimeType;
+      dto.size = file.size;
+      dto.createdAt = file.createdAt;
+      dto.updatedAt = file.updatedAt;
+      return dto;
+    });
+
+    const folderDtos: FolderItemDto[] = folders.map((f) => {
+      const dto = new FolderItemDto();
+      dto.name = f.name;
+      dto.path = f.path;
+      return dto;
+    });
+
+    const response = new ListMediaTreeResponseDto();
+    response.folders = folderDtos;
+    response.files = mediaFiles;
+    return response;
+  }
+
   @Delete()
-  @Protected(Role.SUPER_ADMIN, Role.ADMIN)
+  @Protected()
   @SerializeResponse(DeleteMediaResponseDto)
   async deleteMedia(@Body() body: DeleteMediaBodyDto): Promise<DeleteMediaResponseDto> {
     if (!body.paths || body.paths.length === 0) {
@@ -151,5 +205,18 @@ export class MediaController {
     response.message = `Successfully deleted ${cleanPaths.length} file(s)`;
 
     return response;
+  }
+
+  @Post('folders')
+  @Protected()
+  async createFolder(@Body() body: CreateMediaFolderDto) {
+    const clean = body.folder.replace(/^\/+|\/+$/g, '');
+    if (!clean) {
+      throw new BadRequestException('Invalid folder name');
+    }
+
+    await this.supabaseStorageService.createFolder(this.MEDIA_BUCKET_NAME, clean);
+
+    return { folder: clean };
   }
 }

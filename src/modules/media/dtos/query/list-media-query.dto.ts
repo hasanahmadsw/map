@@ -7,6 +7,10 @@ export class ListMediaQueryDto {
   prefix?: string;
 
   @IsOptional()
+  @IsString()
+  folder?: string;
+
+  @IsOptional()
   @Type(() => Boolean)
   @IsBoolean()
   signed?: boolean = false;
