@@ -13,9 +13,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build && \
-    ls -la /app/dist && \
-    test -f /app/dist/main.js || (echo "ERROR: dist/main.js not found after build!" && exit 1)
+RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build 
 
 # ===============================
 # Stage 2: Production image
@@ -39,4 +37,4 @@ ENV NODE_OPTIONS=--experimental-global-webcrypto
 
 EXPOSE 80
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
