@@ -3,16 +3,6 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "deleteOutDir": true,
-    "assets": [
-      {
-        "include": "shared/modules/app-i18n/translate/**/*",
-        "watchAssets": true
-      },
-      {
-        "include": "services/mail/templates/**/*.html",
-        "watchAssets": true
-      }
-    ]
+    "deleteOutDir": true
   }
 }
