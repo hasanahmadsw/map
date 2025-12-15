@@ -1,0 +1,774 @@
+{
+  "info": {
+    "_postman_id": "equipment-api-collection",
+    "name": "Equipment API",
+    "description": "API collection for Equipment management - Equipment items, brands, and categories endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "equipment-api"
+  },
+  "item": [
+    {
+      "name": "Equipment Items",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Equipment",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"canon-eos-r5\",\n  \"name\": \"Canon EOS R5\",\n  \"summary\": \"Professional mirrorless camera\",\n  \"description\": \"Full-frame mirrorless camera with 45MP sensor and 8K video recording\",\n  \"categoryId\": 1,\n  \"brandId\": 1,\n  \"equipmentType\": \"camera\",\n  \"isPublished\": false,\n  \"isFeatured\": false,\n  \"order\": 0,\n  \"coverPath\": \"/images/equipment/canon-eos-r5.jpg\",\n  \"galleryPaths\": [\n    \"/images/equipment/canon-eos-r5-1.jpg\",\n    \"/images/equipment/canon-eos-r5-2.jpg\"\n  ],\n  \"manualPath\": \"/manuals/canon-eos-r5.pdf\",\n  \"videoUrl\": \"https://www.youtube.com/watch?v=example\",\n  \"specs\": {\n    \"sensor\": \"45MP Full-Frame CMOS\",\n    \"video\": \"8K RAW\",\n    \"iso\": \"100-51200\"\n  },\n  \"status\": \"active\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment"]
+                },
+                "description": "Create a new equipment item. Requires SUPER_ADMIN, ADMIN, or AUTHOR role.\n\n**Equipment Types:** camera, lens, light, audio, accessory\n**Status:** active, archived"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Equipment (Admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment?page=1&limit=10&search=&categoryId=&brandId=&equipmentType=&isPublished=&isFeatured=&status=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search term",
+                      "disabled": true
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "",
+                      "description": "Filter by category ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "",
+                      "description": "Filter by brand ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "equipmentType",
+                      "value": "",
+                      "description": "Filter by type: camera, lens, light, audio, accessory",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "",
+                      "description": "Filter by status: active, archived",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get all equipment items with pagination and filtering. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Equipment by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Equipment ID"
+                    }
+                  ]
+                },
+                "description": "Get a specific equipment item by ID. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Equipment",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Canon EOS R5 Updated\",\n  \"summary\": \"Updated summary\",\n  \"isPublished\": true,\n  \"isFeatured\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Equipment ID"
+                    }
+                  ]
+                },
+                "description": "Update an equipment item. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Equipment",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Equipment ID"
+                    }
+                  ]
+                },
+                "description": "Delete an equipment item. Returns 204 No Content. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Equipment",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Equipment ID"
+                    }
+                  ]
+                },
+                "description": "Publish an equipment item. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Equipment",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Equipment ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish an equipment item. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            },
+            {
+              "name": "Toggle Featured Equipment",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/:id/toggle-featured",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", ":id", "toggle-featured"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Equipment ID"
+                    }
+                  ]
+                },
+                "description": "Toggle featured status of an equipment item. Requires SUPER_ADMIN, ADMIN, or AUTHOR role."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Equipment",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/published?page=1&limit=10&search=&categoryId=&brandId=&equipmentType=&isFeatured=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["equipment", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search term",
+                      "disabled": true
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "",
+                      "description": "Filter by category ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "",
+                      "description": "Filter by brand ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "equipmentType",
+                      "value": "",
+                      "description": "Filter by type: camera, lens, light, audio, accessory",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isFeatured",
+                      "value": "",
+                      "description": "Filter by featured status",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get all published equipment items with pagination and filtering. Public endpoint."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Featured Equipment",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/featured?page=1&limit=10&search=&categoryId=&brandId=&equipmentType=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["equipment", "featured"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page"
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search term",
+                      "disabled": true
+                    },
+                    {
+                      "key": "categoryId",
+                      "value": "",
+                      "description": "Filter by category ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "brandId",
+                      "value": "",
+                      "description": "Filter by brand ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "equipmentType",
+                      "value": "",
+                      "description": "Filter by type: camera, lens, light, audio, accessory",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get all featured equipment items with pagination and filtering. Public endpoint."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Equipment by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["equipment", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "canon-eos-r5",
+                      "description": "Equipment slug"
+                    }
+                  ]
+                },
+                "description": "Get an equipment item by slug. Public endpoint."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Equipment Brands",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Brand",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"canon\",\n  \"name\": \"Canon\",\n  \"order\": 0,\n  \"isActive\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/brands",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "brands"]
+                },
+                "description": "Create a new equipment brand. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Brands (Admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/brands?search=&isActive=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "brands"],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search term",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isActive",
+                      "value": "",
+                      "description": "Filter by active status",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get all equipment brands with filtering. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Brand",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Canon Updated\",\n  \"order\": 1,\n  \"isActive\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/brands/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "brands", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Brand ID"
+                    }
+                  ]
+                },
+                "description": "Update an equipment brand. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Active Brands",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/brands",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["equipment", "brands"]
+                },
+                "description": "Get all active equipment brands. Public endpoint."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Equipment Categories",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"slug\": \"cameras\",\n  \"name\": \"Cameras\",\n  \"description\": \"Professional camera equipment\",\n  \"parentId\": null,\n  \"order\": 0,\n  \"isActive\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "categories"]
+                },
+                "description": "Create a new equipment category. Supports hierarchical categories via parentId. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Categories (Admin)",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/categories?search=&isActive=",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "categories"],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search term",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isActive",
+                      "value": "",
+                      "description": "Filter by active status",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get all equipment categories with filtering. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Category by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/categories/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "categories", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Category ID"
+                    }
+                  ]
+                },
+                "description": "Get a specific equipment category by ID. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Cameras Updated\",\n  \"description\": \"Updated description\",\n  \"order\": 1,\n  \"isActive\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/categories/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "categories", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Category ID"
+                    }
+                  ]
+                },
+                "description": "Update an equipment category. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/equipment/categories/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "equipment", "categories", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Category ID"
+                    }
+                  ]
+                },
+                "description": "Delete an equipment category. Requires SUPER_ADMIN or ADMIN role."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Active Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/equipment/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["equipment", "categories"]
+                },
+                "description": "Get all active equipment categories. Public endpoint."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+

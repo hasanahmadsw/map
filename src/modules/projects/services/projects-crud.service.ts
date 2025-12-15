@@ -13,19 +13,15 @@ import { SlugUniquenessService } from 'src/common/db/slug-uniqueness.service';
 import { FlagsService } from 'src/common/db/flags.service';
 import { JunctionSyncService } from 'src/common/db/junction-sync.service';
 import { findByIdOrThrow } from 'src/common/db/find-or-throw';
-import { UploadService } from 'src/shared/modules/upload/services/upload.service';
 
 @Injectable()
 export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreateProjectDto, UpdateProjectDto> {
   constructor(
     @InjectRepository(ProjectEntity) repo: Repository<ProjectEntity>,
-    @InjectRepository(ServiceEntity) private readonly serviceRepository: Repository<ServiceEntity>,
-    @InjectRepository(SolutionEntity) private readonly solutionRepository: Repository<SolutionEntity>,
     dataSource: DataSource,
     slugGuard: SlugUniquenessService,
     flags: FlagsService,
     private readonly junctionSync: JunctionSyncService,
-    private readonly uploadService: UploadService,
   ) {
     super(repo, dataSource, slugGuard, flags);
   }
@@ -189,12 +185,6 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
   async update(id: ProjectEntity['id'], dto: UpdateProjectDto): Promise<ProjectEntity> {
     const entity = await findByIdOrThrow(this.repo, id, { message: this.notFoundMessage() });
 
-    // Store current image for cleanup
-    let previousImage: string | null = null;
-    if (dto.featuredImage && dto.featuredImage !== entity.featuredImage) {
-      previousImage = entity.featuredImage;
-    }
-
     return this.dataSource.transaction(async (em) => {
       const repo = em.getRepository(this.repo.target as any) as Repository<ProjectEntity>;
       const managed = await repo.findOne({
@@ -206,11 +196,6 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
       const saved = (await repo.save(managed)) as ProjectEntity;
 
       await this.syncRelationsOnUpdate(saved, dto, em);
-
-      // Clean up old image if it was replaced
-      if (previousImage) {
-        this.uploadService.deleteFiles([previousImage]);
-      }
 
       return saved;
     });

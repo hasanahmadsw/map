@@ -9,20 +9,13 @@ import { ProjectResponseDto } from '../dtos/response/project-response.dto';
 import { ProjectFilterDto } from '../dtos/query/project-filter.dto';
 import { PublicProjectFilterDto } from '../dtos/query/public-project-filter.dto';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
-import { UploadService } from 'src/shared/modules/upload/services/upload.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     private readonly read: ProjectsReadService,
     private readonly crud: ProjectsCrudService,
-    private readonly uploadService: UploadService,
   ) {}
-
-  async uploadPicture(picture: Express.Multer.File): Promise<{ url: string }> {
-    const url = await this.uploadService.uploadPicture(picture);
-    return { url };
-  }
 
   async create(dto: CreateProjectDto): Promise<ProjectResponseDto> {
     const saved = await this.crud.create(dto);
