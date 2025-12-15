@@ -13,7 +13,9 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
+RUN NODE_OPTIONS="--max-old-space-size=4096" pnpm run build && \
+    ls -la /app/dist && \
+    test -f /app/dist/src/main.js || (echo "ERROR: dist/src/main.js not found after build!" && exit 1)
 
 # ===============================
 # Stage 2: Production image
@@ -29,11 +31,12 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/env ./env
+# Note: env folder is not copied - environment variables should be set via Render's environment variables
+# or docker-compose env_file. The ConfigModule will read from process.env if env files don't exist.
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS=--experimental-global-webcrypto
 
 EXPOSE 80
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]

@@ -7,6 +7,6 @@ services:
     expose:
       - "80"
     env_file:
-      - ./env/.env
+      - ./env/.env.production
     restart: always
     mem_limit: 4096m
