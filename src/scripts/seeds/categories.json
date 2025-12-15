@@ -1,0 +1,318 @@
+[
+  {
+    "slug": "cinema-cameras",
+    "name": "Cinema Cameras",
+    "description": "Professional digital cinema cameras for film and high-end production",
+    "type": "camera",
+    "order": 1,
+    "isActive": true
+  },
+  {
+    "slug": "broadcast-cameras",
+    "name": "Broadcast Cameras",
+    "description": "Cameras designed for live broadcast and studio environments",
+    "type": "camera",
+    "order": 2,
+    "isActive": true
+  },
+  {
+    "slug": "mirrorless-dslr-cameras",
+    "name": "Mirrorless & DSLR Cameras",
+    "description": "Mirrorless and DSLR cameras for flexible shooting scenarios",
+    "type": "camera",
+    "order": 3,
+    "isActive": true
+  },
+  {
+    "slug": "action-cameras",
+    "name": "Action Cameras",
+    "description": "Compact action cameras for extreme and POV shooting",
+    "type": "camera",
+    "order": 4,
+    "isActive": true
+  },
+  {
+    "slug": "drones",
+    "name": "Drones",
+    "description": "Aerial cameras and drone systems",
+    "type": "camera",
+    "order": 5,
+    "isActive": true
+  },
+  {
+    "slug": "camera-accessories",
+    "name": "Camera Accessories",
+    "description": "Essential accessories for camera systems",
+    "type": "camera",
+    "order": 6,
+    "isActive": true
+  },
+
+  {
+    "slug": "cinema-lenses",
+    "name": "Cinema Lenses",
+    "description": "High-end cinema lenses for professional productions",
+    "type": "lens",
+    "order": 7,
+    "isActive": true
+  },
+  {
+    "slug": "prime-lenses",
+    "name": "Prime Lenses",
+    "description": "Fixed focal length lenses for cinematic quality",
+    "type": "lens",
+    "order": 8,
+    "isActive": true
+  },
+  {
+    "slug": "zoom-lenses",
+    "name": "Zoom Lenses",
+    "description": "Versatile zoom lenses for production use",
+    "type": "lens",
+    "order": 9,
+    "isActive": true
+  },
+  {
+    "slug": "anamorphic-lenses",
+    "name": "Anamorphic Lenses",
+    "description": "Anamorphic lenses for cinematic widescreen look",
+    "type": "lens",
+    "order": 10,
+    "isActive": true
+  },
+  {
+    "slug": "specialty-lenses",
+    "name": "Specialty Lenses",
+    "description": "Macro, probe, tilt-shift and specialty optics",
+    "type": "lens",
+    "order": 11,
+    "isActive": true
+  },
+  {
+    "slug": "lens-accessories",
+    "name": "Lens Accessories",
+    "description": "Filters, adapters and lens-related accessories",
+    "type": "lens",
+    "order": 12,
+    "isActive": true
+  },
+
+  {
+    "slug": "led-lights",
+    "name": "LED Lights",
+    "description": "Professional LED lighting solutions",
+    "type": "light",
+    "order": 13,
+    "isActive": true
+  },
+  {
+    "slug": "tube-lights",
+    "name": "Tube Lights",
+    "description": "Tube-style lighting for flexible setups",
+    "type": "light",
+    "order": 14,
+    "isActive": true
+  },
+  {
+    "slug": "rgb-lights",
+    "name": "RGB Lights",
+    "description": "Full RGB lighting systems",
+    "type": "light",
+    "order": 15,
+    "isActive": true
+  },
+  {
+    "slug": "soft-lights",
+    "name": "Soft Lights",
+    "description": "Soft lighting sources for controlled illumination",
+    "type": "light",
+    "order": 16,
+    "isActive": true
+  },
+  {
+    "slug": "hmi-lights",
+    "name": "HMI Lights",
+    "description": "High-intensity discharge lighting systems",
+    "type": "light",
+    "order": 17,
+    "isActive": true
+  },
+  {
+    "slug": "tungsten-lights",
+    "name": "Tungsten Lights",
+    "description": "Traditional tungsten lighting fixtures",
+    "type": "light",
+    "order": 18,
+    "isActive": true
+  },
+  {
+    "slug": "lighting-accessories",
+    "name": "Lighting Accessories",
+    "description": "Modifiers, stands and lighting accessories",
+    "type": "light",
+    "order": 19,
+    "isActive": true
+  },
+
+  {
+    "slug": "microphones",
+    "name": "Microphones",
+    "description": "Professional microphones for production audio",
+    "type": "audio",
+    "order": 20,
+    "isActive": true
+  },
+  {
+    "slug": "wireless-audio",
+    "name": "Wireless Audio",
+    "description": "Wireless audio systems and transmitters",
+    "type": "audio",
+    "order": 21,
+    "isActive": true
+  },
+  {
+    "slug": "audio-recorders",
+    "name": "Audio Recorders",
+    "description": "Portable and studio audio recorders",
+    "type": "audio",
+    "order": 22,
+    "isActive": true
+  },
+  {
+    "slug": "mixers",
+    "name": "Mixers",
+    "description": "Audio mixing consoles and field mixers",
+    "type": "audio",
+    "order": 23,
+    "isActive": true
+  },
+  {
+    "slug": "audio-accessories",
+    "name": "Audio Accessories",
+    "description": "Cables, mounts and audio accessories",
+    "type": "audio",
+    "order": 24,
+    "isActive": true
+  },
+
+  {
+    "slug": "monitoring",
+    "name": "Monitoring",
+    "description": "On-camera and director monitoring solutions",
+    "type": "accessory",
+    "order": 25,
+    "isActive": true
+  },
+  {
+    "slug": "wireless-video",
+    "name": "Wireless Video",
+    "description": "Wireless video transmission systems",
+    "type": "accessory",
+    "order": 26,
+    "isActive": true
+  },
+  {
+    "slug": "recorders",
+    "name": "Recorders",
+    "description": "External video recording devices",
+    "type": "accessory",
+    "order": 27,
+    "isActive": true
+  },
+  {
+    "slug": "follow-focus",
+    "name": "Follow Focus",
+    "description": "Manual and wireless follow focus systems",
+    "type": "accessory",
+    "order": 28,
+    "isActive": true
+  },
+  {
+    "slug": "matte-boxes",
+    "name": "Matte Boxes",
+    "description": "Matte boxes and lens shading systems",
+    "type": "accessory",
+    "order": 29,
+    "isActive": true
+  },
+  {
+    "slug": "filters",
+    "name": "Filters",
+    "description": "Optical and diffusion filters",
+    "type": "accessory",
+    "order": 30,
+    "isActive": true
+  },
+  {
+    "slug": "rigs-cages",
+    "name": "Rigs & Cages",
+    "description": "Camera rigs, cages and mounting systems",
+    "type": "accessory",
+    "order": 31,
+    "isActive": true
+  },
+  {
+    "slug": "tripods-heads",
+    "name": "Tripods & Heads",
+    "description": "Tripods, fluid heads and camera support",
+    "type": "accessory",
+    "order": 32,
+    "isActive": true
+  },
+  {
+    "slug": "stands-support",
+    "name": "Stands & Support",
+    "description": "Light stands, grip support and mounting",
+    "type": "accessory",
+    "order": 33,
+    "isActive": true
+  },
+  {
+    "slug": "sliders-dollies",
+    "name": "Sliders & Dollies",
+    "description": "Camera sliders and dolly systems",
+    "type": "accessory",
+    "order": 34,
+    "isActive": true
+  },
+  {
+    "slug": "cranes-jibs",
+    "name": "Cranes & Jibs",
+    "description": "Camera cranes and jib systems",
+    "type": "accessory",
+    "order": 35,
+    "isActive": true
+  },
+  {
+    "slug": "power",
+    "name": "Power",
+    "description": "Batteries, chargers and power distribution",
+    "type": "accessory",
+    "order": 36,
+    "isActive": true
+  },
+  {
+    "slug": "cables",
+    "name": "Cables",
+    "description": "Power, video and audio cables",
+    "type": "accessory",
+    "order": 37,
+    "isActive": true
+  },
+  {
+    "slug": "cases-bags",
+    "name": "Cases & Bags",
+    "description": "Protective cases and transport bags",
+    "type": "accessory",
+    "order": 38,
+    "isActive": true
+  },
+  {
+    "slug": "production-vehicles",
+    "name": "Production Vehicles",
+    "description": "Camera cars, tracking vehicles and production transport",
+    "type": "accessory",
+    "order": 39,
+    "isActive": true
+  }
+]
