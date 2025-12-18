@@ -58,7 +58,7 @@ export class StaffController {
   }
 
   @Get('admin/staff/me')
-  @Protected(Role.ADMIN, Role.SUPER_ADMIN)
+  @Protected()
   @SerializeResponse(FullStaffResponseDto)
   async getMe(@CurrentStaff() staff: StaffEntity): Promise<FullStaffResponseDto> {
     return this.staffService.getMe(staff);
