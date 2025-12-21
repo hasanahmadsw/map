@@ -28,6 +28,7 @@
     "seed:articles": "npm run build && cross-env NODE_ENV=development node dist/scripts/seeds/articles.js",
     "seed:equipment-brands": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/equipment-brands.ts",
     "seed:equipment-categories": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/equipment-categories.ts",
+    "seed:equipment": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/equipment.ts",
     "migration:generate": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:generate -d src/data-source.ts",
     "migration:create": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:create",
     "migration:run": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:run -d src/data-source.ts",

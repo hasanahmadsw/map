@@ -20,8 +20,9 @@ import { Client } from 'pg';
           username: configService.get('POSTGRES_USER'),
           password: configService.get('POSTGRES_PASSWORD'),
           database: configService.get('POSTGRES_DATABASE'),
+          // Include both dist and src paths to support both compiled and ts-node execution
+          // entities: isDev ? ['dist/**/*.entity{.ts,.js}', 'src/**/*.entity{.ts,.js}'] : ['dist/**/*.entity{.ts,.js}'],
           entities: ['dist/**/*.entity{.ts,.js}'],
-
           // Connection pooling configuration to reduce query overhead
           extra: {
             max: 20, // Maximum number of connections in the pool

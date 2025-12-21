@@ -80,11 +80,17 @@ export class PaginationService {
         : `${alias}.createdAt`;
 
     // 1) IDs page (with DISTINCT)
-    const idQ = qb
-      .clone()
+    // Clone and remove JOINs for ID query (JOINs cause duplicates and break pagination)
+    const idQ = qb.clone();
+    // Clear existing selections, ordering, and JOINs
+    (idQ as any).expressionMap.selects = [];
+    (idQ as any).expressionMap.orderBys = {};
+    (idQ as any).expressionMap.joinAttributes = [];
+
+    // Build the ID query without JOINs - only need IDs and ordering column
+    idQ
       .select(`${idCol}`, 'id')
       .addSelect(`${createdCol}`, 'created_at_for_order')
-      .distinct(true)
       .orderBy(createdCol, orderDirection)
       .addOrderBy(idCol, 'ASC')
       .skip(skip)
@@ -105,8 +111,10 @@ export class PaginationService {
     const ids = idsRaw.map((r) => r.id);
 
     // 3) fetch page entities fully
-    const dataRows = await qb
-      .clone()
+    const dataQb = qb.clone();
+    // Clear any existing ordering before applying new ordering
+    (dataQb as any).expressionMap.orderBys = {};
+    const dataRows = await dataQb
       .andWhereInIds(ids)
       .orderBy(createdCol, orderDirection)
       .addOrderBy(idCol, 'ASC')

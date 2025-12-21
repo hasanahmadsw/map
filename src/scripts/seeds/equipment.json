@@ -1,0 +1,362 @@
+[
+  {
+    "slug": "arri-alexa-35-super-35",
+    "name": "ARRI ALEXA Super 35",
+    "summary": "ARRI ALEXA 35 Super 35 cinema camera with 4.6K sensor and up to 120 fps.",
+    "description": "An industry-standard Super 35 digital cinema camera trusted by leading filmmakers worldwide. The ARRI ALEXA delivers exceptional dynamic range, rich color science and cinematic texture perfect for commercials, feature films, documentaries and branded content. Available for rental in the UAE and Gulf region, ideal for high-end productions seeking unbeatable image latitude and reliability in studio or on-location work.",
+    "categoryId": 1,
+    "brandId": 1,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 1,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "super35",
+      "maxResolution": "4.6K",
+      "maxFps": 120,
+      "mounts": ["PL"],
+      "media": "SSD"
+    }
+  },
+  {
+    "slug": "arri-alexa-mini-lf",
+    "name": "ARRI ALEXA Mini LF",
+    "summary": "Large-format ALEXA Mini LF with native 4.5K recording.",
+    "description": "The ARRI ALEXA Mini LF combines a large-format LF sensor with the compact, lightweight Mini body. Designed for premium productions requiring maximum cinematic quality, stunning highlight roll-off and powerful color depth. Perfect for feature films, luxury commercials, aerial work and car rigs. Available for rental across Dubai, Abu Dhabi and the GCC, offering ultimate image quality in a portable form factor.",
+    "categoryId": 1,
+    "brandId": 1,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 2,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "full_frame",
+      "maxResolution": "4.5K",
+      "mounts": ["PL"],
+      "media": "SSD"
+    }
+  },
+  {
+    "slug": "sony-venice-cinealta-6k",
+    "name": "Sony VENICE CineAlta 6K",
+    "summary": "Full-frame 6K CineAlta camera with 6K recording options.",
+    "description": "A flagship full-frame 6K cinema camera crafted for high-end filmmaking. Sony VENICE offers unmatched color depth, dual native ISO, stunning low-light performance and exceptional skin tones. Ideal for feature films, OTT streaming, automotive campaigns and cinematic documentaries in the UAE and Gulf. Perfect for projects demanding uncompromised creative control and Hollywood-level visuals.",
+    "categoryId": 1,
+    "brandId": 2,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 3,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "full_frame",
+      "maxResolution": "6K",
+      "maxFps": 120,
+      "mounts": ["PL"],
+      "media": "SSD"
+    }
+  },
+  {
+    "slug": "sony-pmw-f55-cinealta-4k",
+    "name": "Sony PMW-F55 CineAlta 4K",
+    "summary": "Super 35 global shutter camera with internal 4K recording.",
+    "description": "The Sony F55 CineAlta features a Super 35 global shutter sensor that delivers crisp motion rendering, vibrant color and internal 4K recording. A reliable workhorse for commercials, broadcast, documentaries and corporate production. Available for rental across the UAE and GCC, offering strong cinematic performance at excellent value for mid-to-large scale productions.",
+    "categoryId": 1,
+    "brandId": 2,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 4,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "super35",
+      "maxResolution": "4K",
+      "maxFps": 240,
+      "mounts": ["PL"],
+      "media": "SSD"
+    }
+  },
+  {
+    "slug": "sony-pmw-f5-cinealta",
+    "name": "Sony PMW-F5 CineAlta",
+    "summary": "Super 35 cinema camera with external 4K RAW.",
+    "description": "A versatile Super 35 digital cinema system known for flexibility, reliability and efficiency. The Sony F5 offers 4K RAW recording, excellent ergonomics and outstanding motion clarity. Trusted across broadcast, documentary, commercial and multi-camera production markets. A smart rental choice in the UAE and Gulf for filmmakers seeking cinematic output with strong mobility.",
+    "categoryId": 1,
+    "brandId": 2,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 5,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "super35",
+      "maxResolution": "4K",
+      "maxFps": 240,
+      "mounts": ["PL"],
+      "media": "SSD"
+    }
+  },
+  {
+    "slug": "sony-fx6",
+    "name": "Sony FX6",
+    "summary": "Full-frame 4K cinema camera up to 120 fps.",
+    "description": "A full-frame 4K cinema camera optimized for agility, mobility and low-light excellence. The Sony FX6 is ideal for events, run-and-gun work, documentaries, automotive shoots and corporate film. Compact, powerful and compatible with Sony E-mount lenses. Available for rental anywhere in the UAE and GCC for productions requiring cinematic quality with lightweight workflow.",
+    "categoryId": 1,
+    "brandId": 2,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 6,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "full_frame",
+      "maxResolution": "4K",
+      "maxFps": 120,
+      "mounts": ["E"],
+      "media": "CFexpress"
+    }
+  },
+  {
+    "slug": "sony-fx3",
+    "name": "Sony FX3",
+    "summary": "Compact full-frame cinema camera with 4K 120p.",
+    "description": "Compact full-frame cinema camera designed for handheld, gimbal and travel shooting. Sony FX3 delivers outstanding 4K image quality, strong dynamic range and excellent autofocus in a small form factor. Ideal for independent filmmaking, social content, music videos, mini-docs and commercial shoots across the UAE and Gulf region. Perfect balance of size and performance.",
+    "categoryId": 1,
+    "brandId": 2,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 7,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "full_frame",
+      "maxResolution": "4K",
+      "maxFps": 120,
+      "mounts": ["E"],
+      "media": "CFexpress"
+    }
+  },
+  {
+    "slug": "canon-eos-c300-mark-iii",
+    "name": "Canon EOS C300 Mark III",
+    "summary": "Super 35 4K cinema camera with Dual Gain Output.",
+    "description": "A highly advanced Super 35 cinema platform with 4K 120fps recording, Dual Gain Output and superb Canon color science. Excellent for narrative filmmaking, corporate film, commercials and broadcast work. Available for rental across Dubai, Abu Dhabi and the GCC, offering premium image quality and production-friendly workflow for medium to high-budget projects.",
+    "categoryId": 1,
+    "brandId": 4,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 8,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "super35",
+      "maxResolution": "4K",
+      "maxFps": 120,
+      "mounts": ["EF"],
+      "media": "CFexpress"
+    }
+  },
+  {
+    "slug": "canon-eos-c300-mark-ii",
+    "name": "Canon EOS C300 Mark II",
+    "summary": "Super 35 cinema platform with internal 4K recording.",
+    "description": "A proven Super 35 cinema camera with rich color depth, strong skin tone reproduction and robust internal 4K recording. Canon C300 Mark II remains one of the most trusted cameras for broadcast, digital cinema, documentaries and branded content. A cost-effective rental option in the UAE and Gulf for productions demanding reliability and cinematic tone.",
+    "categoryId": 1,
+    "brandId": 4,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 9,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "super35",
+      "maxResolution": "4K",
+      "maxFps": 60,
+      "mounts": ["EF"],
+      "media": "CFast2"
+    }
+  },
+  {
+    "slug": "red-dsmc2-helium-8k",
+    "name": "RED DSMC2 HELIUM 8K",
+    "summary": "8K Super 35 cinema system with extreme detail.",
+    "description": "A high-resolution 8K Super 35 powerhouse for premium cinematic imaging. RED HELIUM excels in detail, latitude, sharpness and VFX-ready resolution. Ideal for feature films, automotive campaigns, beauty, luxury brands and high-end commercial work. Available for rental across the UAE and GCC for productions targeting the global cinema standard.",
+    "categoryId": 1,
+    "brandId": 3,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 10,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "super35",
+      "maxResolution": "8K",
+      "maxFps": 60,
+      "mounts": ["PL"],
+      "media": "SSD"
+    }
+  },
+  {
+    "slug": "sony-rialto-extension-system-venice",
+    "name": "Sony Rialto Camera Extension System for Venice",
+    "summary": "Camera body extension system for Sony VENICE.",
+    "description": "The Rialto extension system allows VENICE users to separate the camera sensor block from the body, enabling ultra-flexible mounting in tight spaces such as vehicle interiors and cranes. Perfect for car commercials, action sequences and gimbals. Available for rental in Dubai, Abu Dhabi and across the Gulf for premium cinematic setups requiring maximum camera mobility.",
+    "categoryId": 6,
+    "brandId": 2,
+    "equipmentType": "accessory",
+    "isPublished": true,
+    "order": 11,
+    "specs": {
+      "v": 1,
+      "type": "accessory",
+      "notes": "Allows sensor block separation of Sony VENICE for high-mobility and compact mounting."
+    }
+  },
+  {
+    "slug": "gopro-hero-5-black",
+    "name": "GoPro HERO 5",
+    "summary": "Compact 4K action camera.",
+    "description": "A compact 4K action camera ideal for POV, sports, automotive, water and outdoor shooting. HERO 5 provides excellent stabilization, rugged build and simple operation. A strong rental choice in the UAE and GCC for secondary camera angles, crash rigs and specialty mounting situations in commercials and events.",
+    "categoryId": 4,
+    "brandId": 47,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 12,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "aps_c",
+      "maxResolution": "4K",
+      "maxFps": 120,
+      "mounts": ["MFT"],
+      "media": "SD"
+    }
+  },
+  {
+    "slug": "gopro-hero-7-black",
+    "name": "GoPro HERO 7",
+    "summary": "4K action camera with HyperSmooth.",
+    "description": "Ultra-stable 4K action camera with HyperSmooth stabilization. HERO 7 is perfect for handheld movement, vehicle rigs, sports and social content. An affordable rental option across the UAE and Gulf region for capturing dynamic angles and secondary cinematic perspectives.",
+    "categoryId": 4,
+    "brandId": 47,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 13,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "aps_c",
+      "maxResolution": "4K",
+      "maxFps": 240,
+      "mounts": ["MFT"],
+      "media": "SD"
+    }
+  },
+  {
+    "slug": "gopro-hero-9-black",
+    "name": "GoPro HERO 9",
+    "summary": "5K action camera with front screen.",
+    "description": "A 5K action camera with improved battery life, front display and strong low-light updates. HERO 9 is great for dynamic car rigs, outdoor shoots, documentaries and events. Available for rental across the UAE and GCC, ideal for creative cinematic angles at low cost.",
+    "categoryId": 4,
+    "brandId": 47,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 14,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "aps_c",
+      "maxResolution": "5K",
+      "maxFps": 60,
+      "mounts": ["MFT"],
+      "media": "SD"
+    }
+  },
+  {
+    "slug": "gopro-hero-11-black",
+    "name": "GoPro HERO 11",
+    "summary": "5.3K action camera.",
+    "description": "A powerful 5.3K action camera with larger sensor and advanced stabilization. HERO 11 delivers sharp, vibrant footage ideal for commercial, automotive, travel and sports production. A flexible rental solution across Dubai, Abu Dhabi and the Gulf for capturing unique angles alongside cinema cameras.",
+    "categoryId": 4,
+    "brandId": 47,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 15,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "aps_c",
+      "maxResolution": "5.3K",
+      "maxFps": 120,
+      "mounts": ["MFT"],
+      "media": "SD"
+    }
+  },
+  {
+    "slug": "gopro-hero-12-black",
+    "name": "GoPro HERO 12",
+    "summary": "5.3K action camera with enhanced battery.",
+    "description": "A premium 5.3K action camera with improved battery performance, 4K120 and new color profiles. HERO 12 is perfect for fast-paced creative production in challenging environments. A strong rental option in the UAE and GCC for supporting cinematic workflows with lightweight camera rigs.",
+    "categoryId": 4,
+    "brandId": 47,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 16,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "aps_c",
+      "maxResolution": "5.3K",
+      "maxFps": 120,
+      "mounts": ["MFT"],
+      "media": "SD"
+    }
+  },
+  {
+    "slug": "canon-eos-r",
+    "name": "Canon EOS R",
+    "summary": "Full-frame mirrorless RF camera.",
+    "description": "A full-frame RF mirrorless camera offering excellent color, strong autofocus and reliable 4K video. Canon EOS R is ideal for social content, travel film, corporate production and commercial photo/video. A cost-efficient rental solution across the UAE and Gulf, especially for hybrid productions that require both stills and motion.",
+    "categoryId": 3,
+    "brandId": 4,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "order": 17,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "full_frame",
+      "maxResolution": "4K",
+      "maxFps": 30,
+      "mounts": ["RF"],
+      "media": "SD"
+    }
+  },
+  {
+    "slug": "sony-a7s-iii",
+    "name": "Sony Alpha a7S III",
+    "summary": "Full-frame mirrorless camera with 4K 120p.",
+    "description": "A cinematic full-frame mirrorless system with outstanding low-light performance, 4K120 recording and professional codecs. Sony A7S III is a top choice for commercial film, events, music videos and documentary production. Available for rental across Dubai, Abu Dhabi and the Gulf — perfect balance of size, power and cinematic output.",
+    "categoryId": 3,
+    "brandId": 2,
+    "equipmentType": "camera",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 18,
+    "specs": {
+      "v": 1,
+      "type": "camera",
+      "sensor": "full_frame",
+      "maxResolution": "4K",
+      "maxFps": 120,
+      "mounts": ["E"],
+      "media": "CFexpress"
+    }
+  }
+]
