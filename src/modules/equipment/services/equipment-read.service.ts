@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 
 import { EquipmentItemEntity } from '../entities/equipment-item.entity';
+import { EquipmentCategoryEntity } from '../entities/equipment-category.entity';
+import { EquipmentBrandEntity } from '../entities/equipment-brand.entity';
 import { EquipmentResponseDto } from '../dtos/response/equipment-response.dto';
 import { EquipmentFilterDto } from '../dtos/query/equipment-filter.dto';
 import { PublicEquipmentFilterDto } from '../dtos/query/public-equipment-filter.dto';
@@ -99,6 +101,28 @@ export class EquipmentReadService extends BaseReadService<
     }
     if (filter.brandId !== undefined) {
       qb.andWhere('eq.brandId = :brandId', { brandId: filter.brandId });
+    }
+    if (filter.category) {
+      // Use subquery to avoid needing JOINs (which get cleared by pagination)
+      const categorySubQuery = qb.connection
+        .createQueryBuilder()
+        .select('cat.id')
+        .from(EquipmentCategoryEntity, 'cat')
+        .where('cat.slug = :categorySlug')
+        .getQuery();
+      qb.andWhere(`eq.categoryId IN (${categorySubQuery})`);
+      qb.setParameter('categorySlug', filter.category);
+    }
+    if (filter.brand) {
+      // Use subquery to avoid needing JOINs (which get cleared by pagination)
+      const brandSubQuery = qb.connection
+        .createQueryBuilder()
+        .select('br.id')
+        .from(EquipmentBrandEntity, 'br')
+        .where('br.slug = :brandSlug')
+        .getQuery();
+      qb.andWhere(`eq.brandId IN (${brandSubQuery})`);
+      qb.setParameter('brandSlug', filter.brand);
     }
     if (filter.equipmentType) {
       qb.andWhere('eq.equipmentType = :equipmentType', { equipmentType: filter.equipmentType });

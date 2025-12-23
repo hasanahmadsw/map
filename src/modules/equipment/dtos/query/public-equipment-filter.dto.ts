@@ -20,6 +20,14 @@ export class PublicEquipmentFilterDto extends PaginationDto {
 
   @IsOptional()
   @IsString()
+  category?: string;
+
+  @IsOptional()
+  @IsString()
+  brand?: string;
+
+  @IsOptional()
+  @IsString()
   equipmentType?: EquipmentType;
 
   @IsOptional()
