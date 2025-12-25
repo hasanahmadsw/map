@@ -24,14 +24,14 @@ import { Client } from 'pg';
           // entities: isDev ? ['dist/**/*.entity{.ts,.js}', 'src/**/*.entity{.ts,.js}'] : ['dist/**/*.entity{.ts,.js}'],
           entities: ['dist/**/*.entity{.ts,.js}'],
           // Connection pooling configuration to reduce query overhead
-          extra: {
-            max: 20, // Maximum number of connections in the pool
-            min: 5, // Minimum number of connections in the pool
-            idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
-            connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection cannot be established
-            // Enable statement timeout to prevent long-running queries
-            statement_timeout: 30000, // 30 seconds
-          },
+          // extra: {
+          //   max: 20, // Maximum number of connections in the pool
+          //   min: 5, // Minimum number of connections in the pool
+          //   idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+          //   connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection cannot be established
+          //   // Enable statement timeout to prevent long-running queries
+          //   statement_timeout: 30000, // 30 seconds
+          // },
 
           // ...(!isDev
           //   ? {
