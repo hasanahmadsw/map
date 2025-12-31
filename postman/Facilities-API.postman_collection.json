@@ -1,0 +1,574 @@
+{
+  "info": {
+    "_postman_id": "facilities-api-collection",
+    "name": "Facilities API",
+    "description": "API collection for Facilities management - Manage broadcast facilities (OB Van, Flight Cases, Studios, SNG) and their units with full CRUD operations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "map-backend-facilities"
+  },
+  "item": [
+    {
+      "name": "Facilities",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Facility",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"solutionId\": 2,\n  \"type\": \"FLIGHT_CASE\",\n  \"slug\": \"flight-cases\",\n  \"title\": \"Flight Cases\",\n  \"summary\": \"Professional broadcast flight cases equipped with full production infrastructure.\",\n  \"description\": \"Our broadcast flight cases are designed for rapid deployment and high reliability, housing complete production, switching, audio, replay, and monitoring systems in compact mobile units.\",\n  \"coverImage\": \"https://example.com/images/facilities/flight-cases.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facilities/flight-case-1.jpg\",\n      \"alt\": \"Flight Case Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities"]
+                },
+                "description": "Create a new facility (Super Admin, Admin, Author). Type must be one of: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER"
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Facilities",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities?page=1&limit=10&orderDirection=ASC&solutionId=2&type=FLIGHT_CASE&isPublished=true",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "solutionId",
+                      "value": "2",
+                      "description": "Filter by solution ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "FLIGHT_CASE",
+                      "description": "Filter by facility type: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "true",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in title, summary, description",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of facilities (Super Admin, Admin, Author). Supports filtering by solutionId, type, isPublished, search, and slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Facility by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility ID"
+                    }
+                  ]
+                },
+                "description": "Get facility by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Facility",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Flight Cases\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"coverImage\": \"https://example.com/images/facilities/flight-cases-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facilities/flight-case-2.jpg\",\n      \"alt\": \"Flight Case Exterior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility ID"
+                    }
+                  ]
+                },
+                "description": "Update facility (Super Admin, Admin, Author). Cannot update solutionId, type, or slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Facility",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility ID"
+                    }
+                  ]
+                },
+                "description": "Delete facility (Super Admin, Admin, Author). This will cascade delete all associated facility units."
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Facility",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility ID"
+                    }
+                  ]
+                },
+                "description": "Publish facility (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Facility",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facilities/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facilities", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish facility (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Facilities",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/published?page=1&limit=10&orderDirection=ASC&solutionId=2&solutionSlug=broadcast-solutions&type=FLIGHT_CASE",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["facilities", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "solutionId",
+                      "value": "2",
+                      "description": "Filter by solution ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "solutionSlug",
+                      "value": "broadcast-solutions",
+                      "description": "Filter by solution slug",
+                      "disabled": true
+                    },
+                    {
+                      "key": "type",
+                      "value": "FLIGHT_CASE",
+                      "description": "Filter by facility type: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of published facilities (public endpoint). Only returns published facilities."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Facility by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["facilities", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "flight-cases",
+                      "description": "Facility slug"
+                    }
+                  ]
+                },
+                "description": "Get published facility by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Facility Units",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Facility Unit",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"facilityId\": 1,\n  \"slug\": \"fc-001\",\n  \"title\": \"Flight Case FC-001\",\n  \"summary\": \"Compact production flight case with 4K switching capabilities.\",\n  \"description\": \"This flight case features a complete production setup including vision mixer, audio console, replay system, and monitoring infrastructure. Designed for rapid deployment in remote locations.\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 8,\n    \"audioChannels\": 32\n  },\n  \"coverImage\": \"https://example.com/images/facility-units/fc-001.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facility-units/fc-001-interior.jpg\",\n      \"alt\": \"FC-001 Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 4,\n      \"notes\": \"4K Full Frame\",\n      \"order\": 1\n    },\n    {\n      \"group\": \"AUDIO\",\n      \"title\": \"Yamaha QL5\",\n      \"qty\": 1,\n      \"notes\": \"32-channel mixer\",\n      \"order\": 2\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facility-units",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facility-units"]
+                },
+                "description": "Create a new facility unit (Super Admin, Admin, Author). Items group must be one of: CAMERAS, LENSES, AUDIO, LIGHTING, MONITORING, ACCESSORIES, OTHER"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Facility Unit by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facility-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facility-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility Unit ID"
+                    }
+                  ]
+                },
+                "description": "Get facility unit by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Facility Unit",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Flight Case FC-001\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6.5m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 10,\n    \"audioChannels\": 40\n  },\n  \"coverImage\": \"https://example.com/images/facility-units/fc-001-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facility-units/fc-001-updated-interior.jpg\",\n      \"alt\": \"FC-001 Updated Interior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 6,\n      \"notes\": \"4K Full Frame - Updated\",\n      \"order\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facility-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facility-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility Unit ID"
+                    }
+                  ]
+                },
+                "description": "Update facility unit (Super Admin, Admin, Author). Cannot update facilityId or slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Facility Unit",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facility-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facility-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility Unit ID"
+                    }
+                  ]
+                },
+                "description": "Delete facility unit (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Facility Unit",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facility-units/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facility-units", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility Unit ID"
+                    }
+                  ]
+                },
+                "description": "Publish facility unit (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Facility Unit",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/facility-units/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "facility-units", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Facility Unit ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish facility unit (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Facility Unit by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/facility-units/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["facility-units", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "fc-001",
+                      "description": "Facility Unit slug"
+                    }
+                  ]
+                },
+                "description": "Get published facility unit by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+

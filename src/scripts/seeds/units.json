@@ -1,0 +1,907 @@
+[
+  {
+    "facilityId": 2,
+    "slug": "ob-van-1",
+    "title": "OB Van 1",
+    "summary": "High-end OB Van with 12 camera chains, full vision mixing, audio, replay, and intercom systems.",
+    "description": "OB Van 1 is a flagship outside broadcast vehicle equipped for complex live productions. It supports multi-camera 4K workflows, advanced routing, professional audio mixing, instant replay, monitoring, intercom, and redundant power systems.",
+    "specs": {
+      "format": "HD / 4K",
+      "cameraChains": 12,
+      "visionMixer": "Hanabi HVS-490",
+      "routing": "64x64",
+      "audioMixer": "Midas M32",
+      "intercom": "RTS Adam",
+      "powerBackup": "APC UPS 40kV",
+      "useCases": ["Sports", "Live Events", "Broadcast Production"]
+    },
+    "isPublished": true,
+    "order": 1,
+    "items": [
+      {
+        "group": "Vision Mixing & Routing",
+        "title": "Hanabi HVS-490 Vision Mixer (40 in / 16 out)",
+        "qty": 1,
+        "order": 1
+      },
+      {
+        "group": "Vision Mixing & Routing",
+        "title": "Router MFR 64x64 with 4 Panels",
+        "qty": 1,
+        "order": 2
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley 86N WorldCam 4K SMPTE-Fiber Camera Full Chain (Tripod, Dolly, Viewfinders)",
+        "qty": 12,
+        "order": 3
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley Camera Control Unit",
+        "qty": 12,
+        "order": 4
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley OCP 400 Remote Control System",
+        "qty": 12,
+        "order": 5
+      },
+      {
+        "group": "Lenses",
+        "title": "Fujinon 22x Broadcast Lens with Full Servo Kit",
+        "qty": 8,
+        "order": 6
+      },
+      {
+        "group": "Lenses",
+        "title": "Canon HJ11x 4.3 with Servo Kit",
+        "qty": 4,
+        "order": 7
+      },
+      {
+        "group": "Camera Support",
+        "title": "Vinten 250 Tripod",
+        "qty": 9,
+        "order": 8
+      },
+      {
+        "group": "Recording & Replay",
+        "title": "Atomos Ninja Recorder",
+        "qty": 3,
+        "order": 9
+      },
+      {
+        "group": "Recording & Replay",
+        "title": "AJA Ki Pro Recorder",
+        "qty": 1,
+        "order": 10
+      },
+      {
+        "group": "Recording & Replay",
+        "title": "Blackmagic Recorder 4K",
+        "qty": 4,
+        "order": 11
+      },
+      {
+        "group": "Monitoring",
+        "title": "Tektronix Waveform Monitor",
+        "qty": 2,
+        "order": 12
+      },
+      {
+        "group": "Monitoring",
+        "title": "TV Logic 17-inch Broadcast Monitor",
+        "qty": 7,
+        "order": 13
+      },
+      {
+        "group": "Monitoring",
+        "title": "Wholer Quad Monitor",
+        "qty": 4,
+        "order": 14
+      },
+      {
+        "group": "Intercom",
+        "title": "RTS Adam Talkback System (64 Ports)",
+        "qty": 1,
+        "order": 15
+      },
+      {
+        "group": "Intercom",
+        "title": "RTS Panels",
+        "qty": 11,
+        "order": 16
+      },
+      {
+        "group": "Sync & Timing",
+        "title": "Harris 75x Frame Sync",
+        "qty": 8,
+        "order": 17
+      },
+      {
+        "group": "Control & Audio",
+        "title": "Aten KVM Controller",
+        "qty": 1,
+        "order": 18
+      },
+      {
+        "group": "RF & Wireless",
+        "title": "Ericsson RF Receiver",
+        "qty": 1,
+        "order": 19
+      },
+      {
+        "group": "Audio",
+        "title": "Midas M32 Audio Mixer (64 Channels)",
+        "qty": 1,
+        "order": 20
+      },
+      {
+        "group": "Audio",
+        "title": "Stage Boxes for Audio Mixer (16 in / 8 out)",
+        "qty": 2,
+        "order": 21
+      },
+      {
+        "group": "Audio",
+        "title": "Genelec Speakers",
+        "qty": 5,
+        "order": 22
+      },
+      {
+        "group": "Replay",
+        "title": "Instant Replay for Playback",
+        "qty": 1,
+        "order": 23
+      },
+      {
+        "group": "Monitoring",
+        "title": "Samsung Monitors for Multiview",
+        "qty": 8,
+        "order": 24
+      },
+      {
+        "group": "Power",
+        "title": "APC UPS System 40kV",
+        "qty": 1,
+        "order": 25
+      },
+      {
+        "group": "Cabling",
+        "title": "Fiber Cables 200m Drums",
+        "qty": 20,
+        "order": 26
+      }
+    ]
+  },
+  {
+    "facilityId": 1,
+    "slug": "flightcase-1",
+    "title": "FlightCase 1",
+    "summary": "Compact broadcast flight case with full production, switching, audio, and replay capabilities.",
+    "description": "FlightCase 1 is a self-contained broadcast production unit designed for fast setup and mobility. It includes camera control, switching, replay, audio mixing, monitoring, and intercom systems suitable for professional live production.",
+    "specs": {
+      "format": "HD / 4K Ready",
+      "mobility": "Portable Flight Case",
+      "useCases": ["Live Events", "Sports", "Broadcast Production"],
+      "power": "AC Powered",
+      "deployment": "Rapid Setup"
+    },
+
+    "isPublished": true,
+    "order": 1,
+    "items": [
+      {
+        "group": "Video Production",
+        "title": "K. FRAME Main Frame 32x20",
+        "qty": 1,
+        "order": 1
+      },
+      {
+        "group": "Video Production",
+        "title": "KARRERA 2ME Switcher Panel",
+        "qty": 1,
+        "order": 2
+      },
+      {
+        "group": "Cameras",
+        "title": "XCU ELITE TRIAX",
+        "qty": 6,
+        "order": 3
+      },
+      {
+        "group": "Cameras",
+        "title": "LDX80 Camera",
+        "qty": 6,
+        "order": 4
+      },
+      {
+        "group": "Cameras",
+        "title": "OCP400",
+        "qty": 6,
+        "order": 5
+      },
+      {
+        "group": "Routing & Control",
+        "title": "SL-3GHD32x32",
+        "qty": 1,
+        "order": 6
+      },
+      {
+        "group": "Routing & Control",
+        "title": "SL-16 XY-CP",
+        "qty": 1,
+        "order": 7
+      },
+      {
+        "group": "Routing & Control",
+        "title": "Glue",
+        "qty": 1,
+        "order": 8
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "iDDR T2 2 Channels Playout",
+        "qty": 1,
+        "order": 9
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "Title Box CG",
+        "qty": 1,
+        "order": 10
+      },
+      {
+        "group": "Lenses & Support",
+        "title": "HJ7.6 22x Lens Full Servo",
+        "qty": 4,
+        "order": 11
+      },
+      {
+        "group": "Lenses & Support",
+        "title": "HJ4.5 11x Wide Angle Lens",
+        "qty": 2,
+        "order": 12
+      },
+      {
+        "group": "Lenses & Support",
+        "title": "Tripod",
+        "qty": 6,
+        "order": 13
+      },
+      {
+        "group": "Recording & Monitoring",
+        "title": "Blackmagic Recorder",
+        "qty": 4,
+        "order": 14
+      },
+      {
+        "group": "Recording & Monitoring",
+        "title": "WVR 7020",
+        "qty": 1,
+        "order": 15
+      },
+      {
+        "group": "Monitoring",
+        "title": "Broadcast Monitor",
+        "qty": 3,
+        "order": 16
+      },
+      {
+        "group": "Monitoring",
+        "title": "Multiviewer Monitors",
+        "qty": 4,
+        "order": 17
+      },
+      {
+        "group": "Audio & Intercom",
+        "title": "DX200 Receiver with 2 Antennas and 10 Beltpack",
+        "qty": 1,
+        "order": 18
+      },
+      {
+        "group": "Audio & Intercom",
+        "title": "M32 Audio Mixer with Stage Box",
+        "qty": 1,
+        "order": 19
+      },
+      {
+        "group": "Networking & Audio",
+        "title": "Networked Digital Audio",
+        "qty": 1,
+        "order": 20
+      }
+    ]
+  },
+  {
+    "facilityId": 1,
+    "slug": "flightcase-2",
+    "title": "FlightCase 2",
+    "summary": "Mobile broadcast flight case with compact vision mixing, routing, audio, replay, and intercom systems.",
+    "description": "FlightCase 2 is a portable broadcast production unit designed for flexible deployments. It supports multi-camera workflows, vision switching, routing, audio mixing, replay, monitoring, and intercom in a compact flight case form factor.",
+    "specs": {
+      "format": "HD",
+      "visionMixers": ["FOR-A HVS-492WOU", "FOR-A HVS-490"],
+      "routing": "64x64",
+      "audioMixer": "Midas M32",
+      "intercom": "RTS Odin",
+      "useCases": ["Live Events", "Studio Backup", "Mobile Production"]
+    },
+    "isPublished": true,
+    "order": 2,
+    "items": [
+      {
+        "group": "Vision Mixing",
+        "title": "FOR-A Video Switcher 2ME HVS-492WOU",
+        "qty": 1,
+        "order": 1
+      },
+      {
+        "group": "Vision Mixing",
+        "title": "FOR-A Video Switcher 2ME HVS-490",
+        "qty": 1,
+        "order": 2
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley Focus Triax Base Unit (Fischer)",
+        "qty": 6,
+        "order": 3
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley Focus 70 1080i",
+        "qty": 6,
+        "order": 4
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley OCP400",
+        "qty": 6,
+        "order": 5
+      },
+      {
+        "group": "Routing",
+        "title": "64x64 Router MFR-64RUW with 4 Panels",
+        "qty": 1,
+        "order": 6
+      },
+      {
+        "group": "Routing",
+        "title": "Nevion Glue",
+        "qty": 1,
+        "order": 7
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "FOR-A Insight Video Server PC",
+        "qty": 1,
+        "order": 8
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "Title Box CG",
+        "qty": 1,
+        "order": 9
+      },
+      {
+        "group": "Lenses",
+        "title": "Fujinon XA17x7.6BRM Normal Lens (Full Servo)",
+        "qty": 5,
+        "order": 10
+      },
+      {
+        "group": "Lenses",
+        "title": "Canon J11Ax4 Wide Angle Lens (Full Servo)",
+        "qty": 1,
+        "order": 11
+      },
+      {
+        "group": "Camera Support",
+        "title": "Libec Tripod",
+        "qty": 5,
+        "order": 12
+      },
+      {
+        "group": "Recording",
+        "title": "Blackmagic Recorder",
+        "qty": 4,
+        "order": 13
+      },
+      {
+        "group": "Monitoring",
+        "title": "Tektronix WVR 7020",
+        "qty": 1,
+        "order": 14
+      },
+      {
+        "group": "Monitoring",
+        "title": "Sony Broadcast Monitor",
+        "qty": 2,
+        "order": 15
+      },
+      {
+        "group": "Monitoring",
+        "title": "Samsung Multiviewer Monitors",
+        "qty": 4,
+        "order": 16
+      },
+      {
+        "group": "Intercom",
+        "title": "RTS ODIN Intercom Talkback with 4 Panels",
+        "qty": 1,
+        "order": 17
+      },
+      {
+        "group": "Audio",
+        "title": "Midas M32 Audio Mixer with Stage Box",
+        "qty": 1,
+        "order": 18
+      },
+      {
+        "group": "Audio & Networking",
+        "title": "Networked Digital Audio",
+        "qty": 1,
+        "order": 19
+      }
+    ]
+  },
+  {
+    "facilityId": 1,
+    "slug": "flightcase-3",
+    "title": "FlightCase 3",
+    "summary": "Sony-based broadcast flight case with vision mixing, routing, audio, replay, intercom, and camera crane support.",
+    "description": "FlightCase 3 is a mobile broadcast production unit built around Sony broadcast systems. It supports multi-camera productions with vision mixing, routing, audio mixing, replay, monitoring, intercom, and a camera crane for advanced production setups.",
+    "specs": {
+      "format": "HD",
+      "visionMixer": "Sony MVS-3000A",
+      "cameraSystem": "Sony HSC100R",
+      "routing": "Nevion 32x32",
+      "audioMixer": "Midas M32",
+      "intercom": ["RTS Odin", "Clear-Com HME DX210"],
+      "cameraChains": 6,
+      "useCases": ["Live Events", "Studio Production", "Mobile Broadcast"]
+    },
+    "isPublished": true,
+    "order": 3,
+    "items": [
+      {
+        "group": "Vision Mixing",
+        "title": "Sony MVS-3000A Mixer Control Panel",
+        "qty": 1,
+        "order": 1
+      },
+      {
+        "group": "Vision Mixing",
+        "title": "Sony Mixer Panel",
+        "qty": 1,
+        "order": 2
+      },
+      {
+        "group": "Cameras",
+        "title": "Sony Camera Control Unit",
+        "qty": 6,
+        "order": 3
+      },
+      {
+        "group": "Cameras",
+        "title": "Sony Broadcast Camera HSC100R",
+        "qty": 6,
+        "order": 4
+      },
+      {
+        "group": "Cameras",
+        "title": "Sony RCP-1500",
+        "qty": 6,
+        "order": 5
+      },
+      {
+        "group": "Routing",
+        "title": "Nevion Video Router 32x32",
+        "qty": 1,
+        "order": 6
+      },
+      {
+        "group": "Routing",
+        "title": "Nevion Glue",
+        "qty": 1,
+        "order": 7
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "FOR-A Insight Video Server PC",
+        "qty": 1,
+        "order": 8
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "Title Box CG",
+        "qty": 1,
+        "order": 9
+      },
+      {
+        "group": "Lenses",
+        "title": "Fujinon XA17x7.6BRM Normal Lens (Full Servo)",
+        "qty": 5,
+        "order": 10
+      },
+      {
+        "group": "Lenses",
+        "title": "Canon J11Ax4 Wide Angle Lens (Full Servo)",
+        "qty": 1,
+        "order": 11
+      },
+      {
+        "group": "Camera Support",
+        "title": "Libec Tripod",
+        "qty": 5,
+        "order": 12
+      },
+      {
+        "group": "Camera Support",
+        "title": "Triangle Camera Crane 13m (4 Silver Boxes, 1 Black Box Head)",
+        "qty": 1,
+        "order": 13
+      },
+      {
+        "group": "Recording & Replay",
+        "title": "Blackmagic Recorder",
+        "qty": 4,
+        "order": 14
+      },
+      {
+        "group": "Monitoring",
+        "title": "Tektronix WVR 7020",
+        "qty": 1,
+        "order": 15
+      },
+      {
+        "group": "Monitoring",
+        "title": "Sony Broadcast Monitor",
+        "qty": 1,
+        "order": 16
+      },
+      {
+        "group": "Monitoring",
+        "title": "Samsung Multiviewer Monitors",
+        "qty": 4,
+        "order": 17
+      },
+      {
+        "group": "Intercom",
+        "title": "RTS ODIN Intercom Talkback with 4 Panels",
+        "qty": 1,
+        "order": 18
+      },
+      {
+        "group": "Audio",
+        "title": "Midas M32 Audio Mixer with Stage Box",
+        "qty": 1,
+        "order": 19
+      },
+      {
+        "group": "Audio & Networking",
+        "title": "Networked Digital Audio",
+        "qty": 1,
+        "order": 20
+      },
+      {
+        "group": "Intercom",
+        "title": "Clear-Com HME DX210 with 8 Beltpack",
+        "qty": 1,
+        "order": 21
+      }
+    ]
+  },
+  {
+    "facilityId": 1,
+    "slug": "flightcase-4",
+    "title": "FlightCase 4",
+    "summary": "Sony-based production flight case with 10 camera chains, FOR-A vision mixing, routing, audio, replay, and intercom.",
+    "description": "FlightCase 4 is a mobile broadcast production unit built around Sony HDC systems and FOR-A vision mixing. It supports multi-camera productions with routing, playout, audio mixing, replay, monitoring, and intercom infrastructure.",
+    "specs": {
+      "format": "HD",
+      "cameraChains": 10,
+      "visionMixer": "FOR-A HVS-2000 (2ME)",
+      "mixerPanel": "FOR-A HVS-3320 OU",
+      "cameraSystem": "Sony HDC-1500",
+      "routing": "32x32",
+      "audioMixer": "Midas M32",
+      "intercom": "RTS ZEUS-3",
+      "useCases": ["Live Events", "Mobile Broadcast", "Studio Production"]
+    },
+    "isPublished": true,
+    "order": 4,
+    "items": [
+      {
+        "group": "Vision Mixing",
+        "title": "FOR-A 2ME Vision Mixer (40 Inputs x 32 Outputs) HVS-2000",
+        "qty": 1,
+        "order": 1
+      },
+      {
+        "group": "Vision Mixing",
+        "title": "FOR-A Mixer Control Panel 3 M/E 32 Position (HVS-3320 OU)",
+        "qty": 1,
+        "order": 2
+      },
+      {
+        "group": "Cameras",
+        "title": "Sony HDCU-1500 Compact HD Camera Control Unit",
+        "qty": 10,
+        "order": 3
+      },
+      {
+        "group": "Cameras",
+        "title": "Sony HDC-1500 Multi Format HD Studio and Broadcast Camera",
+        "qty": 10,
+        "order": 4
+      },
+      {
+        "group": "Cameras",
+        "title": "Sony RCP-750 Remote Control Panel",
+        "qty": 10,
+        "order": 5
+      },
+      {
+        "group": "Routing",
+        "title": "Video Router 32x32 with Panels",
+        "qty": 1,
+        "order": 6
+      },
+      {
+        "group": "Routing",
+        "title": "SNELL Glues",
+        "qty": null,
+        "notes": "Quantity not specified (marked as 'xxx' in source list).",
+        "order": 7
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "FOR-A Insight Video Server PC",
+        "qty": 1,
+        "order": 8
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "Title Box CG",
+        "qty": 1,
+        "order": 9
+      },
+      {
+        "group": "Lenses",
+        "title": "Fujinon XA17x7.6BRM Normal Lens (Full Servo)",
+        "qty": 5,
+        "order": 10
+      },
+      {
+        "group": "Lenses",
+        "title": "Canon J11Ax4 Wide Angle Lens (Full Servo)",
+        "qty": 1,
+        "order": 11
+      },
+      {
+        "group": "Camera Support",
+        "title": "Vinten Osprey Elite Pedestals with Vector 70 Head",
+        "qty": 9,
+        "order": 12
+      },
+      {
+        "group": "Camera Support",
+        "title": "Triangle Camera Crane 13m (4 Silver Boxes, 1 Black Box Head)",
+        "qty": 1,
+        "order": 13
+      },
+      {
+        "group": "Recording & Replay",
+        "title": "Blackmagic Recorder",
+        "qty": 4,
+        "order": 14
+      },
+      {
+        "group": "Monitoring",
+        "title": "Tektronix WVR 7020",
+        "qty": 1,
+        "order": 15
+      },
+      {
+        "group": "Monitoring",
+        "title": "Sony Broadcast Monitor",
+        "qty": 1,
+        "order": 16
+      },
+      {
+        "group": "Monitoring",
+        "title": "Samsung Multiviewer Monitors",
+        "qty": 4,
+        "order": 17
+      },
+      {
+        "group": "Intercom",
+        "title": "RTS ZEUS-3 Intercom 32 Port Matrix",
+        "qty": 1,
+        "order": 18
+      },
+      {
+        "group": "Audio",
+        "title": "Midas M32 Audio Mixer with Stage Box",
+        "qty": 1,
+        "order": 19
+      },
+      {
+        "group": "Audio & Networking",
+        "title": "Networked Digital Audio",
+        "qty": 1,
+        "order": 20
+      },
+      {
+        "group": "Intercom",
+        "title": "Clear-Com HME DX210 with 8 Beltpack",
+        "qty": 1,
+        "order": 21
+      }
+    ]
+  },
+  {
+    "facilityId": 3,
+    "slug": "studio-1",
+    "title": "Studio 1",
+    "summary": "600 SQM broadcast-ready studio facility with full production, audio, intercom, and monitoring infrastructure.",
+    "description": "Studio 1 is a 600 SQM broadcast-ready studio facility equipped for professional live and recorded productions. It includes vision mixing, routing, camera chains, audio mixing, intercom, monitoring, wireless audio, and studio operational rooms.",
+    "specs": {
+      "areaSqm": 600,
+      "broadcastReady": true,
+      "features": ["Lighting Grid", "Basic Lighting", "Makeup Room", "Changing Room", "Guest Room", "Edit Room"],
+      "visionMixers": ["FOR-A HVS-492WOU", "FOR-A HVS-490"],
+      "routing": "64x64",
+      "audioMixer": "Midas M32",
+      "intercom": "RTS Odin",
+      "wirelessAudio": "Sennheiser EW500 G3",
+      "useCases": ["TV Production", "Live Shows", "Interviews", "Events Coverage"]
+    },
+    "isPublished": true,
+    "order": 1,
+    "items": [
+      {
+        "group": "Vision Mixing",
+        "title": "FOR-A Video Switcher 2ME HVS-492WOU",
+        "qty": 1,
+        "order": 1
+      },
+      {
+        "group": "Vision Mixing",
+        "title": "FOR-A Video Switcher 2ME HVS-490",
+        "qty": 1,
+        "order": 2
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley Focus Triax Base Unit (Fischer)",
+        "qty": 6,
+        "order": 3
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley Focus 70 1080i",
+        "qty": 6,
+        "order": 4
+      },
+      {
+        "group": "Cameras",
+        "title": "Grass Valley OCP400",
+        "qty": 6,
+        "order": 5
+      },
+      {
+        "group": "Routing",
+        "title": "64x64 Router MFR-64RUW with 4 Panels",
+        "qty": 1,
+        "order": 6
+      },
+      {
+        "group": "Routing",
+        "title": "Nevion Glue",
+        "qty": 1,
+        "order": 7
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "FOR-A Insight Video Server PC",
+        "qty": 1,
+        "order": 8
+      },
+      {
+        "group": "Playout & Graphics",
+        "title": "Title Box CG",
+        "qty": 1,
+        "order": 9
+      },
+      {
+        "group": "Lenses",
+        "title": "Fujinon XA17x7.6BRM Normal Lens (Full Servo)",
+        "qty": 5,
+        "order": 10
+      },
+      {
+        "group": "Lenses",
+        "title": "Canon J11Ax4 Wide Angle Lens (Full Servo)",
+        "qty": 1,
+        "order": 11
+      },
+      {
+        "group": "Camera Support",
+        "title": "Libec Tripod",
+        "qty": 5,
+        "order": 12
+      },
+      {
+        "group": "Camera Support",
+        "title": "Triangle Camera Crane 13m (4 Silver Boxes, 1 Black Box Head)",
+        "qty": 1,
+        "order": 13
+      },
+      {
+        "group": "Recording & Replay",
+        "title": "Blackmagic Recorder",
+        "qty": 4,
+        "order": 14
+      },
+      {
+        "group": "Monitoring",
+        "title": "Tektronix WVR 7020",
+        "qty": 1,
+        "order": 15
+      },
+      {
+        "group": "Monitoring",
+        "title": "Broadcast Monitor",
+        "qty": 1,
+        "order": 16
+      },
+      {
+        "group": "Monitoring",
+        "title": "Multiviewer Monitors",
+        "qty": 4,
+        "order": 17
+      },
+      {
+        "group": "Intercom",
+        "title": "RTS ODIN Intercom Talkback with 4 Panels",
+        "qty": 1,
+        "order": 18
+      },
+      {
+        "group": "Audio",
+        "title": "M32 Audio Mixer with Stage Box",
+        "qty": 1,
+        "order": 19
+      },
+      {
+        "group": "Wireless Audio",
+        "title": "Sennheiser EW500 G3 Neck Mic Receiver",
+        "qty": 5,
+        "order": 20
+      },
+      {
+        "group": "Wireless Audio",
+        "title": "Sennheiser EW500 G3 Neck Mic Transmitter",
+        "qty": 5,
+        "order": 21
+      },
+      {
+        "group": "Audio & Networking",
+        "title": "Networked Digital Audio",
+        "qty": 1,
+        "order": 22
+      },
+      {
+        "group": "Studio Tools",
+        "title": "Autoscript",
+        "qty": 2,
+        "order": 23
+      }
+    ]
+  }
+]

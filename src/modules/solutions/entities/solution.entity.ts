@@ -13,8 +13,6 @@ import { ProjectEntity } from '../../projects/entities/project.entity';
 
 @Entity('solutions')
 @Index('IDX_SOLUTION_SLUG', ['slug'], { unique: true })
-// Note: Advanced indexes (GIN for slug, composite published+featured, partial indexes)
-// are managed by migrations. See: 1735661763925-AddMissingSolutionIndexes.ts
 export class SolutionEntity {
   @PrimaryGeneratedColumn()
   id: number;

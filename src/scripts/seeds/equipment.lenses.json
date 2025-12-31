@@ -1,0 +1,386 @@
+[
+  {
+    "slug": "arri-signature-prime-125mm-t1-8",
+    "name": "ARRI Signature Prime 125mm T1.8 Lens",
+    "summary": "Large-format cinema prime lens with Signature look and fast T1.8 aperture.",
+    "description": "Rent the ARRI Signature Prime 125mm T1.8 in Dubai, Abu Dhabi and across the GCC for premium close-ups, portraits and cinematic compression. Designed for large-format cinema capture with the signature ARRI rendering—natural skin tones, smooth highlight roll-off and elegant bokeh. Signature Primes are natively LPL, commonly rented with PL solutions depending on your camera build and production requirements in the UAE.",
+    "categoryId": 8,
+    "brandId": 1,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 1,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 125, "max": 125 },
+      "aperture": { "minT": 1.8, "maxT": 1.8 },
+      "isZoom": false,
+      "weightG": 2300
+    }
+  },
+  {
+    "slug": "arri-signature-prime-75mm-t1-8",
+    "name": "ARRI Signature Prime 75mm T1.8 Lens",
+    "summary": "Large-format cinema prime lens, ideal for interviews and cinematic portraits.",
+    "description": "The ARRI Signature Prime 75mm T1.8 is a go-to rental lens in the UAE for interviews, fashion, and cinematic storytelling with beautiful separation and organic texture. Expect premium large-format coverage with refined contrast and smooth bokeh—perfect for commercials, luxury brands and high-end productions across Dubai and the GCC. Signature Primes are natively LPL, often configured to match professional PL-based cinema rigs.",
+    "categoryId": 8,
+    "brandId": 1,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 2,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 75, "max": 75 },
+      "aperture": { "minT": 1.8, "maxT": 1.8 },
+      "isZoom": false,
+      "weightG": 1900
+    }
+  },
+  {
+    "slug": "arri-signature-prime-47mm-t1-8",
+    "name": "ARRI Signature Prime 47mm T1.8 Lens",
+    "summary": "Large-format cinema prime lens with natural perspective and signature bokeh.",
+    "description": "Rent the ARRI Signature Prime 47mm T1.8 in the UAE for a clean, natural perspective that works beautifully for narrative scenes, lifestyle commercials, and automotive filmmaking. This focal length is a versatile centerpiece for large-format camera builds, delivering the Signature look—organic textures, flattering skin tones and cinematic depth—ideal for Dubai and GCC production environments.",
+    "categoryId": 8,
+    "brandId": 1,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 3,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 47, "max": 47 },
+      "aperture": { "minT": 1.8, "maxT": 1.8 },
+      "isZoom": false,
+      "weightG": 1800
+    }
+  },
+  {
+    "slug": "arri-signature-prime-35mm-t1-8",
+    "name": "ARRI Signature Prime 35mm T1.8 Lens",
+    "summary": "Wide large-format cinema prime for narrative, commercials and gimbal work.",
+    "description": "The ARRI Signature Prime 35mm T1.8 is a premium rental choice in Dubai and the GCC for cinematic wide shots with controlled distortion and a beautiful, natural fall-off. Ideal for commercials, interiors, and gimbal/Steadicam moves, delivering the signature ARRI rendering and consistent large-format performance for demanding UAE production schedules.",
+    "categoryId": 8,
+    "brandId": 1,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 4,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 35, "max": 35 },
+      "aperture": { "minT": 1.8, "maxT": 1.8 },
+      "isZoom": false,
+      "weightG": 1700
+    }
+  },
+  {
+    "slug": "arri-signature-prime-25mm-t1-8",
+    "name": "ARRI Signature Prime 25mm T1.8 Lens",
+    "summary": "Wide large-format cinema prime with fast T1.8 for cinematic depth.",
+    "description": "Rent the ARRI Signature Prime 25mm T1.8 in the UAE for dynamic wide framing with a premium cinematic look. Perfect for luxury commercials, hotel and real-estate content, and wide interior scenes across Dubai and Abu Dhabi. The Signature Prime look stays organic and flattering—great for high-end productions needing large-format coverage and consistent performance on set.",
+    "categoryId": 8,
+    "brandId": 1,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 5,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 25, "max": 25 },
+      "aperture": { "minT": 1.8, "maxT": 1.8 },
+      "isZoom": false,
+      "weightG": 1900
+    }
+  },
+  {
+    "slug": "arri-signature-prime-18mm-t1-8",
+    "name": "ARRI Signature Prime 18mm T1.8 Lens",
+    "summary": "Ultra-wide large-format cinema prime, ideal for interiors and dramatic wides.",
+    "description": "The ARRI Signature Prime 18mm T1.8 is a top-tier UAE rental lens for expansive interiors, architectural filmmaking, and dramatic wide shots that still feel natural and cinematic. Great for Dubai location work, car commercials, and premium brand films where large-format coverage, controlled distortion, and signature bokeh are essential for a polished final look.",
+    "categoryId": 8,
+    "brandId": 1,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 6,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 18, "max": 18 },
+      "aperture": { "minT": 1.8, "maxT": 1.8 },
+      "isZoom": false,
+      "weightG": 2000
+    }
+  },
+
+  {
+    "slug": "zeiss-super-speed-85mm-t1-3",
+    "name": "ZEISS Super Speed 85mm Lens",
+    "summary": "Classic fast Super 35 prime with T1.3 speed for low-light and portrait work.",
+    "description": "Rent the ZEISS Super Speed 85mm in Dubai and the GCC for a classic cinema character with a very fast T1.3 aperture—ideal for portraits, interviews, and low-light shooting. Loved for its vintage-inspired rendering, smooth fall-off and cinematic separation. A strong match for Super 35 camera builds used in commercials, documentary and branded content across the UAE.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 7,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 85, "max": 85 },
+      "aperture": { "minT": 1.3, "maxT": 1.3 },
+      "isZoom": false,
+      "weightG": 1400
+    }
+  },
+  {
+    "slug": "zeiss-super-speed-50mm-t1-3",
+    "name": "ZEISS Super Speed 50mm Lens",
+    "summary": "Fast Super 35 prime, the classic 'normal' focal length with T1.3.",
+    "description": "The ZEISS Super Speed 50mm is a UAE rental favorite for natural perspective, narrative work and commercial production where you want a fast T1.3 lens with classic cinema character. Great for handheld and tight setups, delivering strong subject separation and a pleasing, organic image—perfect for fast-paced shoots in Dubai, Abu Dhabi and across the Gulf.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 8,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 50, "max": 50 },
+      "aperture": { "minT": 1.3, "maxT": 1.3 },
+      "isZoom": false,
+      "weightG": 1100
+    }
+  },
+  {
+    "slug": "zeiss-super-speed-35mm-t1-3",
+    "name": "ZEISS Super Speed 35mm Lens",
+    "summary": "Wide fast Super 35 prime with T1.3 for gimbal, interiors and documentary.",
+    "description": "Rent the ZEISS Super Speed 35mm in the UAE for wide storytelling with a fast T1.3 aperture—ideal for interiors, gimbal movement and documentary filmmaking. Known for its cinematic rendering and practical speed in low-light environments. A great option for productions across Dubai and the GCC that want a classic lens feel with professional PL workflow.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 9,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 35, "max": 35 },
+      "aperture": { "minT": 1.3, "maxT": 1.3 },
+      "isZoom": false,
+      "weightG": 790
+    }
+  },
+  {
+    "slug": "zeiss-super-speed-25mm-t1-3",
+    "name": "ZEISS Super Speed 25mm Lens",
+    "summary": "Fast wide Super 35 prime with T1.3 for commercial and cinematic wides.",
+    "description": "The ZEISS Super Speed 25mm is a powerful UAE rental lens for energetic wide framing while keeping a fast T1.3 aperture—great for commercials, interiors, and moving camera shots. Ideal for production teams in Dubai and the Gulf who need low-light capability and a classic cinema character in a PL-mounted prime.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 10,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 25, "max": 25 },
+      "aperture": { "minT": 1.3, "maxT": 1.3 },
+      "isZoom": false,
+      "weightG": 910
+    }
+  },
+  {
+    "slug": "zeiss-super-speed-18mm-t1-3",
+    "name": "ZEISS Super Speed 18mm Lens",
+    "summary": "Ultra-wide fast Super 35 prime with T1.3 for interiors and dramatic shots.",
+    "description": "Rent the ZEISS Super Speed 18mm in Dubai and across the GCC for dramatic wide shots with a fast T1.3 aperture—perfect for tight interiors, automotive interiors, and dynamic camera movement. A classic PL prime delivering strong low-light performance and a cinematic look suited for UAE production conditions and fast schedules.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 11,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 18, "max": 18 },
+      "aperture": { "minT": 1.3, "maxT": 1.3 },
+      "isZoom": false,
+      "weightG": 1330
+    }
+  },
+
+  {
+    "slug": "zeiss-supreme-prime-135mm-t1-5",
+    "name": "ZEISS Supreme Lens 135mm T1.5/114mm",
+    "summary": "Full-frame cinema prime with T1.5 speed, 114mm front diameter class.",
+    "description": "Rent the ZEISS Supreme Prime 135mm T1.5 in the UAE for premium full-frame close-ups, beauty work, fashion and luxury commercials. Designed for consistent color, minimal breathing and a refined cinematic look—ideal for high-end productions in Dubai, Abu Dhabi and across the GCC. Perfect for controlled compression, elegant bokeh and professional PL cinema workflows.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "isFeatured": true,
+    "order": 12,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 135, "max": 135 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 2270
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-100mm-t1-5",
+    "name": "ZEISS Supreme Lens 100mm T1.5/95mm",
+    "summary": "Full-frame cinema prime for portraits and product shots with T1.5 speed.",
+    "description": "The ZEISS Supreme Prime 100mm T1.5 is a premium UAE rental lens for portrait-style framing, product shots, automotive details and cinematic close-ups. Built for modern full-frame cinema capture with consistent color and clean focus behavior—ideal for commercials and high-end branded films across Dubai and the Gulf region.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 13,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 100, "max": 100 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1700
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-85mm-t1-5",
+    "name": "ZEISS Supreme Lens 85mm T1.5/95mm",
+    "summary": "Full-frame cinema portrait prime with fast T1.5 aperture.",
+    "description": "Rent the ZEISS Supreme Prime 85mm T1.5 in Dubai and the GCC for beautiful portraits, interviews and premium commercial cinematography. This lens offers a modern, clean cinematic look with consistent rendering, minimal breathing and professional mechanics—ideal for production teams in the UAE seeking full-frame performance and reliable PL workflows.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 14,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 85, "max": 85 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1420
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-50mm-t1-5",
+    "name": "ZEISS Supreme Lens 50mm T1.5/95mm",
+    "summary": "Modern full-frame cinema 'normal' prime with T1.5 speed.",
+    "description": "The ZEISS Supreme Prime 50mm T1.5 is a versatile UAE rental lens delivering a modern cinematic image for narrative, commercials, corporate films and branded content. With full-frame coverage and a fast T1.5 aperture, it performs exceptionally on UAE sets—perfect for Dubai location shoots and studio production across the Gulf.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 15,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 50, "max": 50 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1220
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-35mm-t1-5",
+    "name": "ZEISS Supreme Lens 35mm T1.5/95mm",
+    "summary": "Full-frame wide prime for cinema and commercial production, T1.5.",
+    "description": "Rent the ZEISS Supreme Prime 35mm T1.5 in the UAE for wide cinematic storytelling with a fast aperture and full-frame coverage. Ideal for gimbal movement, interiors, and commercial filmmaking in Dubai and Abu Dhabi—delivering consistent color, modern sharpness and controlled fall-off for high-end Gulf productions.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 16,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 35, "max": 35 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1400
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-29mm-t1-5",
+    "name": "ZEISS Supreme Lens 29mm T1.5/95mm",
+    "summary": "Full-frame wide prime with T1.5 for premium commercials and narrative work.",
+    "description": "The ZEISS Supreme Prime 29mm T1.5 is a premium UAE rental lens for wide framing with a cinematic full-frame look. Excellent for commercials, lifestyle films, and high-end branded content across Dubai and the GCC. Fast T1.5 aperture supports low-light setups while keeping a clean modern image and professional PL workflow on set.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 17,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 29, "max": 29 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1610
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-25mm-t1-5",
+    "name": "ZEISS Supreme Lens 25mm T1.5/95mm",
+    "summary": "Full-frame wide prime with T1.5, ideal for interiors and dynamic wides.",
+    "description": "Rent the ZEISS Supreme Prime 25mm T1.5 in Dubai and across the Gulf for crisp, modern wide shots with full-frame coverage. Great for interiors, architectural work, automotive campaigns and high-end commercials. The fast T1.5 aperture helps in low-light locations while maintaining consistent rendering and production-ready mechanics for UAE shoots.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 18,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 25, "max": 25 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1420
+    }
+  },
+  {
+    "slug": "zeiss-supreme-prime-21mm-t1-5",
+    "name": "ZEISS Supreme Lens 21mm T1.5/95mm",
+    "summary": "Ultra-wide full-frame cinema prime with fast T1.5 aperture.",
+    "description": "The ZEISS Supreme Prime 21mm T1.5 is an excellent UAE rental choice for dramatic wides, interiors and dynamic movement while keeping a modern, clean full-frame look. Ideal for commercials, travel films and high-end branded content across Dubai, Abu Dhabi and the GCC—fast T1.5 aperture supports night shoots and controlled low-light setups.",
+    "categoryId": 8,
+    "brandId": 5,
+    "equipmentType": "lens",
+    "isPublished": true,
+    "order": 19,
+    "specs": {
+      "v": 1,
+      "type": "lens",
+      "mount": "PL",
+      "focalLengthMm": { "min": 21, "max": 21 },
+      "aperture": { "minT": 1.5, "maxT": 1.5 },
+      "isZoom": false,
+      "weightG": 1610
+    }
+  }
+]

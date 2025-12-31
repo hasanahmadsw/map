@@ -1,0 +1,32 @@
+[
+  {
+    "solutionId": 2,
+    "type": "FLIGHT_CASE",
+    "slug": "flight-cases",
+    "title": "Flight Cases",
+    "summary": "Professional broadcast flight cases equipped with full production infrastructure.",
+    "description": "Our broadcast flight cases are designed for rapid deployment and high reliability, housing complete production, switching, audio, replay, and monitoring systems in compact mobile units.",
+    "isPublished": true,
+    "order": 1
+  },
+  {
+    "solutionId": 2,
+    "type": "OBVAN",
+    "slug": "ob-van",
+    "title": "OB Van",
+    "summary": "Fully equipped Outside Broadcast Van for large scale live productions.",
+    "description": "Our OB Van is a high-capacity mobile broadcast unit designed for professional live production, sports, and major events. It includes full camera chains, vision mixing, routing, audio, intercom, replay, monitoring, and power infrastructure.",
+    "isPublished": true,
+    "order": 2
+  },
+  {
+    "solutionId": 2,
+    "type": "STUDIO",
+    "slug": "studios",
+    "title": "Studios",
+    "summary": "Broadcast-ready studio facilities for professional productions.",
+    "description": "Our studios are built for broadcast and production workflows, providing controlled environments with lighting infrastructure, production rooms, and flexible spaces for shows, interviews, and events coverage.",
+    "isPublished": true,
+    "order": 3
+  }
+]

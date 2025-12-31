@@ -43,19 +43,8 @@ async function bootstrap() {
     const categoryRepository = queryRunner.manager.getRepository(EquipmentCategoryEntity);
     const brandRepository = queryRunner.manager.getRepository(EquipmentBrandEntity);
 
-    // Check if any equipment already exist
-    const existingEquipment = await equipmentRepository.count();
-
-    if (existingEquipment > 0) {
-      console.error('❌ Equipment items already exist in the database. Seeding aborted.');
-      await queryRunner.rollbackTransaction();
-      await queryRunner.release();
-      await app.close();
-      return;
-    }
-
     // Read equipment.json file
-    const equipmentJsonPath = path.join(process.cwd(), 'src/scripts/seeds/equipment.json');
+    const equipmentJsonPath = path.join(process.cwd(), 'src/scripts/seeds/equipment.lenses.json');
     const equipmentJsonContent = fs.readFileSync(equipmentJsonPath, 'utf-8');
     const equipmentData: EquipmentJsonData[] = JSON.parse(equipmentJsonContent);
 
