@@ -89,6 +89,7 @@ export class CreateFacilitiesTables1767193855742 implements MigrationInterface {
         cover_image VARCHAR(500),
         gallery JSONB,
         is_published BOOLEAN NOT NULL DEFAULT false,
+        view_count INTEGER NOT NULL DEFAULT 0,
         "order" INTEGER NOT NULL DEFAULT 0,
         items JSONB,
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -20,6 +20,7 @@ export class FacilityUnitResponseDto {
   coverImage?: string;
   gallery?: any;
   isPublished: boolean;
+  viewCount: number;
   order: number;
   items?: FacilityUnitItemResponseDto[];
   createdAt: Date;
@@ -37,6 +38,7 @@ export class FacilityUnitResponseDto {
     dto.coverImage = e.coverImage ?? undefined;
     dto.gallery = e.gallery ?? undefined;
     dto.isPublished = e.isPublished;
+    dto.viewCount = e.viewCount;
     dto.order = e.order;
 
     // Map items array from JSONB column

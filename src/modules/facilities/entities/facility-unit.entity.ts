@@ -48,6 +48,9 @@ export class FacilityUnitEntity {
   @Column({ name: 'is_published', default: false })
   isPublished: boolean;
 
+  @Column({ name: 'view_count', default: 0 })
+  viewCount: number;
+
   @Column({ type: 'int', default: 0 })
   order: number;
 
