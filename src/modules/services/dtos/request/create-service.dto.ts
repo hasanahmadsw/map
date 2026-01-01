@@ -8,10 +8,11 @@ import {
   Min,
   IsArray,
   ValidateNested,
-  IsInt,
+  IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateSubServiceDto } from './create-sub-service.dto';
+import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
 
 export class CreateServiceDto {
   @IsString()
@@ -65,8 +66,7 @@ export class CreateServiceDto {
   @Min(0)
   order?: number;
 
-  @IsArray()
-  @IsInt({ each: true })
+  @IsEnum(SolutionKey)
   @IsOptional()
-  solutionIds?: number[];
+  solutionKey?: SolutionKey;
 }

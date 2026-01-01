@@ -1,0 +1,338 @@
+{
+  "info": {
+    "_postman_id": "broadcast-api-collection",
+    "name": "Broadcast API",
+    "description": "API collection for Broadcast Units management - Manage broadcast units (OB Van, Flight Cases, SNG, Internet Broadcast) with full CRUD operations. Units are categorized by type.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "map-backend-broadcast"
+  },
+  "item": [
+    {
+      "name": "Broadcast Units",
+      "item": [
+        {
+          "name": "Admin",
+          "item": [
+            {
+              "name": "Create Broadcast Unit",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"FLIGHT_CASE\",\n  \"slug\": \"bc-001\",\n  \"title\": \"Broadcast Unit BC-001\",\n  \"summary\": \"Compact production broadcast unit with 4K switching capabilities.\",\n  \"description\": \"This broadcast unit features a complete production setup including vision mixer, audio console, replay system, and monitoring infrastructure. Designed for rapid deployment in remote locations.\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 8,\n    \"audioChannels\": 32\n  },\n  \"coverImage\": \"https://example.com/images/broadcast-units/bc-001.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/broadcast-units/bc-001-interior.jpg\",\n      \"alt\": \"BC-001 Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 4,\n      \"notes\": \"4K Full Frame\",\n      \"order\": 1\n    },\n    {\n      \"group\": \"AUDIO\",\n      \"title\": \"Yamaha QL5\",\n      \"qty\": 1,\n      \"notes\": \"32-channel mixer\",\n      \"order\": 2\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units"]
+                },
+                "description": "Create a new broadcast unit (Super Admin, Admin, Author). Type must be one of: OBVAN, FLIGHT_CASE, SNG, INTERNET_BROADCAST, OTHER. Items group must be one of the BroadcastUnitItemGroup enum values."
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Broadcast Units",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "type",
+                      "value": "",
+                      "description": "Filter by broadcast type: OBVAN, FLIGHT_CASE, SNG, INTERNET_BROADCAST, OTHER",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in title, summary, description",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of broadcast units (Super Admin, Admin, Author). Supports filtering by type, isPublished, search, and slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Broadcast Unit by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Broadcast Unit ID"
+                    }
+                  ]
+                },
+                "description": "Get broadcast unit by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Broadcast Unit",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Updated Broadcast Unit BC-001\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6.5m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 10,\n    \"audioChannels\": 40\n  },\n  \"coverImage\": \"https://example.com/images/broadcast-units/bc-001-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/broadcast-units/bc-001-updated-interior.jpg\",\n      \"alt\": \"BC-001 Updated Interior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 6,\n      \"notes\": \"4K Full Frame - Updated\",\n      \"order\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Broadcast Unit ID"
+                    }
+                  ]
+                },
+                "description": "Update broadcast unit (Super Admin, Admin, Author). Cannot update type or slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Broadcast Unit",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Broadcast Unit ID"
+                    }
+                  ]
+                },
+                "description": "Delete broadcast unit (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Publish Broadcast Unit",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id/publish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units", ":id", "publish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Broadcast Unit ID"
+                    }
+                  ]
+                },
+                "description": "Publish broadcast unit (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Unpublish Broadcast Unit",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id/unpublish",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units", ":id", "unpublish"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Broadcast Unit ID"
+                    }
+                  ]
+                },
+                "description": "Unpublish broadcast unit (Super Admin, Admin, Author)"
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Public",
+          "item": [
+            {
+              "name": "Get Published Broadcast Units",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/broadcast-units/published?page=1&limit=10&orderDirection=ASC",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["broadcast-units", "published"],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "type",
+                      "value": "",
+                      "description": "Filter by broadcast type: OBVAN, FLIGHT_CASE, SNG, INTERNET_BROADCAST, OTHER",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "description": "Get paginated list of published broadcast units (public endpoint). Only returns published units. Supports filtering by type."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Broadcast Unit by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/broadcast-units/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["broadcast-units", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "bc-001",
+                      "description": "Broadcast Unit slug"
+                    }
+                  ]
+                },
+                "description": "Get published broadcast unit by slug (public endpoint)"
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

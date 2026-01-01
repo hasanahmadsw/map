@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, In, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
 import { ServiceEntity } from '../entities/service.entity';
-import { SolutionEntity } from '../../solutions/entities/solution.entity';
 import { CreateServiceDto } from '../dtos/request/create-service.dto';
 import { UpdateServiceDto } from '../dtos/request/update-service.dto';
 
@@ -30,7 +29,7 @@ export class ServicesCrudService extends BaseCrudService<ServiceEntity, CreateSe
   }
 
   protected createEntityPayload(dto: CreateServiceDto): Partial<ServiceEntity> {
-    const { name, description, shortDescription, meta, subServices, solutionIds, ...rest } = dto;
+    const { name, description, shortDescription, meta, subServices, solutionKey, ...rest } = dto;
 
     return {
       slug: rest.slug,
@@ -45,36 +44,12 @@ export class ServicesCrudService extends BaseCrudService<ServiceEntity, CreateSe
       shortDescription: shortDescription ?? null,
       meta: meta ?? null,
       subServices: subServices ?? null,
+      solutionKey: solutionKey ?? null,
     };
   }
 
   protected updateEntityPayload(entity: ServiceEntity, dto: UpdateServiceDto): void {
-    const { solutionIds, ...serviceData } = dto;
-    Object.assign(entity, serviceData);
-  }
-
-  protected async attachRelationsOnCreate(
-    entity: ServiceEntity,
-    dto: CreateServiceDto,
-    em: EntityManager,
-  ): Promise<void> {
-    if (dto.solutionIds && dto.solutionIds.length > 0) {
-      const solutions = await em.getRepository(SolutionEntity).findBy({ id: In(dto.solutionIds) });
-      entity.solutions = solutions;
-      await em.getRepository(ServiceEntity).save(entity);
-    }
-  }
-
-  protected async syncRelationsOnUpdate(
-    entity: ServiceEntity,
-    dto: UpdateServiceDto,
-    em: EntityManager,
-  ): Promise<void> {
-    if (dto.solutionIds !== undefined) {
-      const solutions = await em.getRepository(SolutionEntity).findBy({ id: In(dto.solutionIds) });
-      entity.solutions = solutions;
-      await em.getRepository(ServiceEntity).save(entity);
-    }
+    Object.assign(entity, dto);
   }
 
   async delete(id: ServiceEntity['id']): Promise<void> {
@@ -82,13 +57,6 @@ export class ServicesCrudService extends BaseCrudService<ServiceEntity, CreateSe
     await findByIdOrThrow(this.repo, id, { message: this.notFoundMessage() });
 
     // Remove ManyToMany relationships before deletion
-    // Delete from solution_services junction table
-    await this.junctionSync.sync(id, [], {
-      table: 'solution_services',
-      leftKey: 'service_id',
-      rightKey: 'solution_id',
-    });
-
     // Delete from project_services junction table
     await this.junctionSync.sync(id, [], {
       table: 'project_services',

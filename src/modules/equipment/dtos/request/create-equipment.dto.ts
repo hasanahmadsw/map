@@ -47,11 +47,6 @@ export class CreateEquipmentDto {
   @IsBoolean()
   isFeatured?: boolean;
 
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  order?: number;
-
   // Media paths
   @IsOptional()
   @IsString()

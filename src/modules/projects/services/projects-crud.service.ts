@@ -4,7 +4,6 @@ import { DataSource, EntityManager, In, Repository } from 'typeorm';
 
 import { ProjectEntity } from '../entities/project.entity';
 import { ServiceEntity } from '../../services/entities/service.entity';
-import { SolutionEntity } from '../../solutions/entities/solution.entity';
 import { CreateProjectDto } from '../dtos/request/create-project.dto';
 import { UpdateProjectDto } from '../dtos/request/update-project.dto';
 
@@ -31,19 +30,8 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
   }
 
   protected createEntityPayload(dto: CreateProjectDto): Partial<ProjectEntity> {
-    const {
-      name,
-      description,
-      shortDescription,
-      meta,
-      challenges,
-      results,
-      serviceIds,
-      solutionIds,
-      startDate,
-      endDate,
-      ...rest
-    } = dto;
+    const { name, description, shortDescription, meta, challenges, results, serviceIds, startDate, endDate, ...rest } =
+      dto;
 
     return {
       slug: rest.slug,
@@ -69,7 +57,7 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
   }
 
   protected updateEntityPayload(entity: ProjectEntity, dto: UpdateProjectDto): void {
-    const { serviceIds, solutionIds, startDate, endDate, ...projectData } = dto;
+    const { serviceIds, startDate, endDate, ...projectData } = dto;
 
     // Handle date fields
     if (startDate !== undefined) {
@@ -107,27 +95,6 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
         em,
       );
     }
-
-    // Associate solutions if provided
-    if (dto.solutionIds && dto.solutionIds.length > 0) {
-      const solutions = await em.getRepository(SolutionEntity).findBy({ id: In(dto.solutionIds) });
-      if (solutions.length !== dto.solutionIds.length) {
-        const foundIds = solutions.map((s) => s.id);
-        const missingIds = dto.solutionIds.filter((id) => !foundIds.includes(id));
-        throw new BadRequestException(`Solutions with IDs ${missingIds.join(', ')} not found`);
-      }
-
-      await this.junctionSync.sync(
-        entity.id,
-        dto.solutionIds,
-        {
-          table: 'solution_projects',
-          leftKey: 'project_id',
-          rightKey: 'solution_id',
-        },
-        em,
-      );
-    }
   }
 
   protected async syncRelationsOnUpdate(
@@ -153,29 +120,6 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
           table: 'project_services',
           leftKey: 'project_id',
           rightKey: 'service_id',
-        },
-        em,
-      );
-    }
-
-    // Handle solution associations
-    if (dto.solutionIds !== undefined) {
-      if (dto.solutionIds.length > 0) {
-        const solutions = await em.getRepository(SolutionEntity).findBy({ id: In(dto.solutionIds) });
-        if (solutions.length !== dto.solutionIds.length) {
-          const foundIds = solutions.map((s) => s.id);
-          const missingIds = dto.solutionIds.filter((id) => !foundIds.includes(id));
-          throw new BadRequestException(`Solutions with IDs ${missingIds.join(', ')} not found`);
-        }
-      }
-
-      await this.junctionSync.sync(
-        entity.id,
-        dto.solutionIds,
-        {
-          table: 'solution_projects',
-          leftKey: 'project_id',
-          rightKey: 'solution_id',
         },
         em,
       );

@@ -45,16 +45,14 @@ export class ServicesReadService extends BaseReadService<
   }
 
   protected shouldUseSafePagination(dto: ServiceFilterDto | PublicServiceFilterDto): boolean {
-    // Always use safe pagination when we have JOINs (solutions) to avoid duplicates
-    return true;
+    // No longer need safe pagination since we removed solution joins
+    // Keep it false unless we have other joins (like projects)
+    return false;
   }
 
   async getPublished(dto: PublicServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
     const qb = this.createPublicQB();
     qb.andWhere(`${qb.alias}.isPublished = :isPublished`, { isPublished: true });
-
-    // Join solutions for data loading (not for filtering - we use EXISTS subquery)
-    qb.leftJoinAndSelect('service.solutions', 'solutions');
 
     this.applyPublicFilters(qb, dto);
     this.applyDefaultOrdering(qb);
@@ -71,11 +69,6 @@ export class ServicesReadService extends BaseReadService<
 
   async findAll(dto: ServiceFilterDto): Promise<PaginationResponseDto<ServiceResponseDto>> {
     const qb = this.createAdminQB();
-
-    // Join solutions if solutionId filter is used
-    if (dto.solutionId !== undefined) {
-      qb.leftJoinAndSelect('service.solutions', 'solutions');
-    }
 
     this.applyAdminFilters(qb, dto);
     this.applyDefaultOrdering(qb);
@@ -108,16 +101,8 @@ export class ServicesReadService extends BaseReadService<
     if (filter.order !== undefined) {
       qb.andWhere('service.order = :order', { order: filter.order });
     }
-    if (filter.solutionId !== undefined) {
-      // Use EXISTS subquery instead of JOIN to avoid issues with paginateSafeQB clearing JOINs
-      qb.andWhere(
-        `EXISTS (
-          SELECT 1 FROM solution_services ss 
-          WHERE ss.service_id = service.id 
-          AND ss.solution_id = :solutionId
-        )`,
-        { solutionId: filter.solutionId },
-      );
+    if (filter.solutionKey !== undefined) {
+      qb.andWhere('service.solutionKey = :solutionKey', { solutionKey: filter.solutionKey });
     }
   }
 
@@ -133,16 +118,8 @@ export class ServicesReadService extends BaseReadService<
     if (filter.order !== undefined) {
       qb.andWhere('service.order = :order', { order: filter.order });
     }
-    if (filter.solutionId !== undefined) {
-      // Use EXISTS subquery instead of JOIN to avoid issues with paginateSafeQB clearing JOINs
-      qb.andWhere(
-        `EXISTS (
-          SELECT 1 FROM solution_services ss 
-          WHERE ss.service_id = service.id 
-          AND ss.solution_id = :solutionId
-        )`,
-        { solutionId: filter.solutionId },
-      );
+    if (filter.solutionKey !== undefined) {
+      qb.andWhere('service.solutionKey = :solutionKey', { solutionKey: filter.solutionKey });
     }
   }
 

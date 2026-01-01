@@ -1,6 +1,6 @@
 import { ServiceEntity } from '../../entities/service.entity';
 import { SubServiceResponseDto } from './sub-service-response.dto';
-import { SolutionResponseDto } from 'src/modules/solutions/dtos/response/solution-response.dto';
+import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
 
 export class ServiceResponseDto {
   id: number;
@@ -20,7 +20,7 @@ export class ServiceResponseDto {
     keywords?: string[];
   };
   subServices?: SubServiceResponseDto[];
-  solutions?: SolutionResponseDto[];
+  solutionKey?: SolutionKey;
   createdAt: Date;
   updatedAt: Date;
 
@@ -39,7 +39,7 @@ export class ServiceResponseDto {
     dto.shortDescription = entity.shortDescription;
     dto.meta = entity.meta;
     dto.subServices = entity.subServices?.map((subService) => SubServiceResponseDto.fromEntity(subService));
-    dto.solutions = entity.solutions?.map((solution) => SolutionResponseDto.fromEntity(solution));
+    dto.solutionKey = entity.solutionKey;
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
     return dto;

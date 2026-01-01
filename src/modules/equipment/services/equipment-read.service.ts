@@ -81,9 +81,6 @@ export class EquipmentReadService extends BaseReadService<
     if (filter.status) {
       qb.andWhere('eq.status = :status', { status: filter.status });
     }
-    if (filter.order !== undefined) {
-      qb.andWhere('eq.order = :order', { order: filter.order });
-    }
   }
 
   protected applyPublicFilters(qb: SelectQueryBuilder<EquipmentItemEntity>, filter: PublicEquipmentFilterDto): void {
@@ -103,7 +100,6 @@ export class EquipmentReadService extends BaseReadService<
       qb.andWhere('eq.brandId = :brandId', { brandId: filter.brandId });
     }
     if (filter.category) {
-      // Use subquery to avoid needing JOINs (which get cleared by pagination)
       const categorySubQuery = qb.connection
         .createQueryBuilder()
         .select('cat.id')
@@ -114,7 +110,6 @@ export class EquipmentReadService extends BaseReadService<
       qb.setParameter('categorySlug', filter.category);
     }
     if (filter.brand) {
-      // Use subquery to avoid needing JOINs (which get cleared by pagination)
       const brandSubQuery = qb.connection
         .createQueryBuilder()
         .select('br.id')
@@ -133,6 +128,25 @@ export class EquipmentReadService extends BaseReadService<
   }
 
   protected applyDefaultOrdering(qb: SelectQueryBuilder<EquipmentItemEntity>): void {
-    qb.orderBy('eq.order', 'ASC').addOrderBy('eq.createdAt', 'DESC');
+    // Default ranking requested by client:
+    // 1) Type rank
+    // 2) Category order
+    // 3) Brand order
+    // 4) createdAt desc
+
+    qb.addOrderBy(
+      `CASE eq.equipment_type
+          WHEN 'camera' THEN 1
+          WHEN 'lens' THEN 2
+          WHEN 'light' THEN 3
+          WHEN 'audio' THEN 4
+          WHEN 'accessory' THEN 5
+          ELSE 99
+        END`,
+      'ASC',
+    )
+      .addOrderBy('category.order', 'ASC')
+      .addOrderBy('brand.order', 'ASC')
+      .addOrderBy('eq.created_at', 'DESC');
   }
 }

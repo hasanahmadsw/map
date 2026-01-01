@@ -9,7 +9,6 @@ import {
   JoinTable,
 } from 'typeorm';
 import { ServiceEntity } from '../../services/entities/service.entity';
-import { SolutionEntity } from '../../solutions/entities/solution.entity';
 
 @Entity('projects')
 @Index('IDX_PROJECT_SLUG', ['slug'], { unique: true })
@@ -91,14 +90,6 @@ export class ProjectEntity {
     inverseJoinColumn: { name: 'service_id', referencedColumnName: 'id' },
   })
   services: ServiceEntity[];
-
-  @ManyToMany(() => SolutionEntity, (solution) => solution.projects)
-  @JoinTable({
-    name: 'project_solutions',
-    joinColumn: { name: 'project_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'solution_id', referencedColumnName: 'id' },
-  })
-  solutions: SolutionEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

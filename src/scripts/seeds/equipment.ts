@@ -106,7 +106,6 @@ async function bootstrap() {
         equipmentType: item.equipmentType as EquipmentType,
         isPublished: item.isPublished ?? false,
         isFeatured: item.isFeatured ?? false,
-        order: item.order ?? 0,
         specs: validatedSpecs,
       });
     }

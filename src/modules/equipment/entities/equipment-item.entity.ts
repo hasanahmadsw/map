@@ -55,9 +55,6 @@ export class EquipmentItemEntity {
   @Column({ default: false, name: 'is_published' })
   isPublished: boolean;
 
-  @Column({ type: 'int', default: 0 })
-  order: number;
-
   @Column({ name: 'cover_path', nullable: true })
   coverPath: string;
 

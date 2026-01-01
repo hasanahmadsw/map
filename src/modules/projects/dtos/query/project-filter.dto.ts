@@ -42,8 +42,4 @@ export class ProjectFilterDto extends PaginationDto {
   @IsOptional()
   @IsInt()
   serviceId?: number;
-
-  @IsOptional()
-  @IsInt()
-  solutionId?: number;
 }

@@ -33,10 +33,4 @@ export class EquipmentFilterDto extends PaginationDto {
   @IsOptional()
   @IsString()
   status?: EquipmentStatus;
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(0)
-  order?: number;
 }

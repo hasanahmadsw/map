@@ -11,7 +11,6 @@ export class EquipmentResponseDto {
 
   isPublished: boolean;
   isFeatured: boolean;
-  order: number;
   status: string;
 
   viewCount: number;
@@ -41,7 +40,6 @@ export class EquipmentResponseDto {
 
     dto.isPublished = entity.isPublished;
     dto.isFeatured = entity.isFeatured;
-    dto.order = entity.order;
     dto.status = entity.status;
 
     dto.viewCount = entity.viewCount;

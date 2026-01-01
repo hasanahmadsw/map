@@ -1,5 +1,6 @@
-import { IsOptional, IsString, IsBoolean, IsInt, Min } from 'class-validator';
+import { IsOptional, IsString, IsBoolean, IsInt, Min, IsEnum } from 'class-validator';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
+import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
 
 export class ServiceFilterDto extends PaginationDto {
   @IsOptional()
@@ -24,6 +25,6 @@ export class ServiceFilterDto extends PaginationDto {
   order?: number;
 
   @IsOptional()
-  @IsInt()
-  solutionId?: number;
+  @IsEnum(SolutionKey)
+  solutionKey?: SolutionKey;
 }

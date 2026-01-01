@@ -103,9 +103,4 @@ export class CreateProjectDto {
   @IsInt({ each: true })
   @IsOptional()
   serviceIds?: number[];
-
-  @IsArray()
-  @IsInt({ each: true })
-  @IsOptional()
-  solutionIds?: number[];
 }

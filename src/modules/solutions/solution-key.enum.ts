@@ -1,0 +1,5 @@
+export enum SolutionKey {
+  PRODUCTION = 'PRODUCTION',
+  EVENTS = 'EVENTS',
+  PHOTOGRAPHY = 'PHOTOGRAPHY',
+}

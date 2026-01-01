@@ -48,7 +48,6 @@ export class EquipmentCrudService extends BaseCrudService<EquipmentItemEntity, C
 
       isPublished: dto.isPublished ?? false,
       isFeatured: dto.isFeatured ?? false,
-      order: dto.order ?? 0,
 
       coverPath: dto.coverPath ?? null,
       galleryPaths: dto.galleryPaths ?? null,

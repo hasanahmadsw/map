@@ -1,20 +1,20 @@
 {
   "info": {
-    "_postman_id": "facilities-api-collection",
-    "name": "Facilities API",
-    "description": "API collection for Facilities management - Manage broadcast facilities (OB Van, Flight Cases, Studios, SNG) and their units with full CRUD operations.",
+    "_postman_id": "broadcast-api-collection",
+    "name": "Broadcast API",
+    "description": "API collection for Broadcast management - Manage broadcast facilities (OB Van, Flight Cases, Studios, SNG) and their units with full CRUD operations.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "map-backend-facilities"
+    "_exporter_id": "map-backend-broadcast"
   },
   "item": [
     {
-      "name": "Facilities",
+      "name": "Broadcasts",
       "item": [
         {
           "name": "Admin",
           "item": [
             {
-              "name": "Create Facility",
+              "name": "Create Broadcast",
               "request": {
                 "method": "POST",
                 "header": [
@@ -30,7 +30,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"solutionId\": 2,\n  \"type\": \"FLIGHT_CASE\",\n  \"slug\": \"flight-cases\",\n  \"title\": \"Flight Cases\",\n  \"summary\": \"Professional broadcast flight cases equipped with full production infrastructure.\",\n  \"description\": \"Our broadcast flight cases are designed for rapid deployment and high reliability, housing complete production, switching, audio, replay, and monitoring systems in compact mobile units.\",\n  \"coverImage\": \"https://example.com/images/facilities/flight-cases.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facilities/flight-case-1.jpg\",\n      \"alt\": \"Flight Case Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1\n}",
+                  "raw": "{\n  \"type\": \"FLIGHT_CASE\",\n  \"slug\": \"flight-cases\",\n  \"title\": \"Flight Cases\",\n  \"summary\": \"Professional broadcast flight cases equipped with full production infrastructure.\",\n  \"description\": \"Our broadcast flight cases are designed for rapid deployment and high reliability, housing complete production, switching, audio, replay, and monitoring systems in compact mobile units.\",\n  \"coverImage\": \"https://example.com/images/broadcasts/flight-cases.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/broadcasts/flight-case-1.jpg\",\n      \"alt\": \"Flight Case Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -38,16 +38,16 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities",
+                  "raw": "{{baseUrl}}/admin/broadcasts",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities"]
+                  "path": ["admin", "broadcasts"]
                 },
-                "description": "Create a new facility (Super Admin, Admin, Author). Type must be one of: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER"
+                "description": "Create a new broadcast facility (Super Admin, Admin, Author). Type must be one of: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER"
               },
               "response": []
             },
             {
-              "name": "Get All Facilities",
+              "name": "Get All Broadcasts",
               "request": {
                 "method": "GET",
                 "header": [
@@ -58,9 +58,9 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities?page=1&limit=10&orderDirection=ASC&solutionId=2&type=FLIGHT_CASE&isPublished=true",
+                  "raw": "{{baseUrl}}/admin/broadcasts?page=1&limit=10&orderDirection=ASC&type=FLIGHT_CASE&isPublished=true",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities"],
+                  "path": ["admin", "broadcasts"],
                   "query": [
                     {
                       "key": "page",
@@ -76,12 +76,6 @@
                       "key": "orderDirection",
                       "value": "ASC",
                       "description": "Sort direction: ASC or DESC"
-                    },
-                    {
-                      "key": "solutionId",
-                      "value": "2",
-                      "description": "Filter by solution ID",
-                      "disabled": true
                     },
                     {
                       "key": "type",
@@ -109,12 +103,12 @@
                     }
                   ]
                 },
-                "description": "Get paginated list of facilities (Super Admin, Admin, Author). Supports filtering by solutionId, type, isPublished, search, and slug."
+                "description": "Get paginated list of broadcasts (Super Admin, Admin, Author). Supports filtering by type, isPublished, search, and slug."
               },
               "response": []
             },
             {
-              "name": "Get Facility by ID",
+              "name": "Get Broadcast by ID",
               "request": {
                 "method": "GET",
                 "header": [
@@ -125,23 +119,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities/:id",
+                  "raw": "{{baseUrl}}/admin/broadcasts/:id",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities", ":id"],
+                  "path": ["admin", "broadcasts", ":id"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility ID"
+                      "description": "Broadcast ID"
                     }
                   ]
                 },
-                "description": "Get facility by ID (Super Admin, Admin, Author)"
+                "description": "Get broadcast by ID (Super Admin, Admin, Author)"
               },
               "response": []
             },
             {
-              "name": "Update Facility",
+              "name": "Update Broadcast",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -157,7 +151,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"Updated Flight Cases\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"coverImage\": \"https://example.com/images/facilities/flight-cases-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facilities/flight-case-2.jpg\",\n      \"alt\": \"Flight Case Exterior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2\n}",
+                  "raw": "{\n  \"title\": \"Updated Flight Cases\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"coverImage\": \"https://example.com/images/broadcasts/flight-cases-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/broadcasts/flight-case-2.jpg\",\n      \"alt\": \"Flight Case Exterior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -165,23 +159,23 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities/:id",
+                  "raw": "{{baseUrl}}/admin/broadcasts/:id",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities", ":id"],
+                  "path": ["admin", "broadcasts", ":id"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility ID"
+                      "description": "Broadcast ID"
                     }
                   ]
                 },
-                "description": "Update facility (Super Admin, Admin, Author). Cannot update solutionId, type, or slug."
+                "description": "Update broadcast (Super Admin, Admin, Author). Cannot update type or slug."
               },
               "response": []
             },
             {
-              "name": "Delete Facility",
+              "name": "Delete Broadcast",
               "request": {
                 "method": "DELETE",
                 "header": [
@@ -192,23 +186,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities/:id",
+                  "raw": "{{baseUrl}}/admin/broadcasts/:id",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities", ":id"],
+                  "path": ["admin", "broadcasts", ":id"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility ID"
+                      "description": "Broadcast ID"
                     }
                   ]
                 },
-                "description": "Delete facility (Super Admin, Admin, Author). This will cascade delete all associated facility units."
+                "description": "Delete broadcast (Super Admin, Admin, Author). This will cascade delete all associated broadcast units."
               },
               "response": []
             },
             {
-              "name": "Publish Facility",
+              "name": "Publish Broadcast",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -219,23 +213,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities/:id/publish",
+                  "raw": "{{baseUrl}}/admin/broadcasts/:id/publish",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities", ":id", "publish"],
+                  "path": ["admin", "broadcasts", ":id", "publish"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility ID"
+                      "description": "Broadcast ID"
                     }
                   ]
                 },
-                "description": "Publish facility (Super Admin, Admin, Author)"
+                "description": "Publish broadcast (Super Admin, Admin, Author)"
               },
               "response": []
             },
             {
-              "name": "Unpublish Facility",
+              "name": "Unpublish Broadcast",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -246,18 +240,18 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facilities/:id/unpublish",
+                  "raw": "{{baseUrl}}/admin/broadcasts/:id/unpublish",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facilities", ":id", "unpublish"],
+                  "path": ["admin", "broadcasts", ":id", "unpublish"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility ID"
+                      "description": "Broadcast ID"
                     }
                   ]
                 },
-                "description": "Unpublish facility (Super Admin, Admin, Author)"
+                "description": "Unpublish broadcast (Super Admin, Admin, Author)"
               },
               "response": []
             }
@@ -267,14 +261,14 @@
           "name": "Public",
           "item": [
             {
-              "name": "Get Published Facilities",
+              "name": "Get Published Broadcasts",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/facilities/published?page=1&limit=10&orderDirection=ASC&solutionId=2&solutionSlug=broadcast-solutions&type=FLIGHT_CASE",
+                  "raw": "{{baseUrl}}/broadcasts/published?page=1&limit=10&orderDirection=ASC&type=FLIGHT_CASE",
                   "host": ["{{baseUrl}}"],
-                  "path": ["facilities", "published"],
+                  "path": ["broadcasts", "published"],
                   "query": [
                     {
                       "key": "page",
@@ -292,47 +286,35 @@
                       "description": "Sort direction: ASC or DESC"
                     },
                     {
-                      "key": "solutionId",
-                      "value": "2",
-                      "description": "Filter by solution ID",
-                      "disabled": true
-                    },
-                    {
-                      "key": "solutionSlug",
-                      "value": "broadcast-solutions",
-                      "description": "Filter by solution slug",
-                      "disabled": true
-                    },
-                    {
                       "key": "type",
                       "value": "FLIGHT_CASE",
-                      "description": "Filter by facility type: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER",
+                      "description": "Filter by broadcast type: OBVAN, FLIGHT_CASE, SNG, STUDIO, OTHER",
                       "disabled": true
                     }
                   ]
                 },
-                "description": "Get paginated list of published facilities (public endpoint). Only returns published facilities."
+                "description": "Get paginated list of published broadcasts (public endpoint). Only returns published broadcasts."
               },
               "response": []
             },
             {
-              "name": "Get Facility by Slug",
+              "name": "Get Broadcast by Slug",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/facilities/slug/:slug",
+                  "raw": "{{baseUrl}}/broadcasts/slug/:slug",
                   "host": ["{{baseUrl}}"],
-                  "path": ["facilities", "slug", ":slug"],
+                  "path": ["broadcasts", "slug", ":slug"],
                   "variable": [
                     {
                       "key": "slug",
                       "value": "flight-cases",
-                      "description": "Facility slug"
+                      "description": "Broadcast slug"
                     }
                   ]
                 },
-                "description": "Get published facility by slug (public endpoint)"
+                "description": "Get published broadcast by slug (public endpoint)"
               },
               "response": []
             }
@@ -341,13 +323,13 @@
       ]
     },
     {
-      "name": "Facility Units",
+      "name": "Broadcast Units",
       "item": [
         {
           "name": "Admin",
           "item": [
             {
-              "name": "Create Facility Unit",
+              "name": "Create Broadcast Unit",
               "request": {
                 "method": "POST",
                 "header": [
@@ -363,7 +345,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"facilityId\": 1,\n  \"slug\": \"fc-001\",\n  \"title\": \"Flight Case FC-001\",\n  \"summary\": \"Compact production flight case with 4K switching capabilities.\",\n  \"description\": \"This flight case features a complete production setup including vision mixer, audio console, replay system, and monitoring infrastructure. Designed for rapid deployment in remote locations.\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 8,\n    \"audioChannels\": 32\n  },\n  \"coverImage\": \"https://example.com/images/facility-units/fc-001.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facility-units/fc-001-interior.jpg\",\n      \"alt\": \"FC-001 Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 4,\n      \"notes\": \"4K Full Frame\",\n      \"order\": 1\n    },\n    {\n      \"group\": \"AUDIO\",\n      \"title\": \"Yamaha QL5\",\n      \"qty\": 1,\n      \"notes\": \"32-channel mixer\",\n      \"order\": 2\n    }\n  ]\n}",
+                  "raw": "{\n  \"broadcastId\": 1,\n  \"slug\": \"bc-001\",\n  \"title\": \"Broadcast Unit BC-001\",\n  \"summary\": \"Compact production broadcast unit with 4K switching capabilities.\",\n  \"description\": \"This broadcast unit features a complete production setup including vision mixer, audio console, replay system, and monitoring infrastructure. Designed for rapid deployment in remote locations.\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 8,\n    \"audioChannels\": 32\n  },\n  \"coverImage\": \"https://example.com/images/broadcast-units/bc-001.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/broadcast-units/bc-001-interior.jpg\",\n      \"alt\": \"BC-001 Interior\"\n    }\n  ],\n  \"isPublished\": false,\n  \"order\": 1,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 4,\n      \"notes\": \"4K Full Frame\",\n      \"order\": 1\n    },\n    {\n      \"group\": \"AUDIO\",\n      \"title\": \"Yamaha QL5\",\n      \"qty\": 1,\n      \"notes\": \"32-channel mixer\",\n      \"order\": 2\n    }\n  ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -371,16 +353,16 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facility-units",
+                  "raw": "{{baseUrl}}/admin/broadcast-units",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facility-units"]
+                  "path": ["admin", "broadcast-units"]
                 },
-                "description": "Create a new facility unit (Super Admin, Admin, Author). Items group must be one of: CAMERAS, LENSES, AUDIO, LIGHTING, MONITORING, ACCESSORIES, OTHER"
+                "description": "Create a new broadcast unit (Super Admin, Admin, Author). Items group must be one of the BroadcastUnitItemGroup enum values."
               },
               "response": []
             },
             {
-              "name": "Get Facility Unit by ID",
+              "name": "Get All Broadcast Units",
               "request": {
                 "method": "GET",
                 "header": [
@@ -391,23 +373,84 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facility-units/:id",
+                  "raw": "{{baseUrl}}/admin/broadcast-units?page=1&limit=10&orderDirection=ASC",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facility-units", ":id"],
-                  "variable": [
+                  "path": ["admin", "broadcast-units"],
+                  "query": [
                     {
-                      "key": "id",
+                      "key": "page",
                       "value": "1",
-                      "description": "Facility Unit ID"
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "broadcastId",
+                      "value": "",
+                      "description": "Filter by broadcast ID",
+                      "disabled": true
+                    },
+                    {
+                      "key": "isPublished",
+                      "value": "",
+                      "description": "Filter by published status",
+                      "disabled": true
+                    },
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Search in title, summary, description",
+                      "disabled": true
+                    },
+                    {
+                      "key": "slug",
+                      "value": "",
+                      "description": "Filter by slug",
+                      "disabled": true
                     }
                   ]
                 },
-                "description": "Get facility unit by ID (Super Admin, Admin, Author)"
+                "description": "Get paginated list of broadcast units (Super Admin, Admin, Author)."
               },
               "response": []
             },
             {
-              "name": "Update Facility Unit",
+              "name": "Get Broadcast Unit by ID",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "broadcast-units", ":id"],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1",
+                      "description": "Broadcast Unit ID"
+                    }
+                  ]
+                },
+                "description": "Get broadcast unit by ID (Super Admin, Admin, Author)"
+              },
+              "response": []
+            },
+            {
+              "name": "Update Broadcast Unit",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -423,7 +466,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"title\": \"Updated Flight Case FC-001\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6.5m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 10,\n    \"audioChannels\": 40\n  },\n  \"coverImage\": \"https://example.com/images/facility-units/fc-001-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/facility-units/fc-001-updated-interior.jpg\",\n      \"alt\": \"FC-001 Updated Interior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 6,\n      \"notes\": \"4K Full Frame - Updated\",\n      \"order\": 1\n    }\n  ]\n}",
+                  "raw": "{\n  \"title\": \"Updated Broadcast Unit BC-001\",\n  \"summary\": \"Updated summary\",\n  \"description\": \"Updated description\",\n  \"specs\": {\n    \"dimensions\": {\n      \"length\": \"6.5m\",\n      \"width\": \"2.5m\",\n      \"height\": \"2.8m\"\n    },\n    \"power\": \"3-phase 400V\",\n    \"cameras\": 10,\n    \"audioChannels\": 40\n  },\n  \"coverImage\": \"https://example.com/images/broadcast-units/bc-001-updated.jpg\",\n  \"gallery\": [\n    {\n      \"url\": \"https://example.com/images/broadcast-units/bc-001-updated-interior.jpg\",\n      \"alt\": \"BC-001 Updated Interior\"\n    }\n  ],\n  \"isPublished\": true,\n  \"order\": 2,\n  \"items\": [\n    {\n      \"group\": \"CAMERAS\",\n      \"title\": \"Sony PXW-FX9\",\n      \"qty\": 6,\n      \"notes\": \"4K Full Frame - Updated\",\n      \"order\": 1\n    }\n  ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -431,23 +474,23 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facility-units/:id",
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facility-units", ":id"],
+                  "path": ["admin", "broadcast-units", ":id"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility Unit ID"
+                      "description": "Broadcast Unit ID"
                     }
                   ]
                 },
-                "description": "Update facility unit (Super Admin, Admin, Author). Cannot update facilityId or slug."
+                "description": "Update broadcast unit (Super Admin, Admin, Author). Cannot update broadcastId or slug."
               },
               "response": []
             },
             {
-              "name": "Delete Facility Unit",
+              "name": "Delete Broadcast Unit",
               "request": {
                 "method": "DELETE",
                 "header": [
@@ -458,23 +501,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facility-units/:id",
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facility-units", ":id"],
+                  "path": ["admin", "broadcast-units", ":id"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility Unit ID"
+                      "description": "Broadcast Unit ID"
                     }
                   ]
                 },
-                "description": "Delete facility unit (Super Admin, Admin, Author)"
+                "description": "Delete broadcast unit (Super Admin, Admin, Author)"
               },
               "response": []
             },
             {
-              "name": "Publish Facility Unit",
+              "name": "Publish Broadcast Unit",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -485,23 +528,23 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facility-units/:id/publish",
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id/publish",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facility-units", ":id", "publish"],
+                  "path": ["admin", "broadcast-units", ":id", "publish"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility Unit ID"
+                      "description": "Broadcast Unit ID"
                     }
                   ]
                 },
-                "description": "Publish facility unit (Super Admin, Admin, Author)"
+                "description": "Publish broadcast unit (Super Admin, Admin, Author)"
               },
               "response": []
             },
             {
-              "name": "Unpublish Facility Unit",
+              "name": "Unpublish Broadcast Unit",
               "request": {
                 "method": "PATCH",
                 "header": [
@@ -512,18 +555,18 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/facility-units/:id/unpublish",
+                  "raw": "{{baseUrl}}/admin/broadcast-units/:id/unpublish",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "facility-units", ":id", "unpublish"],
+                  "path": ["admin", "broadcast-units", ":id", "unpublish"],
                   "variable": [
                     {
                       "key": "id",
                       "value": "1",
-                      "description": "Facility Unit ID"
+                      "description": "Broadcast Unit ID"
                     }
                   ]
                 },
-                "description": "Unpublish facility unit (Super Admin, Admin, Author)"
+                "description": "Unpublish broadcast unit (Super Admin, Admin, Author)"
               },
               "response": []
             }
@@ -533,23 +576,60 @@
           "name": "Public",
           "item": [
             {
-              "name": "Get Facility Unit by Slug",
+              "name": "Get Published Broadcast Units",
               "request": {
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/facility-units/slug/:slug",
+                  "raw": "{{baseUrl}}/broadcast-units/published?page=1&limit=10&orderDirection=ASC",
                   "host": ["{{baseUrl}}"],
-                  "path": ["facility-units", "slug", ":slug"],
-                  "variable": [
+                  "path": ["broadcast-units", "published"],
+                  "query": [
                     {
-                      "key": "slug",
-                      "value": "fc-001",
-                      "description": "Facility Unit slug"
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number (default: 1)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Items per page (default: 10, max: 100)"
+                    },
+                    {
+                      "key": "orderDirection",
+                      "value": "ASC",
+                      "description": "Sort direction: ASC or DESC"
+                    },
+                    {
+                      "key": "broadcastId",
+                      "value": "",
+                      "description": "Filter by broadcast ID",
+                      "disabled": true
                     }
                   ]
                 },
-                "description": "Get published facility unit by slug (public endpoint)"
+                "description": "Get paginated list of published broadcast units (public endpoint)."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Broadcast Unit by Slug",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/broadcast-units/slug/:slug",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["broadcast-units", "slug", ":slug"],
+                  "variable": [
+                    {
+                      "key": "slug",
+                      "value": "bc-001",
+                      "description": "Broadcast Unit slug"
+                    }
+                  ]
+                },
+                "description": "Get published broadcast unit by slug (public endpoint)"
               },
               "response": []
             }
@@ -571,4 +651,3 @@
     }
   ]
 }
-

@@ -1,0 +1,440 @@
+{
+  "info": {
+    "_postman_id": "services-api-collection",
+    "name": "Services API",
+    "description": "API collection for Services management - Manage services with full CRUD operations. Services are dynamic pages linked to solutionKey enum.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "map-backend-services"
+  },
+  "item": [
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"slug\": \"video-production\",\n  \"icon\": \"https://example.com/icons/video.svg\",\n  \"name\": \"Video Production\",\n  \"description\": \"Professional video production services for broadcast and digital media.\",\n  \"shortDescription\": \"High-quality video production\",\n  \"meta\": {\n    \"title\": \"Video Production Services\",\n    \"description\": \"Professional video production services\",\n    \"keywords\": [\"video\", \"production\", \"broadcast\"]\n  },\n  \"subServices\": [\n    {\n      \"title\": \"Live Production\",\n      \"description\": \"Live event production services\"\n    },\n    {\n      \"title\": \"Post-Production\",\n      \"description\": \"Video editing and post-production\"\n    }\n  ],\n  \"solutionKey\": \"PRODUCTION\",\n  \"isPublished\": false,\n  \"isFeatured\": false,\n  \"featuredImage\": \"https://example.com/images/services/video-production.jpg\",\n  \"order\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/services",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services"]
+            },
+            "description": "Create a new service (Super Admin, Admin, Author). solutionKey must be one of: PRODUCTION, EVENTS, PHOTOGRAPHY"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/services?page=1&limit=10&orderDirection=ASC&solutionKey=PRODUCTION&isPublished=true&isFeatured=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (default: 10, max: 100)"
+                },
+                {
+                  "key": "orderDirection",
+                  "value": "ASC",
+                  "description": "Sort direction: ASC or DESC"
+                },
+                {
+                  "key": "solutionKey",
+                  "value": "PRODUCTION",
+                  "description": "Filter by solution key: PRODUCTION, EVENTS, PHOTOGRAPHY",
+                  "disabled": true
+                },
+                {
+                  "key": "isPublished",
+                  "value": "true",
+                  "description": "Filter by published status",
+                  "disabled": true
+                },
+                {
+                  "key": "isFeatured",
+                  "value": "false",
+                  "description": "Filter by featured status",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search in slug or name",
+                  "disabled": true
+                },
+                {
+                  "key": "slug",
+                  "value": "",
+                  "description": "Filter by slug",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "",
+                  "description": "Filter by order value",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get paginated list of services (Super Admin, Admin, Author). Supports filtering by solutionKey, isPublished, isFeatured, search, slug, and order."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/services/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Get service by ID (Super Admin, Admin, Author)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Video Production\",\n  \"description\": \"Updated description\",\n  \"shortDescription\": \"Updated short description\",\n  \"meta\": {\n    \"title\": \"Updated Video Production Services\",\n    \"description\": \"Updated description\",\n    \"keywords\": [\"video\", \"production\", \"updated\"]\n  },\n  \"solutionKey\": \"PRODUCTION\",\n  \"isPublished\": true,\n  \"isFeatured\": true,\n  \"featuredImage\": \"https://example.com/images/services/video-production-updated.jpg\",\n  \"order\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/services/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Update service (Super Admin, Admin, Author). Cannot update slug."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Service",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/services/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Delete service (Super Admin, Admin, Author). This will remove all associated project relationships."
+          },
+          "response": []
+        },
+        {
+          "name": "Publish Service",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/services/:id/publish",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services", ":id", "publish"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Publish service (Super Admin, Admin, Author)"
+          },
+          "response": []
+        },
+        {
+          "name": "Unpublish Service",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/services/:id/unpublish",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services", ":id", "unpublish"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Unpublish service (Super Admin, Admin, Author)"
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Featured Service",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/services/:id/toggle-featured",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "services", ":id", "toggle-featured"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Toggle featured status of service (Super Admin, Admin, Author)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Get Published Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/services/published?page=1&limit=10&orderDirection=ASC&solutionKey=PRODUCTION&isFeatured=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["services", "published"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (default: 10, max: 100)"
+                },
+                {
+                  "key": "orderDirection",
+                  "value": "ASC",
+                  "description": "Sort direction: ASC or DESC"
+                },
+                {
+                  "key": "solutionKey",
+                  "value": "PRODUCTION",
+                  "description": "Filter by solution key: PRODUCTION, EVENTS, PHOTOGRAPHY",
+                  "disabled": true
+                },
+                {
+                  "key": "isFeatured",
+                  "value": "false",
+                  "description": "Filter by featured status",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search in name or description",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "",
+                  "description": "Filter by order value",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get paginated list of published services (public endpoint). Only returns published services."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Featured Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/services/featured?page=1&limit=10&orderDirection=ASC&solutionKey=PRODUCTION",
+              "host": ["{{baseUrl}}"],
+              "path": ["services", "featured"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (default: 10, max: 100)"
+                },
+                {
+                  "key": "orderDirection",
+                  "value": "ASC",
+                  "description": "Sort direction: ASC or DESC"
+                },
+                {
+                  "key": "solutionKey",
+                  "value": "PRODUCTION",
+                  "description": "Filter by solution key: PRODUCTION, EVENTS, PHOTOGRAPHY",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search in name or description",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "",
+                  "description": "Filter by order value",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get paginated list of featured published services (public endpoint)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service by Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/services/slug/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["services", "slug", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "video-production",
+                  "description": "Service slug"
+                }
+              ]
+            },
+            "description": "Get published service by slug (public endpoint)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
+

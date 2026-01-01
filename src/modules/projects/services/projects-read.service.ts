@@ -35,17 +35,11 @@ export class ProjectsReadService extends BaseReadService<
   }
 
   protected createAdminQB(): SelectQueryBuilder<ProjectEntity> {
-    return this.repo
-      .createQueryBuilder('project')
-      .leftJoinAndSelect('project.services', 'services')
-      .leftJoinAndSelect('project.solutions', 'solutions');
+    return this.repo.createQueryBuilder('project').leftJoinAndSelect('project.services', 'services');
   }
 
   protected createPublicQB(): SelectQueryBuilder<ProjectEntity> {
-    return this.repo
-      .createQueryBuilder('project')
-      .leftJoinAndSelect('project.services', 'services')
-      .leftJoinAndSelect('project.solutions', 'solutions');
+    return this.repo.createQueryBuilder('project').leftJoinAndSelect('project.services', 'services');
   }
 
   protected shouldUseSafePagination(_dto: any): boolean {
@@ -84,9 +78,6 @@ export class ProjectsReadService extends BaseReadService<
     }
     if (filter.serviceId !== undefined) {
       qb.andWhere('services.id = :serviceId', { serviceId: filter.serviceId });
-    }
-    if (filter.solutionId !== undefined) {
-      qb.andWhere('solutions.id = :solutionId', { solutionId: filter.solutionId });
     }
   }
 

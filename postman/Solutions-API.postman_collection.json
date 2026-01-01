@@ -1,0 +1,59 @@
+{
+  "info": {
+    "_postman_id": "solutions-api-collection",
+    "name": "Solutions API",
+    "description": "API collection for Solutions - Static enum-based configuration endpoints. Solutions are now static enums (PRODUCTION, EVENTS, PHOTOGRAPHY) without database tables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "map-backend-solutions"
+  },
+  "item": [
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Get All Solutions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/solutions",
+              "host": ["{{baseUrl}}"],
+              "path": ["solutions"]
+            },
+            "description": "Get all solution configurations (public endpoint). Returns static configuration for all solution keys: PRODUCTION, EVENTS, PHOTOGRAPHY."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Solution by Key",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/solutions/:key",
+              "host": ["{{baseUrl}}"],
+              "path": ["solutions", ":key"],
+              "variable": [
+                {
+                  "key": "key",
+                  "value": "PRODUCTION",
+                  "description": "Solution key: PRODUCTION, EVENTS, or PHOTOGRAPHY"
+                }
+              ]
+            },
+            "description": "Get solution configuration by key (public endpoint). Key must be one of: PRODUCTION, EVENTS, PHOTOGRAPHY (case-insensitive)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
+

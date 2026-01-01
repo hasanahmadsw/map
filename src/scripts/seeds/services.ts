@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from 'src/app.module';
 import { ServicesService } from 'src/modules/services/services/services.service';
 import { CreateServiceDto } from 'src/modules/services/dtos/request/create-service.dto';
+import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -24,7 +25,7 @@ interface ServiceJsonData {
   isFeatured?: boolean;
   featuredImage?: string;
   order?: number;
-  solutionIds?: number[];
+  solutionKey?: SolutionKey;
 }
 
 async function bootstrap() {
@@ -72,7 +73,7 @@ async function bootstrap() {
         isFeatured: serviceData.isFeatured ?? false,
         featuredImage: serviceData.featuredImage,
         order: serviceData.order ?? 0,
-        solutionIds: serviceData.solutionIds,
+        solutionKey: serviceData.solutionKey,
       };
 
       try {

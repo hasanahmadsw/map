@@ -8,7 +8,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { SolutionEntity } from 'src/modules/solutions/entities/solution.entity';
+import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
 import { ProjectEntity } from 'src/modules/projects/entities/project.entity';
 import { SubService } from '../interfaces/sub-service.interface';
 
@@ -58,13 +58,8 @@ export class ServiceEntity {
   @Column({ type: 'int', default: 0 })
   order: number;
 
-  @ManyToMany(() => SolutionEntity, (solution) => solution.services)
-  @JoinTable({
-    name: 'solution_services',
-    joinColumn: { name: 'service_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'solution_id', referencedColumnName: 'id' },
-  })
-  solutions: SolutionEntity[];
+  @Column({ type: 'enum', enum: SolutionKey, name: 'solution_key', nullable: true })
+  solutionKey: SolutionKey;
 
   @ManyToMany(() => ProjectEntity, (project) => project.services)
   @JoinTable({

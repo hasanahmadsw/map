@@ -29,7 +29,6 @@
     "seed:equipment-brands": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/equipment-brands.ts",
     "seed:equipment-categories": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/equipment-categories.ts",
     "seed:equipment": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/equipment.ts",
-    "seed:facilities": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/facilities.ts",
     "seed:facility-units": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seeds/facility-units.ts",
     "migration:generate": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:generate -d src/data-source.ts",
     "migration:create": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:create",

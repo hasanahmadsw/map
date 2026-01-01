@@ -79,24 +79,55 @@ export class PaginationService {
         ? `${alias}.created_at`
         : `${alias}.createdAt`;
 
+    // Check if the query builder has predefined ordering
+    const hasPredefinedOrder = qb.expressionMap && Object.keys(qb.expressionMap.orderBys ?? {}).length > 0;
+
     // 1) IDs page (with DISTINCT)
-    // Clone and remove JOINs for ID query (JOINs cause duplicates and break pagination)
-    const idQ = qb.clone();
-    // Clear existing selections, ordering, and JOINs
-    (idQ as any).expressionMap.selects = [];
-    (idQ as any).expressionMap.orderBys = {};
-    (idQ as any).expressionMap.joinAttributes = [];
+    let ids: number[];
 
-    // Build the ID query without JOINs - only need IDs and ordering column
-    idQ
-      .select(`${idCol}`, 'id')
-      .addSelect(`${createdCol}`, 'created_at_for_order')
-      .orderBy(createdCol, orderDirection)
-      .addOrderBy(idCol, 'ASC')
-      .skip(skip)
-      .take(limit);
+    if (hasPredefinedOrder) {
+      // Preserve the original ordering from the query builder
+      // Fetch all IDs in order, deduplicate, then apply pagination
+      // This ensures correct pagination across pages
+      const orderedQb = qb.clone();
+      orderedQb.select(`${idCol}`, 'id');
 
-    const idsRaw = await idQ.getRawMany<{ id: number }>();
+      // Fetch all ordered IDs (may have duplicates from JOINs)
+      const allOrderedIdsRaw = await orderedQb.getRawMany<{ id: number }>();
+
+      // Remove duplicates while preserving order
+      const seen = new Set<number>();
+      const uniqueIds: number[] = [];
+      for (const row of allOrderedIdsRaw) {
+        if (!seen.has(row.id)) {
+          seen.add(row.id);
+          uniqueIds.push(row.id);
+        }
+      }
+
+      // Apply pagination to deduplicated list
+      const startIndex = skip;
+      const endIndex = skip + limit;
+      ids = uniqueIds.slice(startIndex, endIndex);
+    } else {
+      // No predefined ordering - use default behavior without JOINs
+      const idQ = qb.clone();
+      // Clear existing selections, ordering, and JOINs
+      (idQ as any).expressionMap.selects = [];
+      (idQ as any).expressionMap.orderBys = {};
+      (idQ as any).expressionMap.joinAttributes = [];
+
+      idQ
+        .select(`${idCol}`, 'id')
+        .addSelect(`${createdCol}`, 'created_at_for_order')
+        .orderBy(createdCol, orderDirection)
+        .addOrderBy(idCol, 'ASC')
+        .skip(skip)
+        .take(limit);
+
+      const idsRaw = await idQ.getRawMany<{ id: number }>();
+      ids = idsRaw.map((r) => r.id);
+    }
 
     // 2) total (with COUNT DISTINCT) - remove ORDER BY for count query
     const totalQ = qb.clone().select(`COUNT(DISTINCT ${idCol})`, 'count');
@@ -104,24 +135,41 @@ export class PaginationService {
     const totalRes = await totalQ.getRawOne<{ count: string }>();
     const total = parseInt(totalRes?.count ?? '0', 10);
 
-    if (!idsRaw.length) {
+    if (!ids.length) {
       return new PaginationResponseDto<Out>([], total, page, limit);
     }
 
-    const ids = idsRaw.map((r) => r.id);
-
     // 3) fetch page entities fully
     const dataQb = qb.clone();
-    // Clear any existing ordering before applying new ordering
-    (dataQb as any).expressionMap.orderBys = {};
-    const dataRows = await dataQb
-      .andWhereInIds(ids)
-      .orderBy(createdCol, orderDirection)
-      .addOrderBy(idCol, 'ASC')
-      .getMany();
 
-    const data = options?.map ? dataRows.map(options.map) : (dataRows as unknown as Out[]);
-    return new PaginationResponseDto<Out>(data, total, page, limit);
+    if (hasPredefinedOrder) {
+      // Preserve the original ordering - don't clear it
+      // The ordering is already set in the query builder
+      const dataRows = await dataQb.andWhereInIds(ids).getMany();
+
+      // Sort the results to match the original ordering
+      // Since databases don't guarantee order with IN clause, we sort in memory
+      const idToIndex = new Map(ids.map((id, idx) => [id, idx]));
+      dataRows.sort((a, b) => {
+        const aIdx = idToIndex.get((a as any).id) ?? Infinity;
+        const bIdx = idToIndex.get((b as any).id) ?? Infinity;
+        return aIdx - bIdx;
+      });
+
+      const data = options?.map ? dataRows.map(options.map) : (dataRows as unknown as Out[]);
+      return new PaginationResponseDto<Out>(data, total, page, limit);
+    } else {
+      // Clear any existing ordering before applying new ordering
+      (dataQb as any).expressionMap.orderBys = {};
+      const dataRows = await dataQb
+        .andWhereInIds(ids)
+        .orderBy(createdCol, orderDirection)
+        .addOrderBy(idCol, 'ASC')
+        .getMany();
+
+      const data = options?.map ? dataRows.map(options.map) : (dataRows as unknown as Out[]);
+      return new PaginationResponseDto<Out>(data, total, page, limit);
+    }
   }
 
   // paginate for an array in memory (if needed)
