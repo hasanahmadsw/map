@@ -1,6 +1,7 @@
 import { ServiceEntity } from '../../entities/service.entity';
 import { SubServiceResponseDto } from './sub-service-response.dto';
 import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
+import { GalleryItem } from 'src/modules/equipment/types/gallery-item.interface';
 
 export class ServiceResponseDto {
   id: number;
@@ -9,6 +10,7 @@ export class ServiceResponseDto {
   isPublished: boolean;
   isFeatured: boolean;
   featuredImage?: string;
+  gallery?: GalleryItem[];
   viewCount: number;
   order: number;
   name?: string;
@@ -32,6 +34,7 @@ export class ServiceResponseDto {
     dto.isPublished = entity.isPublished;
     dto.isFeatured = entity.isFeatured;
     dto.featuredImage = entity.featuredImage;
+    dto.gallery = entity.gallery;
     dto.viewCount = entity.viewCount;
     dto.order = entity.order;
     dto.name = entity.name;

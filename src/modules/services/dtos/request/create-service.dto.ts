@@ -13,6 +13,7 @@ import {
 import { Type } from 'class-transformer';
 import { CreateSubServiceDto } from './create-sub-service.dto';
 import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
+import { GalleryItemDto } from 'src/modules/equipment/dtos/request/gallery-item.dto';
 
 export class CreateServiceDto {
   @IsString()
@@ -60,6 +61,12 @@ export class CreateServiceDto {
   @IsString()
   @IsOptional()
   featuredImage?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => GalleryItemDto)
+  gallery?: GalleryItemDto[];
 
   @IsNumber()
   @IsOptional()

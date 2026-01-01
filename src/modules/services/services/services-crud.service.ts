@@ -36,6 +36,7 @@ export class ServicesCrudService extends BaseCrudService<ServiceEntity, CreateSe
       isPublished: rest.isPublished ?? false,
       isFeatured: rest.isFeatured ?? false,
       featuredImage: rest.featuredImage,
+      gallery: rest.gallery ?? null,
       viewCount: 0,
       icon: rest.icon,
       order: rest.order ?? 0,

@@ -11,6 +11,7 @@ import {
 import { SolutionKey } from 'src/modules/solutions/solution-key.enum';
 import { ProjectEntity } from 'src/modules/projects/entities/project.entity';
 import { SubService } from '../interfaces/sub-service.interface';
+import { GalleryItem } from 'src/modules/equipment/types/gallery-item.interface';
 
 @Entity('services')
 @Index('IDX_SERVICE_SLUG', ['slug'], { unique: true })
@@ -51,6 +52,9 @@ export class ServiceEntity {
 
   @Column({ name: 'featured_image', nullable: true })
   featuredImage: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  gallery: GalleryItem[];
 
   @Column({ name: 'view_count', default: 0 })
   viewCount: number;

@@ -9,8 +9,11 @@ import {
   IsUrl,
   Length,
   Min,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { EquipmentStatus, EquipmentType } from '../../types/equipment.enums';
+import { GalleryItemDto } from './gallery-item.dto';
 
 export class CreateEquipmentDto {
   @IsString()
@@ -54,8 +57,9 @@ export class CreateEquipmentDto {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  galleryPaths?: string[];
+  @ValidateNested({ each: true })
+  @Type(() => GalleryItemDto)
+  gallery?: GalleryItemDto[];
 
   @IsOptional()
   @IsString()

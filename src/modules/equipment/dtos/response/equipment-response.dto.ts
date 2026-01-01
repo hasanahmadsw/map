@@ -1,4 +1,5 @@
 import { EquipmentItemEntity } from '../../entities/equipment-item.entity';
+import { GalleryItem } from '../../types/gallery-item.interface';
 
 export class EquipmentResponseDto {
   id: number;
@@ -16,7 +17,7 @@ export class EquipmentResponseDto {
   viewCount: number;
 
   coverPath?: string;
-  galleryPaths?: string[];
+  gallery?: GalleryItem[];
   manualPath?: string;
   videoUrl?: string;
 
@@ -45,7 +46,7 @@ export class EquipmentResponseDto {
     dto.viewCount = entity.viewCount;
 
     dto.coverPath = entity.coverPath ?? undefined;
-    dto.galleryPaths = entity.galleryPaths ?? undefined;
+    dto.gallery = entity.gallery ?? undefined;
     dto.manualPath = entity.manualPath ?? undefined;
     dto.videoUrl = entity.videoUrl ?? undefined;
 

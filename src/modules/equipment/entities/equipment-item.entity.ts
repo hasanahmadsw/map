@@ -11,6 +11,7 @@ import {
 import { EquipmentBrandEntity } from './equipment-brand.entity';
 import { EquipmentCategoryEntity } from './equipment-category.entity';
 import { EquipmentStatus, EquipmentType } from '../types/equipment.enums';
+import { GalleryItem } from '../types/gallery-item.interface';
 
 @Entity('equipment_items')
 @Index('IDX_EQUIPMENT_ITEM_SLUG', ['slug'], { unique: true })
@@ -58,8 +59,8 @@ export class EquipmentItemEntity {
   @Column({ name: 'cover_path', nullable: true })
   coverPath: string;
 
-  @Column({ name: 'gallery_paths', type: 'jsonb', nullable: true })
-  galleryPaths: string[];
+  @Column({ name: 'gallery', type: 'jsonb', nullable: true })
+  gallery: GalleryItem[];
 
   @Column({ name: 'manual_path', nullable: true })
   manualPath: string;
