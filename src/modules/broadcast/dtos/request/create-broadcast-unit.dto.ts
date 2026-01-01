@@ -13,6 +13,7 @@ import {
 import { BroadcastUnitItemGroup } from '../../enums/broadcast-unit-item.enum';
 import { BroadcastType } from '../../enums/broadcast-type.enum';
 import { Type } from 'class-transformer';
+import { BroadcastUnitSpecsDto } from './broadcast-unit-specs-dto';
 
 export class CreateBroadcastUnitItemDto {
   @IsOptional()
@@ -60,7 +61,9 @@ export class CreateBroadcastUnitDto {
   description?: string;
 
   @IsOptional()
-  specs?: any;
+  @ValidateNested()
+  @Type(() => BroadcastUnitSpecsDto)
+  specs?: BroadcastUnitSpecsDto;
 
   @IsString()
   @IsOptional()

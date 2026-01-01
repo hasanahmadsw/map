@@ -10,6 +10,23 @@ export class BroadcastUnitItemResponseDto {
   order?: number;
 }
 
+export class BroadcastUnitSpecsResponseDto {
+  format?: string;
+  routing?: string;
+  intercom?: string;
+  intercomList?: string[];
+  useCases?: string[];
+  audioMixer?: string;
+  visionMixer?: string;
+  visionMixers?: string[];
+  cameraChains?: number;
+  cameraSystem?: string;
+  powerBackup?: string;
+  power?: string;
+  mobility?: string;
+  deployment?: string;
+}
+
 export class BroadcastUnitResponseDto {
   id: number;
   type: BroadcastType;
@@ -17,7 +34,7 @@ export class BroadcastUnitResponseDto {
   title?: string;
   summary?: string;
   description?: string;
-  specs?: any;
+  specs?: BroadcastUnitSpecsResponseDto;
   coverImage?: string;
   gallery?: any;
   isPublished: boolean;
@@ -35,7 +52,7 @@ export class BroadcastUnitResponseDto {
     dto.title = e.title ?? undefined;
     dto.summary = e.summary ?? undefined;
     dto.description = e.description ?? undefined;
-    dto.specs = e.specs ?? undefined;
+    dto.specs = e.specs ? Object.assign(new BroadcastUnitSpecsResponseDto(), e.specs) : undefined;
     dto.coverImage = e.coverImage ?? undefined;
     dto.gallery = e.gallery ?? undefined;
     dto.isPublished = e.isPublished;
