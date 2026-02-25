@@ -56,10 +56,6 @@ export class CreateBroadcastUnitDto {
   @IsOptional()
   summary?: string;
 
-  @IsString()
-  @IsOptional()
-  description?: string;
-
   @IsOptional()
   @ValidateNested()
   @Type(() => BroadcastUnitSpecsDto)
@@ -67,7 +63,15 @@ export class CreateBroadcastUnitDto {
 
   @IsString()
   @IsOptional()
-  coverImage?: string;
+  metaTitle?: string;
+
+  @IsString()
+  @IsOptional()
+  metaDescription?: string;
+
+  @IsString()
+  @IsOptional()
+  metaKeywords?: string;
 
   @IsOptional()
   gallery?: any;

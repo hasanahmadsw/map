@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsBoolean, IsNumber, Min, IsInt, IsDateString } from 'class-validator';
+import { IsOptional, IsString, IsBoolean, IsInt, Min, IsDateString } from 'class-validator';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
 
 export class ProjectFilterDto extends PaginationDto {
@@ -38,8 +38,4 @@ export class ProjectFilterDto extends PaginationDto {
   @IsOptional()
   @IsDateString()
   startDateTo?: string;
-
-  @IsOptional()
-  @IsInt()
-  serviceId?: number;
 }

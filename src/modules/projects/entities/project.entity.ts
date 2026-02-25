@@ -5,10 +5,7 @@ import {
   UpdateDateColumn,
   Column,
   Index,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
-import { ServiceEntity } from '../../services/entities/service.entity';
 
 @Entity('projects')
 @Index('IDX_PROJECT_SLUG', ['slug'], { unique: true })
@@ -82,14 +79,6 @@ export class ProjectEntity {
 
   @Column({ type: 'jsonb', nullable: true })
   technologies: string[];
-
-  @ManyToMany(() => ServiceEntity, (service) => service.projects)
-  @JoinTable({
-    name: 'project_services',
-    joinColumn: { name: 'project_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'service_id', referencedColumnName: 'id' },
-  })
-  services: ServiceEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

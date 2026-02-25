@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { json } from 'express';
+import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -49,10 +50,11 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
   // Start the server
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 6000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }

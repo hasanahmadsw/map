@@ -1,16 +1,14 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, In, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 
 import { ProjectEntity } from '../entities/project.entity';
-import { ServiceEntity } from '../../services/entities/service.entity';
 import { CreateProjectDto } from '../dtos/request/create-project.dto';
 import { UpdateProjectDto } from '../dtos/request/update-project.dto';
 
 import { BaseCrudService } from 'src/common/crud/base-crud.service';
 import { SlugUniquenessService } from 'src/common/db/slug-uniqueness.service';
 import { FlagsService } from 'src/common/db/flags.service';
-import { JunctionSyncService } from 'src/common/db/junction-sync.service';
 import { findByIdOrThrow } from 'src/common/db/find-or-throw';
 
 @Injectable()
@@ -20,7 +18,6 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
     dataSource: DataSource,
     slugGuard: SlugUniquenessService,
     flags: FlagsService,
-    private readonly junctionSync: JunctionSyncService,
   ) {
     super(repo, dataSource, slugGuard, flags);
   }
@@ -30,8 +27,7 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
   }
 
   protected createEntityPayload(dto: CreateProjectDto): Partial<ProjectEntity> {
-    const { name, description, shortDescription, meta, challenges, results, serviceIds, startDate, endDate, ...rest } =
-      dto;
+    const { name, description, shortDescription, meta, challenges, results, startDate, endDate, ...rest } = dto;
 
     return {
       slug: rest.slug,
@@ -57,7 +53,7 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
   }
 
   protected updateEntityPayload(entity: ProjectEntity, dto: UpdateProjectDto): void {
-    const { serviceIds, startDate, endDate, ...projectData } = dto;
+    const { startDate, endDate, ...projectData } = dto;
 
     // Handle date fields
     if (startDate !== undefined) {
@@ -71,59 +67,19 @@ export class ProjectsCrudService extends BaseCrudService<ProjectEntity, CreatePr
   }
 
   protected async attachRelationsOnCreate(
-    entity: ProjectEntity,
-    dto: CreateProjectDto,
-    em: EntityManager,
+    _entity: ProjectEntity,
+    _dto: CreateProjectDto,
+    _em: EntityManager,
   ): Promise<void> {
-    // Associate services if provided
-    if (dto.serviceIds && dto.serviceIds.length > 0) {
-      const services = await em.getRepository(ServiceEntity).findBy({ id: In(dto.serviceIds) });
-      if (services.length !== dto.serviceIds.length) {
-        const foundIds = services.map((s) => s.id);
-        const missingIds = dto.serviceIds.filter((id) => !foundIds.includes(id));
-        throw new BadRequestException(`Services with IDs ${missingIds.join(', ')} not found`);
-      }
-
-      await this.junctionSync.sync(
-        entity.id,
-        dto.serviceIds,
-        {
-          table: 'project_services',
-          leftKey: 'project_id',
-          rightKey: 'service_id',
-        },
-        em,
-      );
-    }
+    // No relations to attach after removing services
   }
 
   protected async syncRelationsOnUpdate(
-    entity: ProjectEntity,
-    dto: UpdateProjectDto,
-    em: EntityManager,
+    _entity: ProjectEntity,
+    _dto: UpdateProjectDto,
+    _em: EntityManager,
   ): Promise<void> {
-    // Handle service associations
-    if (dto.serviceIds !== undefined) {
-      if (dto.serviceIds.length > 0) {
-        const services = await em.getRepository(ServiceEntity).findBy({ id: In(dto.serviceIds) });
-        if (services.length !== dto.serviceIds.length) {
-          const foundIds = services.map((s) => s.id);
-          const missingIds = dto.serviceIds.filter((id) => !foundIds.includes(id));
-          throw new BadRequestException(`Services with IDs ${missingIds.join(', ')} not found`);
-        }
-      }
-
-      await this.junctionSync.sync(
-        entity.id,
-        dto.serviceIds,
-        {
-          table: 'project_services',
-          leftKey: 'project_id',
-          rightKey: 'service_id',
-        },
-        em,
-      );
-    }
+    // No relations to sync after removing services
   }
 
   async update(id: ProjectEntity['id'], dto: UpdateProjectDto): Promise<ProjectEntity> {

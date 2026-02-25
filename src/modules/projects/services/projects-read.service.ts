@@ -35,15 +35,11 @@ export class ProjectsReadService extends BaseReadService<
   }
 
   protected createAdminQB(): SelectQueryBuilder<ProjectEntity> {
-    return this.repo.createQueryBuilder('project').leftJoinAndSelect('project.services', 'services');
+    return this.repo.createQueryBuilder('project');
   }
 
   protected createPublicQB(): SelectQueryBuilder<ProjectEntity> {
-    return this.repo.createQueryBuilder('project').leftJoinAndSelect('project.services', 'services');
-  }
-
-  protected shouldUseSafePagination(_dto: any): boolean {
-    return true; // because we have JOINs
+    return this.repo.createQueryBuilder('project');
   }
 
   protected applyAdminFilters(qb: SelectQueryBuilder<ProjectEntity>, filter: ProjectFilterDto): void {
@@ -75,9 +71,6 @@ export class ProjectsReadService extends BaseReadService<
     }
     if (filter.startDateTo) {
       qb.andWhere('project.startDate <= :startDateTo', { startDateTo: filter.startDateTo });
-    }
-    if (filter.serviceId !== undefined) {
-      qb.andWhere('services.id = :serviceId', { serviceId: filter.serviceId });
     }
   }
 

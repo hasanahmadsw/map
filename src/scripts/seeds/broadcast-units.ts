@@ -61,9 +61,10 @@ interface UnitJsonData {
   slug: string;
   title?: string;
   summary?: string;
-  description?: string;
   specs?: any;
-  coverImage?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
   gallery?: any;
   isPublished?: boolean;
   order?: number;
@@ -150,13 +151,14 @@ async function bootstrap() {
         slug: unitData.slug,
         title: unitData.title,
         summary: unitData.summary,
-        description: unitData.description,
         specs: unitData.specs,
-        coverImage: unitData.coverImage,
+        metaTitle: unitData.metaTitle,
+        metaDescription: unitData.metaDescription,
+        metaKeywords: unitData.metaKeywords,
         gallery: unitData.gallery,
         isPublished: unitData.isPublished ?? true,
         order: unitData.order ?? 0,
-        items: mappedItems, // This should now be properly mapped
+        items: mappedItems,
       };
 
       try {

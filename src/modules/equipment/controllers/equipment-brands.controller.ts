@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch, Post, Query, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post, Query, Param } from '@nestjs/common';
 import { EquipmentBrandsService } from '../services/equipment-brands.service';
 import { CreateEquipmentBrandDto, UpdateEquipmentBrandDto } from '../dtos/request';
 import { EquipmentBrandResponseDto } from '../dtos/response';
@@ -28,11 +28,24 @@ export class EquipmentBrandsController {
     return this.service.findAll(dto);
   }
 
+  @Get('admin/equipment/brands/:id')
+  @Protected(Role.SUPER_ADMIN, Role.ADMIN)
+  @SerializeResponse(EquipmentBrandResponseDto)
+  findOne(@Param('id', PositiveIntPipe) id: number) {
+    return this.service.findOne(id);
+  }
+
   @Patch('admin/equipment/brands/:id')
   @Protected(Role.SUPER_ADMIN, Role.ADMIN)
   @SerializeResponse(EquipmentBrandResponseDto)
   update(@Param('id', PositiveIntPipe) id: number, @Body() dto: UpdateEquipmentBrandDto) {
     return this.service.update(id, dto);
+  }
+
+  @Delete('admin/equipment/brands/:id')
+  @Protected(Role.SUPER_ADMIN, Role.ADMIN)
+  remove(@Param('id', PositiveIntPipe) id: number) {
+    return this.service.remove(id);
   }
 
   // ===== PUBLIC =====

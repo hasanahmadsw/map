@@ -38,4 +38,9 @@ export class EquipmentBrandsCrudService {
     Object.assign(entity, dto);
     return this.repo.save(entity);
   }
+
+  async remove(id: number) {
+    const entity = await findByIdOrThrow(this.repo, id, { message: 'Brand not found' });
+    await this.repo.remove(entity);
+  }
 }

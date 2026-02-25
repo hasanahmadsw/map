@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "equipment-rental",
+    "type": "HUB",
+    "parentSlug": null,
+    "h1": "Equipment Rental in Dubai",
+    "linkLabel": "Equipment Rental",
+    "metaTitle": "Equipment Rental Dubai | Film, Broadcast & Production Gear",
+    "metaDescription": "Rent professional film and broadcast equipment in Dubai. Cameras, lenses, lighting, audio, and accessories with fast delivery and on-set support.",
+    "subHeading": "Professional production equipment rental with fast delivery across Dubai"
+  },
+  {
+    "slug": "camera-rental",
+    "type": "CLUSTER",
+    "parentSlug": "equipment-rental",
+    "h1": "Camera Rental in Dubai",
+    "linkLabel": "Cameras",
+    "metaTitle": "Camera Rental Dubai | Cinema & Broadcast Cameras",
+    "metaDescription": "Rent professional cinema and broadcast cameras in Dubai. Flexible daily rates, insured gear, and optional camera crew available.",
+    "subHeading": "Cinema cameras, mirrorless, and broadcast camera systems for professional productions"
+  },
+  {
+    "slug": "lighting-rental",
+    "type": "CLUSTER",
+    "parentSlug": "equipment-rental",
+    "h1": "Lighting Rental in Dubai",
+    "linkLabel": "Lighting",
+    "metaTitle": "Lighting Equipment Rental Dubai | Film & Studio Lighting",
+    "metaDescription": "Rent professional lighting equipment in Dubai for film, broadcast, and studio production. LED panels, Fresnels, and modifiers available.",
+    "subHeading": "Studio lighting fixtures, LED panels, and modifiers for production setups"
+  },
+  {
+    "slug": "audio-rental",
+    "type": "CLUSTER",
+    "parentSlug": "equipment-rental",
+    "h1": "Audio Equipment Rental in Dubai",
+    "linkLabel": "Audio",
+    "metaTitle": "Audio Equipment Rental Dubai | Microphones & Wireless Systems",
+    "metaDescription": "Rent professional audio equipment in Dubai including microphones, field recorders, and wireless systems for production.",
+    "subHeading": "Microphones, recorders, wireless systems, and audio accessories"
+  },
+  {
+    "slug": "lens-rental",
+    "type": "CLUSTER",
+    "parentSlug": "equipment-rental",
+    "h1": "Lens Rental in Dubai",
+    "linkLabel": "Lenses",
+    "metaTitle": "Lens Rental Dubai | Cinema & Photography Lenses",
+    "metaDescription": "Rent professional cinema lenses in Dubai including prime and zoom lenses for film and broadcast production.",
+    "subHeading": "Cinema prime lenses, zoom lenses, and specialty optics"
+  },
+  {
+    "slug": "accessories-rental",
+    "type": "CLUSTER",
+    "parentSlug": "equipment-rental",
+    "h1": "Production Accessories Rental in Dubai",
+    "linkLabel": "Accessories",
+    "metaTitle": "Production Accessories Rental Dubai | Grip & Support Gear",
+    "metaDescription": "Rent production accessories in Dubai including grip equipment, camera supports, and essential on-set tools.",
+    "subHeading": "Grip gear, camera supports, power solutions, and production accessories"
+  },
+  {
+    "slug": "arri-camera-rental",
+    "type": "BRAND",
+    "parentSlug": "camera-rental",
+    "h1": "ARRI Camera Rental in Dubai",
+    "linkLabel": "ARRI Cameras",
+    "metaTitle": "ARRI Camera Rental Dubai | Alexa Cinema Cameras",
+    "metaDescription": "Rent ARRI cinema cameras in Dubai including Alexa systems for film and broadcast production.",
+    "subHeading": "ARRI cinema camera systems for professional productions"
+  },
+  {
+    "slug": "arri-lens-rental",
+    "type": "BRAND",
+    "parentSlug": "lens-rental",
+    "h1": "ARRI Lens Rental in Dubai",
+    "linkLabel": "ARRI Lenses",
+    "metaTitle": "ARRI Lens Rental Dubai | Cinema Prime Lenses",
+    "metaDescription": "Rent ARRI cinema lenses in Dubai for film and production shoots.",
+    "subHeading": "ARRI cinema lenses for professional production"
+  },
+  {
+    "slug": "canon-rental",
+    "type": "BRAND",
+    "parentSlug": "camera-rental",
+    "h1": "Canon Camera Rental in Dubai",
+    "linkLabel": "Canon",
+    "metaTitle": "Canon Camera Rental Dubai | Cinema & Broadcast Cameras",
+    "metaDescription": "Rent Canon professional cameras in Dubai for film, commercial, and broadcast production.",
+    "subHeading": "Canon cinema and broadcast camera systems"
+  },
+  {
+    "slug": "sony-rental",
+    "type": "BRAND",
+    "parentSlug": "camera-rental",
+    "h1": "Sony Camera Rental in Dubai",
+    "linkLabel": "Sony",
+    "metaTitle": "Sony Camera Rental Dubai | FX Series & Cinema Cameras",
+    "metaDescription": "Rent Sony cinema and mirrorless cameras in Dubai for film and production shoots.",
+    "subHeading": "Sony FX series and production camera systems"
+  },
+  {
+    "slug": "red-rental",
+    "type": "BRAND",
+    "parentSlug": "camera-rental",
+    "h1": "RED Camera Rental in Dubai",
+    "linkLabel": "RED",
+    "metaTitle": "RED Camera Rental Dubai | Cinema Camera Systems",
+    "metaDescription": "Rent RED cinema cameras in Dubai for film and high-end production.",
+    "subHeading": "RED cinema camera systems for professional production"
+  },
+  {
+    "slug": "zeiss-rental",
+    "type": "BRAND",
+    "parentSlug": "lens-rental",
+    "h1": "Zeiss Lens Rental in Dubai",
+    "linkLabel": "Zeiss",
+    "metaTitle": "Zeiss Lens Rental Dubai | Cinema Prime Lenses",
+    "metaDescription": "Rent Zeiss cinema lenses in Dubai including prime and specialty lenses for film production.",
+    "subHeading": "Zeiss cinema prime lenses for professional shoots"
+  }
+]

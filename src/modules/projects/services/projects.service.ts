@@ -19,7 +19,7 @@ export class ProjectsService {
 
   async create(dto: CreateProjectDto): Promise<ProjectResponseDto> {
     const saved = await this.crud.create(dto);
-    return this.read.getById(saved.id, ['services', 'solutions']);
+    return this.read.getById(saved.id);
   }
 
   findAll(dto: ProjectFilterDto): Promise<PaginationResponseDto<ProjectResponseDto>> {
@@ -27,16 +27,16 @@ export class ProjectsService {
   }
 
   getById(id: number): Promise<ProjectResponseDto> {
-    return this.read.getById(id, ['services', 'solutions']);
+    return this.read.getById(id);
   }
 
   findBySlug(slug: string): Promise<ProjectResponseDto> {
-    return this.read.findBySlug(slug, ['services', 'solutions']);
+    return this.read.findBySlug(slug);
   }
 
   async update(id: number, dto: UpdateProjectDto): Promise<ProjectResponseDto> {
     const saved = await this.crud.update(id, dto);
-    return this.read.getById(saved.id, ['services', 'solutions']);
+    return this.read.getById(saved.id);
   }
 
   delete(id: number): Promise<void> {
@@ -45,17 +45,17 @@ export class ProjectsService {
 
   async publish(id: number): Promise<ProjectResponseDto> {
     const saved = await this.crud.publish(id);
-    return this.read.getById(saved.id, ['services', 'solutions']);
+    return this.read.getById(saved.id);
   }
 
   async unpublish(id: number): Promise<ProjectResponseDto> {
     const saved = await this.crud.unpublish(id);
-    return this.read.getById(saved.id, ['services', 'solutions']);
+    return this.read.getById(saved.id);
   }
 
   async toggleFeatured(id: number): Promise<ProjectResponseDto> {
     const saved = await this.crud.toggleFeatured(id);
-    return this.read.getById(saved.id, ['services', 'solutions']);
+    return this.read.getById(saved.id);
   }
 
   getPublishedProjects(dto: PublicProjectFilterDto) {

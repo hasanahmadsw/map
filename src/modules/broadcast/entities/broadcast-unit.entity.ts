@@ -20,14 +20,17 @@ export class BroadcastUnitEntity {
   @Column({ type: 'text', nullable: true })
   summary: string;
 
-  @Column({ type: 'text', nullable: true })
-  description: string;
-
   @Column({ type: 'jsonb', nullable: true })
   specs: any; // flexible specs object
 
-  @Column({ name: 'cover_image', nullable: true })
-  coverImage: string;
+  @Column({ name: 'meta_title', nullable: true })
+  metaTitle: string;
+
+  @Column({ name: 'meta_description', type: 'text', nullable: true })
+  metaDescription: string;
+
+  @Column({ name: 'meta_keywords', type: 'text', nullable: true })
+  metaKeywords: string;
 
   @Column({ type: 'jsonb', nullable: true })
   gallery: any;

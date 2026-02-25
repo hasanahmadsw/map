@@ -8,6 +8,7 @@ import { PaginationService } from 'src/common/pagination/paginate.service';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
 import { paginateAuto } from 'src/common/db/pagination.helper';
+import { findByIdOrThrow } from 'src/common/db/find-or-throw';
 
 @Injectable()
 export class EquipmentBrandsReadService {
@@ -40,6 +41,11 @@ export class EquipmentBrandsReadService {
       orderDirection: 'ASC',
       map: (e) => EquipmentBrandResponseDto.fromEntity(e),
     });
+  }
+
+  async findOne(id: number) {
+    const entity = await findByIdOrThrow(this.repo, id, { message: 'Brand not found' });
+    return EquipmentBrandResponseDto.fromEntity(entity);
   }
 
   async getActive(dto: PaginationDto): Promise<PaginationResponseDto<EquipmentBrandResponseDto>> {

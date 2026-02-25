@@ -98,9 +98,4 @@ export class CreateProjectDto {
   @IsString({ each: true })
   @IsOptional()
   technologies?: string[];
-
-  @IsArray()
-  @IsInt({ each: true })
-  @IsOptional()
-  serviceIds?: number[];
 }

@@ -22,8 +22,16 @@ export class EquipmentBrandsService {
     return this.read.findAll(dto);
   }
 
+  findOne(id: number) {
+    return this.read.findOne(id);
+  }
+
   update(id: number, dto: UpdateEquipmentBrandDto) {
     return this.crud.update(id, dto);
+  }
+
+  remove(id: number) {
+    return this.crud.remove(id);
   }
 
   getActive(dto: PaginationDto): Promise<PaginationResponseDto<EquipmentBrandResponseDto>> {

@@ -33,9 +33,10 @@ export class BroadcastUnitResponseDto {
   slug: string;
   title?: string;
   summary?: string;
-  description?: string;
   specs?: BroadcastUnitSpecsResponseDto;
-  coverImage?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
   gallery?: any;
   isPublished: boolean;
   viewCount: number;
@@ -51,9 +52,10 @@ export class BroadcastUnitResponseDto {
     dto.slug = e.slug;
     dto.title = e.title ?? undefined;
     dto.summary = e.summary ?? undefined;
-    dto.description = e.description ?? undefined;
     dto.specs = e.specs ? Object.assign(new BroadcastUnitSpecsResponseDto(), e.specs) : undefined;
-    dto.coverImage = e.coverImage ?? undefined;
+    dto.metaTitle = e.metaTitle ?? undefined;
+    dto.metaDescription = e.metaDescription ?? undefined;
+    dto.metaKeywords = e.metaKeywords ?? undefined;
     dto.gallery = e.gallery ?? undefined;
     dto.isPublished = e.isPublished;
     dto.viewCount = e.viewCount;

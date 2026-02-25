@@ -1,7 +1,6 @@
 import { ProjectEntity } from '../../entities/project.entity';
 import { ProjectChallengeResponseDto } from './project-challenge-response.dto';
 import { ProjectResultResponseDto } from './project-result-response.dto';
-import { ServiceResponseDto } from 'src/modules/services/dtos/response/service-response.dto';
 
 export class ProjectResponseDto {
   id: number;
@@ -28,7 +27,6 @@ export class ProjectResponseDto {
   };
   challenges?: ProjectChallengeResponseDto[];
   results?: ProjectResultResponseDto[];
-  services?: ServiceResponseDto[];
   createdAt: Date;
   updatedAt: Date;
 
@@ -54,7 +52,6 @@ export class ProjectResponseDto {
     dto.meta = entity.meta;
     dto.challenges = entity.challenges?.map((challenge) => ProjectChallengeResponseDto.fromEntity(challenge));
     dto.results = entity.results?.map((result) => ProjectResultResponseDto.fromEntity(result));
-    dto.services = entity.services?.map((service) => ServiceResponseDto.fromEntity(service));
     dto.createdAt = entity.createdAt;
     dto.updatedAt = entity.updatedAt;
     return dto;
