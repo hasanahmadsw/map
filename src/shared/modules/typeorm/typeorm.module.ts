@@ -42,7 +42,7 @@ import { Client } from 'pg';
           //   : {}),
 
           synchronize: false, // Always false - use migrations instead to preserve indexes
-          logging: isDev, // Enable logging in development for debugging
+          logging: false, // Enable logging in development for debugging
         };
       },
       inject: [ConfigService],

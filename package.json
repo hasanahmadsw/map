@@ -34,7 +34,8 @@
     "migration:run": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
     "migration:revert": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:revert -d src/data-source.ts",
     "migration:show": "cross-env NODE_ENV=development typeorm-ts-node-commonjs migration:show -d src/data-source.ts",
-    "check:indexes": "cross-env NODE_ENV=development ts-node scripts/check-staff-indexes.ts"
+    "check:indexes": "cross-env NODE_ENV=development ts-node scripts/check-staff-indexes.ts",
+    "change:superadmin-password": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register scripts/change-superadmin-password.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.0",

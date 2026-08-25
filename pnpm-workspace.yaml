@@ -1,0 +1,7 @@
+allowBuilds:
+  '@firebase/util': true
+  '@nestjs/core': true
+  msgpackr-extract: true
+  protobufjs: true
+  sharp: true
+  sqlite3: true
